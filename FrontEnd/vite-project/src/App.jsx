@@ -4,7 +4,9 @@ import Navbar from './components/Navbar';
 import MainPage from './pages/MainPage';
 import StatsPage from './pages/StatsPage';
 import ReportPage from './pages/ReportPage';
-import LinkPage, { BeforeLink, AfterLink } from './pages/LinkPage';
+import LinkPage from './pages/LinkPage';
+import BeforeLink from './pages/BeforeLink';
+import AfterLink from './pages/AfterLink';
 import LogoutPage from './pages/LogoutPage';
 import './App.css';
 
