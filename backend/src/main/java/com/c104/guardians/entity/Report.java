@@ -3,7 +3,7 @@ package com.c104.guardians.entity;
 import jakarta.persistence.*;
 import lombok.*;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
-import org.springframework.data.annotation.CreatedDate;
+import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.LocalDateTime;
 
@@ -19,11 +19,8 @@ public class Report {
     @Column(name = "report_id")
     private Integer reportId;
 
-    @Column(name = "image_url", nullable = false)
-    private String imageUrl;
-
-    @Column(name = "report_at", nullable = false)
-    @CreatedDate
+    @Column(name = "report_at", nullable = false, updatable = false)
+    @CreationTimestamp
     private LocalDateTime reportAt;
 
     @OneToOne
@@ -34,4 +31,9 @@ public class Report {
     @ManyToOne
     @JoinColumn(name = "emp_id")
     private Employee employee;
+
+    @PrePersist // 실시간 시간 먼저 입력되도록
+    protected void onCreate() {
+        reportAt = LocalDateTime.now();
+    }
 }
