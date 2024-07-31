@@ -11,7 +11,7 @@ public class DepartmentService {
     @Autowired
     private DepartmentRepository departmentRepository;
 
-    public Department getDepartmentById(Integer departmentId) {
-        return departmentRepository.findById(departmentId).orElse(null);
+    public Department getDepartmentById(Integer deptId) {
+        return departmentRepository.findById(deptId).orElse(null);
     }
 }

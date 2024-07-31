@@ -16,7 +16,7 @@ public class PotholeService {
         return potholeRepository.save(pothole);
     }
 
-    public Pothole getPotholeById(Integer id) {
-        return potholeRepository.findById(id).orElse(null);
+    public Pothole getPotholeById(Integer potholeId) {
+        return potholeRepository.findById(potholeId).orElse(null);
     }
 }

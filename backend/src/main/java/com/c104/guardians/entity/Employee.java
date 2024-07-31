@@ -26,10 +26,10 @@ public class Employee {
     @Column(name = "name", nullable = false, length = 100)
     private String name;
 
-    @Column(name = "phone", nullable = false, length = 11)
+    @Column(name = "phone", nullable = false, length = 11, unique = true)
     private String phone;
 
-    @Column(name = "email", nullable = false, length = 50)
+    @Column(name = "email", nullable = false, length = 50, unique = true)
     private String email;
 
     @ManyToOne
