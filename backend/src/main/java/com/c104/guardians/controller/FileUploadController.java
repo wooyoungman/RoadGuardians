@@ -57,7 +57,7 @@ public class FileUploadController {
 
         String imageName =
                 "T_" + now.format(DateTimeFormatter.ofPattern("yyyyMMddHHmmss"))
-                + ".jpg";
+                        + ".jpg";
 
         String imagePath = "src/main/resources/static/img/pothole/" + imageName;
         Files.copy(image.getInputStream(), Paths.get(imagePath));
@@ -88,7 +88,7 @@ public class FileUploadController {
 
         String imageName =
                 "T_" + now.format(DateTimeFormatter.ofPattern("yyyyMMddHHmmss"))
-                + ".jpg";
+                        + ".jpg";
 
         String imagePath = "src/main/resources/static/img/overload/" + imageName;
         Files.copy(image.getInputStream(), Paths.get(imagePath));

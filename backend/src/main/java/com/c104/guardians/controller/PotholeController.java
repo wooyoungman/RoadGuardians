@@ -8,12 +8,10 @@ import com.c104.guardians.service.PotholeService;
 import com.c104.guardians.service.RepairService;
 import com.c104.guardians.repository.PotholeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 
-import java.time.LocalDateTime;
 import java.util.*;
 
 @RestController
@@ -32,7 +30,7 @@ public class PotholeController {
     private DepartmentService departmentService;
 
     @GetMapping("/map")
-    public ResponseEntity<List<Marker>> getPotholesByConfirm(
+    public ResponseEntity<List<PotholeMarker>> getPotholesByConfirm(
     ) {
         return ResponseEntity.ok(potholeRepository.findMarkerByConfirm(false));
     }
@@ -62,10 +60,12 @@ public class PotholeController {
         Pothole pothole = potholeService.getPotholeById(repairRequest.getPotholeId());
         Department department = departmentService.getDepartmentById(repairRequest.getDeptId());
 
+        // 오류
         if (pothole == null || department == null) {
-            return ResponseEntity.badRequest().build(); // 잘못된 요청 처리
+            return ResponseEntity.badRequest().build();
         }
 
+        pothole.setConfirm(true);
         Repair repair = new Repair();
         repair.setPothole(pothole);
         repair.setDepartment(department);

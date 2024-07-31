@@ -1,8 +1,7 @@
 package com.c104.guardians.repository;
 
-import com.c104.guardians.entity.Marker;
+import com.c104.guardians.entity.PotholeMarker;
 import com.c104.guardians.entity.Pothole;
-import com.c104.guardians.entity.PotholeAndRepair;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -21,18 +20,16 @@ public interface PotholeRepository extends JpaRepository<Pothole, Integer> {
 
     Optional<Pothole> findById(Integer pothole_id);
 
-    List<Marker> findMarkerByConfirm(Boolean confirm);
+    List<PotholeMarker> findMarkerByConfirm(Boolean confirm);
 
-
-    @Query("SELECT pothole FROM Pothole pothole JOIN pothole.repair")
-    List<PotholeAndRepair> findAllPotholesWithRepairs();
 
     // 중복 7일 이내 가까운 곳에서 신고
     @Query("SELECT pothole FROM Pothole pothole WHERE pothole.detectAt >= :detectAt AND ST_Distance_Sphere(pothole.location, :location) <= :buffer")
     List<Pothole> checkDuplication(
             @Param("detectAt") LocalDateTime detectAt,
             @Param("location") Point location,
-            @Param("buffer") Integer buffer);
+            @Param("buffer") Integer buffer
+    );
 
 
 }
