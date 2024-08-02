@@ -68,5 +68,10 @@ button:focus-visible {
 }
 
 @tailwind base;
+@layer base {
+  img {
+    @apply inline-block;
+  }
+}
 @tailwind components;
 @tailwind utilities;

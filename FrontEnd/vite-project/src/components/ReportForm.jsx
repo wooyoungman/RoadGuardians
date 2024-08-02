@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import html2canvas from 'html2canvas';
 
 const ReportForm = ({ isOpen, isClose }) => {
   const [authorName, setAuthorName] = useState('');
@@ -16,18 +17,24 @@ const ReportForm = ({ isOpen, isClose }) => {
     e.preventDefault();
     setIsSubmitting(true);
 
+    const pngFileHTML = document.getElementById('ReportForm');
+
     try {
+      const canvas = await html2canvas(pngFileHTML);
+      const blob = await new Promise((resolve) => canvas.toBlob(resolve, 'image/png'));
+
+      const formData = new FormData();
+      formData.append('file', blob, { id }+'.png');
+      formData.append('data', JSON.stringify({ authorName }))
+
       const response = await fetch('/api/report', { // 서버의 엔드포인트에 맞게 수정
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ authorName }),
+        body: formData,
       });
 
       if (response.ok) {
-        alert('신고가 접수되었습니다.');
         isClose();
+        alert('신고가 접수되었습니다.');
       } else {
         alert('서버에 문제가 발생했습니다.');
       }
@@ -73,16 +80,16 @@ const ReportForm = ({ isOpen, isClose }) => {
           >
             {/* 신고서 바디 */}
             <div
-            className='border-solid border-2 border-zinc-700 text-sm'
+            className='flex-1 border-solid border-2 border-zinc-700 text-sm'
             id='ReportForm'>
               <h1 className='p-4 border-solid border-b-2 border-zinc-700 text-left'>운행제한 위반 통지서</h1>
 
               {/* 그리드 시스템 7로 분할 */}
-              <div className='grid grid-cols-7 items-center'>
-                <label className='h-full w-15 content-center border-solid border-r-2 border-zinc-700'>관할구청</label>
-                <div className='h-full w-25 content-center border-solid border-r-2 border-zinc-700'>광주광역시</div>
+              <div className='grid grid-cols-7 items-center content-center'>
+                <label className='h-full content-center border-solid border-r-2 border-zinc-700'>관할구청</label>
+                <div className='h-full content-center border-solid border-r-2 border-zinc-700'>광주광역시</div>
                 {/* 관할구역 받기 */}
-                <div className='col-span-2 h-full w-25 content-center border-solid border-r-2 border-zinc-700'>DB 받아서 넣기</div>
+                <div className='col-span-2 h-full content-center border-solid border-r-2 border-zinc-700'>DB 받아서 넣기</div>
 
                 <div className="grid col-span-3 grid grid-cols-3 h-full">
                   <label htmlFor="authorName" className="p-2 border-r-2 border-zinc-700">작성자</label>
@@ -121,7 +128,7 @@ const ReportForm = ({ isOpen, isClose }) => {
                     <div className='p-2 content-center col-span-2'>DB 받아서 넣기</div>
                   </div>
                   <div className='grid grid-cols-6 border-solid border-b-2 border-zinc-700'>
-                    <div className='p-2 border-solid border-e-2 border-zinc-700'>적발 지역</div>
+                    <div className='p-2 content-center border-solid border-e-2 border-zinc-700'>적발 지역</div>
                     <div className='p-2 col-span-5 content-center'>
                       <div>
                         DB 받아서 넣기
@@ -190,11 +197,7 @@ const ReportForm = ({ isOpen, isClose }) => {
               </div>
             </div>
           </form>
-
-
-
       </div>
-
     </div>
   );
 };
