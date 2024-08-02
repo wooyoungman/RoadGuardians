@@ -32,7 +32,11 @@ public class OverloadController {
     private ReportRepository reportRepository;
 
 
+<<<<<<< HEAD
     @CrossOrigin(origins = "http://localhost:5173")
+=======
+
+>>>>>>> f797fb2bc41b0f5e47a0e5216cb60a64d1ef2bdf
     @GetMapping(params = "confirm")
     public ResponseEntity<?> getOverloadByConfirm(
             @RequestParam Boolean confirm
