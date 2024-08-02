@@ -63,4 +63,6 @@ nav {
 
 #ReportForm {
   font-family: '바탕';
+  display: inline-block;
+  position: relative;
 }
