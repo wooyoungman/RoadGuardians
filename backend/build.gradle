@@ -49,6 +49,10 @@ dependencies {
 	implementation 'com.vividsolutions:jts:1.13'
 	// ObjectMapper
 	implementation 'com.fasterxml.jackson.core:jackson-databind'
+
+	//firebase
+	implementation 'com.google.firebase:firebase-admin:9.2.0'
+	implementation group: 'com.google.firebase', name: 'firebase-admin', version: '8.1.0'
 }
 
 tasks.named('test') {
