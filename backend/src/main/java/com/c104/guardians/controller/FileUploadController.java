@@ -6,6 +6,7 @@ import com.c104.guardians.repository.OverloadRepository;
 import com.c104.guardians.repository.PotholeRepository;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.firebase.cloud.StorageClient;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.GeometryFactory;
 import org.locationtech.jts.geom.Point;
@@ -24,15 +25,22 @@ import java.nio.file.Paths;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.UUID;
+
 
 @RestController
-@RequestMapping("/api/upload")
+@RequestMapping("/api/v1/upload")
 public class FileUploadController {
 
     @Autowired
     private PotholeRepository potholeRepository;
     @Autowired
     private OverloadRepository overloadRepository;
+
+    @Autowired
+    private StorageClient storageClient;
+
+    private final String baseUrl = "https://firebasestorage.googleapis.com/v0/b/c104-10f5a.appspot.com/o";
 
     // 포트홀 DB 추가
     @PostMapping("/pothole")
@@ -56,15 +64,20 @@ public class FileUploadController {
         }
 
         String imageName =
-                "T_" + now.format(DateTimeFormatter.ofPattern("yyyyMMddHHmmss"))
-                        + ".jpg";
+                now.format(DateTimeFormatter.ofPattern("yyyyMMddHHmmss"))
+                + "-" + UUID.randomUUID().toString();
 
-        String imagePath = "src/main/resources/static/img/pothole/" + imageName;
-        Files.copy(image.getInputStream(), Paths.get(imagePath));
+        String blobString = "pothole" + "/" + imageName + ".jpg";
+
+        storageClient.bucket().create(blobString, image.getInputStream(), image.getContentType());
+
+        // https://firebasestorage.googleapis.com/v0/b/c104-10f5a.appspot.com/o/pothole%2F27025c38-b622-4dbc-9006-0d10388a4cfb-pot1.JPG?alt=media
+        System.out.println(baseUrl + "/pothole%" + imageName + ".JPG" + "?alt=media");
+
 
         Pothole newPothole = new Pothole();
         newPothole.setLocation(location);
-        newPothole.setImageUrl("/img/pothole/" + imageName);
+        newPothole.setImageUrl(baseUrl + "/pothole%" + imageName + ".JPG" + "?alt=media" );
         newPothole.setConfirm(false);
 
         potholeRepository.save(newPothole);
@@ -87,17 +100,20 @@ public class FileUploadController {
         Point location = new GeometryFactory().createPoint(new Coordinate(x, y));
 
         String imageName =
-                "T_" + now.format(DateTimeFormatter.ofPattern("yyyyMMddHHmmss"))
-                        + ".jpg";
+                now.format(DateTimeFormatter.ofPattern("yyyyMMddHHmmss"))
+                        + "-" + UUID.randomUUID().toString();
 
-        String imagePath = "src/main/resources/static/img/overload/" + imageName;
-        Files.copy(image.getInputStream(), Paths.get(imagePath));
+        String blobString = "overload" + "/" + imageName + ".jpg";
 
+        storageClient.bucket().create(blobString, image.getInputStream(), image.getContentType());
+
+
+        System.out.println(baseUrl + "/overload%" + imageName + ".JPG" + "?alt=media");
 
         Overload newOverload = new Overload();
         newOverload.setLocation(location);
-        newOverload.setImageUrl("/img/overload/" + imageName);
-        newOverload.setType(jsonNode.get("type").asText());
+        newOverload.setImageUrl(baseUrl + "/overload%" + imageName + ".JPG" + "?alt=media" );
+        newOverload.setType("");
         newOverload.setCarNumber(jsonNode.get("carNumber").asText());
         newOverload.setConfirm(false);
 
@@ -105,5 +121,7 @@ public class FileUploadController {
 
         return ResponseEntity.ok().build();
     }
+
+
 }
 

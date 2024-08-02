@@ -34,7 +34,7 @@ public class Overload {
     @Column(name = "image_url", columnDefinition = "TEXT")
     private String imageUrl;
 
-    @Column(name = "type", nullable = false, length = 20)
+    @Column(name = "type", nullable = true, length = 20)
     private String type;
 
     @Column(name = "car_number", nullable = false, length = 50)
