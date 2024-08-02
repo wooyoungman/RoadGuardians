@@ -190,7 +190,7 @@ const ReportForm = ({ isOpen, isClose }) => {
                 </button>
                 <button 
                   onClick={isClose} 
-                  className="my-4 bg-hover border border-borderHover text-white py-2 px-4 rounded-md hover:bg-primary hover:border-borderPrimary focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2"
+                  className="my-4 bg-primary border border-borderPrimary text-white py-2 px-4 rounded-md hover:bg-hover hover:border-borderHover focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2"
                 >
                   아니요
                 </button>
