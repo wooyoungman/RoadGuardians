@@ -1,11 +1,9 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import Navbar from './components/Navbar';
 import MainPage from './pages/MainPage';
 import StatsPage from './pages/StatsPage';
 import ReportPage from './pages/ReportPage';
-import LinkPage from './pages/LinkPage';
 import BeforeLink from './pages/BeforeLink';
 import AfterLink from './pages/AfterLink';
 import LogoutPage from './pages/LogoutPage';
@@ -20,7 +18,8 @@ const App = () => {
           <Route path="/" element={<MainPage />} />
           <Route path="/stats" element={<StatsPage />} />
           <Route path="/report" element={<ReportPage />} />
-          <Route path="/link" element={<LinkPage />}>
+          <Route path="/link/*" element={<BeforeLink />}>
+            <Route path="" element={<Navigate to="before" replace />} />
             <Route path="before" element={<BeforeLink />} />
             <Route path="after" element={<AfterLink />} />
           </Route>
