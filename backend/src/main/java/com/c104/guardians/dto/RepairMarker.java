@@ -1,4 +1,4 @@
-package com.c104.guardians.entity;
+package com.c104.guardians.dto;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import org.locationtech.jts.geom.Point;

@@ -1,7 +1,7 @@
 package com.c104.guardians.repository;
 
 import com.c104.guardians.entity.Repair;
-import com.c104.guardians.entity.RepairMarker;
+import com.c104.guardians.dto.RepairMarker;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -24,4 +24,5 @@ public interface RepairRepository extends JpaRepository<Repair, Integer> {
 
     @Query("SELECT repair FROM Repair repair WHERE repair.status = :status")
     List<Repair> findRepair(@Param("status") String status);
+
 }

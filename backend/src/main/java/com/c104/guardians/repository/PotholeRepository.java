@@ -1,6 +1,6 @@
 package com.c104.guardians.repository;
 
-import com.c104.guardians.entity.PotholeMarker;
+import com.c104.guardians.dto.PotholeMarker;
 import com.c104.guardians.entity.Pothole;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;

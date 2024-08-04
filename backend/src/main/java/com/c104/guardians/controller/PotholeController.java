@@ -1,5 +1,6 @@
 package com.c104.guardians.controller;
 
+import com.c104.guardians.dto.PotholeMarker;
 import com.c104.guardians.dto.RepairRequest;
 import com.c104.guardians.entity.*;
 import com.c104.guardians.repository.RepairRepository;

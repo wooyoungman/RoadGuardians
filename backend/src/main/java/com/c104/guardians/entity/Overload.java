@@ -37,11 +37,12 @@ public class Overload {
     @Column(name = "type", nullable = true, length = 20)
     private String type;
 
-    @Column(name = "car_number", nullable = false, length = 50)
+    @Column(name = "car_number", nullable = true, length = 50)
     private String carNumber;
 
     @Column(name = "confirm", columnDefinition = "BOOLEAN DEFAULT false")
     private Boolean confirm;
+
 
     @OneToOne(mappedBy = "overload", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonBackReference // 무한루프 방지
@@ -51,5 +52,6 @@ public class Overload {
     @PrePersist // 실시간 시간 먼저 입력되도록
     protected void onCreate() {
         detectAt = LocalDateTime.now();
+
     }
 }
