@@ -65,19 +65,20 @@ public class FileUploadController {
 
         String imageName =
                 now.format(DateTimeFormatter.ofPattern("yyyyMMddHHmmss"))
-                + "-" + UUID.randomUUID().toString();
+                + "-" + UUID.randomUUID().toString()
+                + ".jpg";
 
-        String blobString = "pothole" + "/" + imageName + ".jpg";
+        String blobString = "pothole" + "/" + imageName;
 
         storageClient.bucket().create(blobString, image.getInputStream(), image.getContentType());
 
-        // https://firebasestorage.googleapis.com/v0/b/c104-10f5a.appspot.com/o/pothole%2F27025c38-b622-4dbc-9006-0d10388a4cfb-pot1.JPG?alt=media
-        System.out.println(baseUrl + "/pothole%" + imageName + ".JPG" + "?alt=media");
+        // https://firebasestorage.googleapis.com/v0/b/c104-10f5a.appspot.com/o/overload%2F20240802103159-97ba967a-93f7-4ed4-86cb-4f41cd877822.jpg?alt=media
+        System.out.println(baseUrl + "/pothole%2F" + imageName + "?alt=media");
 
 
         Pothole newPothole = new Pothole();
         newPothole.setLocation(location);
-        newPothole.setImageUrl(baseUrl + "/pothole%" + imageName + ".JPG" + "?alt=media" );
+        newPothole.setImageUrl(baseUrl + "/pothole%2F" + imageName + "?alt=media" );
         newPothole.setConfirm(false);
 
         potholeRepository.save(newPothole);
@@ -101,18 +102,19 @@ public class FileUploadController {
 
         String imageName =
                 now.format(DateTimeFormatter.ofPattern("yyyyMMddHHmmss"))
-                        + "-" + UUID.randomUUID().toString();
+                        + "-" + UUID.randomUUID().toString()
+                        + ".jpg";
 
-        String blobString = "overload" + "/" + imageName + ".jpg";
+        String blobString = "overload" + "/" + imageName;
 
         storageClient.bucket().create(blobString, image.getInputStream(), image.getContentType());
 
 
-        System.out.println(baseUrl + "/overload%" + imageName + ".JPG" + "?alt=media");
+        System.out.println(baseUrl + "/overload%2F" + imageName + "?alt=media");
 
         Overload newOverload = new Overload();
         newOverload.setLocation(location);
-        newOverload.setImageUrl(baseUrl + "/overload%" + imageName + ".JPG" + "?alt=media" );
+        newOverload.setImageUrl(baseUrl + "/overload%2F" + imageName + "?alt=media" );
         newOverload.setType("");
         newOverload.setCarNumber(jsonNode.get("carNumber").asText());
         newOverload.setConfirm(false);
