@@ -47,7 +47,7 @@ nav {
   font-weight: 500;
 }
 
-.nav-links a.active {
+.nav-links a.active-link {
   color: red;
 }
 
