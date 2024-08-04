@@ -4,8 +4,10 @@ import Navbar from './components/Navbar';
 import MainPage from './pages/MainPage';
 import StatsPage from './pages/StatsPage';
 import ReportPage from './pages/ReportPage';
+import ReportAfterPage from './pages/ReportAfterPage';
 import BeforeLink from './pages/BeforeLink';
 import AfterLink from './pages/AfterLink';
+import LinkPage from './pages/LinkPage';
 import LogoutPage from './pages/LogoutPage';
 import './App.css';
 
@@ -18,7 +20,8 @@ const App = () => {
           <Route path="/" element={<MainPage />} />
           <Route path="/stats" element={<StatsPage />} />
           <Route path="/report" element={<ReportPage />} />
-          <Route path="/link/*" element={<BeforeLink />}>
+          <Route path="/report/after" element={<ReportAfterPage />} />
+          <Route path="/link/*" element={<LinkPage />}>
             <Route path="" element={<Navigate to="before" replace />} />
             <Route path="before" element={<BeforeLink />} />
             <Route path="after" element={<AfterLink />} />
