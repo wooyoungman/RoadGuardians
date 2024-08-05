@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import html2canvas from 'html2canvas';
 import axios from 'axios';
 
@@ -7,6 +8,7 @@ const ReportForm = ({ isOpen, isClose, selectedItem }) => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [locationName, setLocationName] = useState('DB 받아서 넣기');
   const [deptName, setDeptName] = useState('DB 받아서 넣기');
+  const navigate = useNavigate();
 
   const apiKey = import.meta.env.VITE_GOOGLE_API_KEY;
 
@@ -17,14 +19,13 @@ const ReportForm = ({ isOpen, isClose, selectedItem }) => {
       year: 'numeric',
       month: 'numeric',
       day: 'numeric'
-    }).replace(/\./g, '.').replace(/\s/g, ' ') + '.';
+    }).replace(/\./g, '.').replace(/\s/g, ' ');
   };
 
   const reverseGeocode = async (lat, lon) => {
     try {
       const response = await axios.get(`https://maps.googleapis.com/maps/api/geocode/json?latlng=${lat},${lon}&key=${apiKey}&language=ko`);
       const { results } = response.data;
-      console.log(response)
       if (results && results.length > 0) {
         const { formatted_address, address_components } = results[0];
         setLocationName(formatted_address);
@@ -59,6 +60,7 @@ const ReportForm = ({ isOpen, isClose, selectedItem }) => {
 
   const handleBackgroundClick = (e) => {
     if (e.target === e.currentTarget) {
+      setIsSubmitting(false);
       isClose();
     }
   };
@@ -74,22 +76,32 @@ const ReportForm = ({ isOpen, isClose, selectedItem }) => {
       const blob = await new Promise((resolve) => canvas.toBlob(resolve, 'image/png'));
 
       const formData = new FormData();
-      formData.append('file', blob, `${selectedItem?.overloadId}.png`);
-      formData.append('data', JSON.stringify({ authorName }));
+      formData.append('image', blob, `${selectedItem?.overloadId}.png`);
+      const data = {
+        overloadId: selectedItem?.overloadId,
+        username: authorName,
+      };
+      
+      // JSON 문자열로 변환하여 FormData에 추가
+      formData.append('data', JSON.stringify(data));      
 
-      const response = await fetch('/api/v1/overload/report', { // 서버의 엔드포인트에 맞게 수정
+      const response = await fetch('http://i11c104.p.ssafy.io/api/v1/overload/report', { // 엔드 포인트에 맞게
         method: 'POST',
+        mode: "cors",
         body: formData,
       });
+      
+      console.log(formData);
 
       if (response.ok) {
         isClose();
         alert('신고가 접수되었습니다.');
+        navigate('/report')
       } else {
+        console.log(formData);
         alert('서버에 문제가 발생했습니다.');
       }
     } catch (error) {
-      console.error('Error:', error);
       alert('서버에 문제가 발생했습니다.');
     } finally {
       setIsSubmitting(false);
