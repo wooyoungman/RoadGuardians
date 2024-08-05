@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 import { Outlet, useNavigate } from 'react-router-dom';
 import ReportForm from '../components/ReportForm';
 
@@ -48,10 +49,20 @@ const ReportPage = () => {
   };
 
   const handleButtonClick = (path) => {
+    setIsFormOpen(false);
     navigate(path);
   };
 
   const groupedItems = groupByDate(list);
+
+  if (loading) {
+    return <div>Loading...</div>;
+  }
+
+  if (error) {
+    return <div>Error: {error.message}</div>;
+  }
+
 
   return (
     <div className="p-6">
@@ -65,7 +76,7 @@ const ReportPage = () => {
             신고 전
           </button>
           <button
-            className={`bg-hover border border-borderHover text-white py-2 px-4 rounded-md`} 
+            className={`bg-hover border border-borderHover text-white py-2 px-4 ms-4 rounded-md`} 
             onClick={() => handleButtonClick('/report/after')}
           >
             신고 후
@@ -81,7 +92,7 @@ const ReportPage = () => {
             <h2>{date}</h2>
             {/* 요일 별 */}
             {groupedItems[date].map((item) => (
-              <div key={item.overloadId} className="post-item" onClick={() => openOffcanvas(item)}>
+              <div key={item.overloadId} className="post-item">
                 <img src={item.imageUrl} alt="Report Image" className="post-image" />
                 <div className="post-content">
                   <p>ID: {item.overloadId}</p>
