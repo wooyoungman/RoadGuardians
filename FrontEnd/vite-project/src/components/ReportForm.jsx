@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import html2canvas from 'html2canvas';
 
-const ReportForm = ({ isOpen, isClose }) => {
+const ReportForm = ({ isOpen, isClose, selectedItem }) => {
   const [authorName, setAuthorName] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
   
@@ -11,6 +11,14 @@ const ReportForm = ({ isOpen, isClose }) => {
       isClose();
     }
   };
+
+  // 수정 필요
+  useEffect(() => {
+    if (selectedItem) {
+      setDeptId(selectedItem.deptId || '');
+      setPotholeId(selectedItem.overloadId || '');
+    }
+  }, [selectedItem]);
 
   // axios POST 요청과 함께, render 변경
   const handleSubmit = async (e) => {
@@ -27,7 +35,7 @@ const ReportForm = ({ isOpen, isClose }) => {
       formData.append('file', blob, { id }+'.png');
       formData.append('data', JSON.stringify({ authorName }))
 
-      const response = await fetch('/api/report', { // 서버의 엔드포인트에 맞게 수정
+      const response = await fetch('/api/v1/overload/report', { // 서버의 엔드포인트에 맞게 수정
         method: 'POST',
         body: formData,
       });
@@ -54,7 +62,7 @@ const ReportForm = ({ isOpen, isClose }) => {
   return (
     // 모달 백그라운드
     <div
-      className="fixed inset-0 flex items-center justify-center bg-gray-500 bg-opacity-50 z-50" 
+      className="fixed inset-0 flex items-center justify-center bg-gray-500 bg-opacity-30 z-50" 
       onClick={handleBackgroundClick}
     >
       {/* 모달 바디 */}
@@ -80,7 +88,7 @@ const ReportForm = ({ isOpen, isClose }) => {
           >
             {/* 신고서 바디 */}
             <div
-            className='flex-1 border-solid border-2 border-zinc-700 text-sm'
+            className='flex-1 border-solid border-2 border-zinc-700 text-sm text-black'
             id='ReportForm'>
               <h1 className='p-4 border-solid border-b-2 border-zinc-700 text-left'>운행제한 위반 통지서</h1>
 
@@ -98,9 +106,10 @@ const ReportForm = ({ isOpen, isClose }) => {
                     id="authorName"
                     name="authorName"
                     type="text"
+                    placeholder='이름을 입력해주세요.'
                     value={authorName}
                     onChange={(e) => setAuthorName(e.target.value)}
-                    className="col-span-2 rounded-md focus:ring-indigo-500 focus:border-indigo-500 text-center" 
+                    className="col-span-2 rounded-md focus:ring-indigo-500 focus:border-indigo-500 text-center bg-white" 
                   />
                 </div>
 
@@ -119,7 +128,7 @@ const ReportForm = ({ isOpen, isClose }) => {
                   <div className='grid grid-cols-6 border-solid border-b-2 border-zinc-700'>
                     <div className='p-2 border-solid border-e-2 border-zinc-700'>단속 유형</div>
                     {/* 선택 가능한 select */}
-                    <select className='p-2 col-span-2 text-center border-solid border-e-2 border-zinc-700'>
+                    <select className='p-2 col-span-2 text-center border-solid border-e-2 border-zinc-700 bg-white'>
                       <option value="v1">길이 위반</option>
                       <option value="v2">너비 위반</option>
                       <option value="v3">높이 위반</option>
