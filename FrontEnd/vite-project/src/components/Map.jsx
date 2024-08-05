@@ -27,7 +27,7 @@ const saveDisabledMarkers = (disabledMarkers) => {
   localStorage.setItem('disabledMarkers', JSON.stringify(disabledMarkers));
 };
 
-const Marker = ({ map, position, title, onClick, isActive }) => {
+const Marker = ({ map, position, title, onClick, isActive, isSelected }) => {
   useEffect(() => {
     if (!isActive) {
       return;
@@ -53,36 +53,39 @@ const Marker = ({ map, position, title, onClick, isActive }) => {
     const overImage = new kakao.maps.MarkerImage(overMarker, overMarkerSize, {
       offset: overMarkerOffset
     });
-    const clickImage = new kakao.maps.MarkerImage(clickMarker, markerSize, {
-      offset: markerOffset
+    const clickImage = new kakao.maps.MarkerImage(clickMarker, overMarkerSize, {
+      offset: overMarkerOffset
     });
 
     const marker = new kakao.maps.Marker({
       map: map,
       position: position,
       title: title,
-      image: normalImage
+      image: isSelected ? clickImage : normalImage
     });
 
     marker.normalImage = normalImage;
 
     kakao.maps.event.addListener(marker, 'mouseover', function () {
-      marker.setImage(overImage);
+      if (!isSelected) {
+        marker.setImage(overImage);
+      }
     });
 
     kakao.maps.event.addListener(marker, 'mouseout', function () {
-      marker.setImage(normalImage);
+      if (!isSelected) {
+        marker.setImage(normalImage);
+      }
     });
 
     kakao.maps.event.addListener(marker, 'click', function () {
-      marker.setImage(clickImage);
       onClick();
     });
 
     return () => {
       marker.setMap(null);
     };
-  }, [map, position, title, onClick, isActive]);
+  }, [map, position, title, onClick, isActive, isSelected]);
 
   if (!isActive) {
     return null;
@@ -193,6 +196,7 @@ function Kakao() {
             title={pothole.title}
             onClick={() => handleMarkerClick(pothole)}
             isActive={true}
+            isSelected={selectedMarker && selectedMarker.potholeId === pothole.potholeId}
           />
         ))}
       </div>
