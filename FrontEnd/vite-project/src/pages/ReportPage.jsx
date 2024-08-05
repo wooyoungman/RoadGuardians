@@ -2,6 +2,10 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Outlet, useNavigate } from 'react-router-dom';
 import ReportForm from '../components/ReportForm';
+<<<<<<< HEAD
+=======
+import './LinkPage.css';
+>>>>>>> FrontEnd_mingyeong
 
 const groupByDate = (items) => {
   return items.reduce((acc, item) => {
@@ -40,12 +44,21 @@ const ReportPage = () => {
     fetchData();
   }, []);
 
+<<<<<<< HEAD
   const formOpenClick = () => {
+=======
+  const formOpenClick = (item) => {
+    setSelectedItem(item);
+>>>>>>> FrontEnd_mingyeong
     setIsFormOpen(true);
   };
   
   const formCloseClick = () => {
     setIsFormOpen(false);
+<<<<<<< HEAD
+=======
+    setSelectedItem(null);
+>>>>>>> FrontEnd_mingyeong
   };
 
   const handleButtonClick = (path) => {
@@ -63,20 +76,31 @@ const ReportPage = () => {
     return <div>Error: {error.message}</div>;
   }
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> FrontEnd_mingyeong
   return (
     <div className="p-6">
       {/* 상위 버튼 */}
       <div style={{ display: 'flex', justifyContent: 'flex-start', marginTop: '120px', position: 'fixed', top: '10px', left: '10px', zIndex: 10 }}>
         <div>
           <button
+<<<<<<< HEAD
             className={`bg-hover border border-borderHover text-white py-2 px-4 rounded-md`} 
+=======
+            className={`bg-hover border border-borderHover text-white py-2 px-4 rounded-md ${window.location.pathname === '/report' ? 'bg-primary borderPrimary' : ''}`} 
+>>>>>>> FrontEnd_mingyeong
             onClick={() => handleButtonClick('/report')}
           >
             신고 전
           </button>
           <button
+<<<<<<< HEAD
             className={`bg-hover border border-borderHover text-white py-2 px-4 ms-4 rounded-md`} 
+=======
+            className={`bg-hover border border-borderHover text-white py-2 px-4 ms-4 rounded-md ${window.location.pathname === '/report/after' ? 'bg-primary borderPrimary' : ''}`} 
+>>>>>>> FrontEnd_mingyeong
             onClick={() => handleButtonClick('/report/after')}
           >
             신고 후
@@ -92,7 +116,11 @@ const ReportPage = () => {
             <h2>{date}</h2>
             {/* 요일 별 */}
             {groupedItems[date].map((item) => (
+<<<<<<< HEAD
               <div key={item.overloadId} className="post-item">
+=======
+              <div key={item.overloadId} className="post-item" onClick={() => formOpenClick(item)}>
+>>>>>>> FrontEnd_mingyeong
                 <img src={item.imageUrl} alt="Report Image" className="post-image" />
                 <div className="post-content">
                   <p>ID: {item.overloadId}</p>
@@ -106,6 +134,7 @@ const ReportPage = () => {
         ))}
       </div>
 
+<<<<<<< HEAD
       <div className='flex justify-between'>
         <button onClick={formOpenClick} className="bg-primary border border-borderPrimary text-white py-2 px-4 rounded-md hover:bg-hover hover:border-borderHover focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">
           신고서 작성
@@ -113,6 +142,10 @@ const ReportPage = () => {
       </div>
 
       <ReportForm isOpen={isFormOpen} isClose={formCloseClick} />
+=======
+
+      <ReportForm isOpen={isFormOpen} isClose={formCloseClick} selectedItem={selectedItem} />
+>>>>>>> FrontEnd_mingyeong
       <Outlet />
     </div>
   );
