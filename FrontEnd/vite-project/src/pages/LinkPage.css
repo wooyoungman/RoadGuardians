@@ -127,3 +127,18 @@
   overflow-y: auto;
   max-height: 90vh;
 }
+
+
+.car-icon {
+  width: 28px;
+  height: 28px;
+  background-image: url('/path/to/car-icon.png');
+  background-size: cover;
+  position: absolute;
+  top: -40px;
+  margin-top: 10px;
+}
+
+.transparent {
+  opacity: 0.3;
+}

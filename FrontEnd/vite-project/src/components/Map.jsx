@@ -196,7 +196,10 @@ function Kakao() {
             title={pothole.title}
             onClick={() => handleMarkerClick(pothole)}
             isActive={true}
+<<<<<<< HEAD
             isSelected={selectedMarker && selectedMarker.potholeId === pothole.potholeId}
+=======
+>>>>>>> FrontEnd_mingyeong
           />
         ))}
       </div>
