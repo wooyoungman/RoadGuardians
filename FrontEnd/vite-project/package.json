@@ -15,11 +15,8 @@
     "axios": "^1.7.3",
     "bootstrap": "^5.3.3",
     "cors": "^2.8.5",
-<<<<<<< HEAD
-=======
     "dotenv": "^16.4.5",
     "express": "^4.19.2",
->>>>>>> FrontEnd_mingyeong
     "html2canvas": "^1.4.1",
     "postcss": "^8.4.40",
     "react": "^18.3.1",

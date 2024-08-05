@@ -99,11 +99,7 @@ const AfterLink = () => {
               <>
                 <img src={selectedItem.pothole.imageUrl} alt="포트홀 이미지" className="modal-image" />
                 <div className="modal-text">
-<<<<<<< HEAD
                   <p>ID: {selectedItem.pothole.repairId}</p>
-=======
-                  <p>ID: {selectedItem.repairId}</p>
->>>>>>> FrontEnd_mingyeong
                   <p>위치: {selectedItem.pothole.location}</p>
                   <p>확인 여부: {selectedItem.pothole.confirm ? "확인됨" : "확인되지 않음"}</p>
                   <p>상태: {selectedItem.status}</p>
@@ -112,11 +108,7 @@ const AfterLink = () => {
                 </div>
               </>
             )}
-<<<<<<< HEAD
-            <button onClick={closeOffcanvas} className="connect-button">닫기</button>
-=======
             <button onClick={closeOffcanvas} className="mt-4 bg-primary text-white py-2 px-4 rounded hover:bg-hover">닫기</button>
->>>>>>> FrontEnd_mingyeong
           </div>
         </div>
       )}
