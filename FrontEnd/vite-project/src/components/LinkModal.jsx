@@ -60,12 +60,12 @@ const LinkModal = ({ isOpen, isClose, selectedItem }) => {
           <h3 className="text-lg font-semibold">포트홀 작업지시</h3>
           <button onClick={isClose} className="top-2 right-2 text-gray-600">X</button>
         </header>
-        <form className='flex-1 overflow-auto p-4' onSubmit={handleSubmit}>
+        <form className='flex-1 p-4' onSubmit={handleSubmit}>
           <div className='flex justify-between'>
             <div>
               해당 포트홀 작업지시 하시겠습니까?
             </div>
-            <div className='mt-8'>
+            <div className='mt-4'>
               <button 
                 type="submit" 
                 disabled={isSubmitting}

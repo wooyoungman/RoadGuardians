@@ -64,7 +64,7 @@ function ReportAfterPage() {
 
   return (
     <div className='p-6'>
-      <div style={{ display: 'flex', justifyContent: 'flex-start', marginTop: '120px', position: 'fixed', top: '10px', left: '10px', zIndex: 1050 }}>
+      <div style={{ display: 'flex', justifyContent: 'flex-start', marginTop: '120px', position: 'fixed', top: '10px', left: '10px', zIndex: 10 }}>
         <div>
           <button
             className={`bg-hover border border-borderHover text-white py-2 px-4 rounded-md`} 
@@ -73,7 +73,7 @@ function ReportAfterPage() {
             신고 전
           </button>
           <button
-            className={`bg-hover border border-borderHover text-white py-2 px-4 rounded-md`} 
+            className={`bg-hover border border-borderHover text-white py-2 px-4 ms-4 rounded-md`} 
             onClick={() => handleButtonClick('/report/after')}
           >
             신고 후
