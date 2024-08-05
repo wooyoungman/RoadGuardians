@@ -26,6 +26,7 @@ const ReportForm = ({ isOpen, isClose, selectedItem }) => {
     try {
       const response = await axios.get(`https://maps.googleapis.com/maps/api/geocode/json?latlng=${lat},${lon}&key=${apiKey}&language=ko`);
       const { results } = response.data;
+      console.log(response)
       if (results && results.length > 0) {
         const { formatted_address, address_components } = results[0];
         setLocationName(formatted_address);
