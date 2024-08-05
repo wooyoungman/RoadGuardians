@@ -1,5 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+<<<<<<< HEAD
+=======
+import './LinkPage.css';
+>>>>>>> FrontEnd_mingyeong
 
 const groupByDate = (items) => {
   return items.reduce((acc, item) => {
@@ -67,13 +71,21 @@ function ReportAfterPage() {
       <div style={{ display: 'flex', justifyContent: 'flex-start', marginTop: '120px', position: 'fixed', top: '10px', left: '10px', zIndex: 10 }}>
         <div>
           <button
+<<<<<<< HEAD
             className={`bg-hover border border-borderHover text-white py-2 px-4 rounded-md`} 
+=======
+            className={`bg-hover border border-borderHover text-white py-2 px-4 rounded-md ${window.location.pathname === '/report' ? 'bg-primary borderPrimary' : ''}`} 
+>>>>>>> FrontEnd_mingyeong
             onClick={() => handleButtonClick('/report')}
           >
             신고 전
           </button>
           <button
+<<<<<<< HEAD
             className={`bg-hover border border-borderHover text-white py-2 px-4 ms-4 rounded-md`} 
+=======
+            className={`bg-hover border border-borderHover text-white py-2 px-4 ms-4 rounded-md ${window.location.pathname === '/report/after' ? 'bg-primary borderPrimary' : ''}`} 
+>>>>>>> FrontEnd_mingyeong
             onClick={() => handleButtonClick('/report/after')}
           >
             신고 후
@@ -128,4 +140,8 @@ function ReportAfterPage() {
   );
 }
 
+<<<<<<< HEAD
 export default ReportAfterPage;
+=======
+export default ReportAfterPage;
+>>>>>>> FrontEnd_mingyeong
