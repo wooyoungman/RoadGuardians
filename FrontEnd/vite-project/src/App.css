@@ -17,7 +17,7 @@ nav {
   position: fixed;
   top: 0;
   left: 0;
-  z-index: 1000;
+  z-index: 40;
 }
 
 .logo-container {
@@ -47,7 +47,7 @@ nav {
   font-weight: 500;
 }
 
-.nav-links a.active {
+.nav-links a.active-link {
   color: red;
 }
 
@@ -59,4 +59,10 @@ nav {
   display: flex;
   justify-content: center;
   align-items: center;
+}
+
+#ReportForm {
+  font-family: '바탕';
+  display: inline-block;
+  position: relative;
 }
