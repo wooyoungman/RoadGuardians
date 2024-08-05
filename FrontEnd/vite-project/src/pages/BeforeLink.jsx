@@ -116,11 +116,7 @@ const BeforeLink = () => {
                 </div>
               </>
             )}
-<<<<<<< HEAD
-            <button onClick={modalOpenClick} className="mt-4 bg-primary text-white py-2 px-4 rounded hover:bg-hover">오프캔버스 연결</button>
-=======
             <button onClick={modalOpenClick} className="mt-4 bg-primary text-white py-2 px-4 rounded hover:bg-hover">유지연계과 연계하기</button>
->>>>>>> FrontEnd_mingyeong
           </div>
         </div>
 
