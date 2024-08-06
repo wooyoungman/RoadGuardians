@@ -139,5 +139,35 @@
   .pothole-name{
     font-size: 25px;
     font-weight: bold;
-    margin: 20px;
+    margin: 15px;
   }
+
+
+.start-button{
+  background-color: rgb(43, 2, 130);
+  color: white;
+  padding: 7px;
+  margin: 3px;
+  font-size: 15px;
+  border: none;
+  cursor: pointer;
+}
+
+.start-button:hover {
+  background-color: rgb(43, 2, 130);
+  box-shadow: 0 3px 4px gray;
+}
+
+.pothole-start{
+  display: flex;
+  padding: 2px;
+  border-bottom: 1px solid gainsboro;
+}
+
+.work_information{
+  color: gray;
+  font-size: 11px;
+  margin-top: 20px;
+  margin-right: 50px;
+
+}
