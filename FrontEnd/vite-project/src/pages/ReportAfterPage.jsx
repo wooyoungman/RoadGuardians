@@ -88,11 +88,11 @@ function ReportAfterPage() {
             <div className="grid grid-cols-4 gap-4">
               {groupedItems[date].map((item) => (
                 <div
-                  key={item.id}
+                  key={item.reportId}
                   className="relative bg-white border border-gray-200 rounded-lg overflow-hidden shadow-md transition-transform transform hover:scale-110 cursor-pointer"
                   onClick={() => openModal(item)}
                 >
-                  <img src={item.overload.imageUrl} alt={`Pothole ${item.id}`} className="w-full h-40 object-cover" />
+                  <img src={`https://firebasestorage.googleapis.com/v0/b/c104-10f5a.appspot.com/o/report%2F${item.reportId}.png?alt=media`} alt={`Overload ${item.reportId}`} className="w-full h-40 object-cover" />
                 </div>
               ))}
             </div>
@@ -100,7 +100,7 @@ function ReportAfterPage() {
         ))}
       {isModalOpen && selectedItem && (
         // Modal 백그라운드
-        <div className="fixed inset-0 flex items-center justify-center bg-gray-500 bg-opacity-30" onClick={closeModal}>
+        <div className="fixed inset-0 flex items-center justify-center bg-gray-500 bg-opacity-30 z-50" onClick={closeModal}>
           {/* Modal 바디 */}
           <div
             className="bg-white text-black rounded-lg shadow-lg p-4 w-3/5 max-h-[90vh] flex flex-col"
@@ -108,16 +108,16 @@ function ReportAfterPage() {
           >
             {/* 헤더 */}
             <header className='flex justify-between items-center mb-4'>
-              <h2 className="text-xl font-semibold">신고 상세보기</h2>
+              <h2 className="text-xl font-semibold">신고 번호 {selectedItem.reportId}번 상세보기</h2>
               <button onClick={closeModal} className="top-2 right-2 text-gray-600">
                 X
               </button>
             </header>
-            <img src={selectedItem.overload.imageUrl} alt={`과적 차량 ${selectedItem.reportId}`} className="flex w-3/5 mb-4" />
-            <p>신고 ID : {selectedItem.reportId}</p>
-            <p>신고 시각 : {new Date(selectedItem.reportAt).toLocaleString()}</p>
-            <p>포인트 벡터 : {selectedItem.overload.location}</p>
-            <p>신고 상태 : {selectedItem.overload.confirm ? '신고 완료' : '신고 전'}</p>
+            {/* 신고서 보기 */}
+            <div className="flex justify-center w-3/5 h-2/5 overflow-y-auto">
+              <img src={`https://firebasestorage.googleapis.com/v0/b/c104-10f5a.appspot.com/o/report%2F${selectedItem.reportId}.png?alt=media`} alt={`Overload ${selectedItem.reportId}`}
+              />
+            </div>
           </div>
         </div>
       )}
