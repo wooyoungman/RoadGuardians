@@ -26,7 +26,6 @@ const ReportForm = ({ isOpen, isClose, selectedItem }) => {
     try {
       const response = await axios.get(`https://maps.googleapis.com/maps/api/geocode/json?latlng=${lat},${lon}&key=${apiKey}&language=ko`);
       const { results } = response.data;
-      console.log(response)
       if (results && results.length > 0) {
         const { formatted_address, address_components } = results[0];
         setLocationName(formatted_address);
@@ -75,11 +74,11 @@ const ReportForm = ({ isOpen, isClose, selectedItem }) => {
     try {
       const canvas = await html2canvas(pngFileHTML, {
         allowTaint: true,
-        useCORS: true
+        backgroundColor: '#ffffff',
+        useCORS: true,
       });
-      const dataURL = canvas.toDataURL('image/png');
+      const dataURL = canvas.toDataURL('image/png')
       const blob = await (await fetch(dataURL)).blob();
-
       const formData = new FormData();
       formData.append('image', blob, `${selectedItem?.overloadId}.png`);
       const data = {
@@ -95,15 +94,11 @@ const ReportForm = ({ isOpen, isClose, selectedItem }) => {
         mode: "cors",
         body: formData,
       });
-      
-      console.log(formData);
-
       if (response.ok) {
         isClose();
         alert('신고가 접수되었습니다.');
         navigate('/report')
       } else {
-        console.log(formData);
         alert('서버에 문제가 발생했습니다.');
       }
     } catch (error) {
