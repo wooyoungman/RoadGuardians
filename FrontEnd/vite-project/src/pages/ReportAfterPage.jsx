@@ -93,10 +93,6 @@ function ReportAfterPage() {
                   onClick={() => openModal(item)}
                 >
                   <img src={item.overload.imageUrl} alt={`Pothole ${item.id}`} className="w-full h-40 object-cover" />
-                  <div className="p-4">
-                    <p>ID: {item.reportId}</p>
-                    <p>Detected at: {new Date(item.reportAt).toLocaleString()}</p>
-                  </div>
                 </div>
               ))}
             </div>
