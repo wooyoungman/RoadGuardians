@@ -9,6 +9,7 @@ import BeforeLink from './pages/BeforeLink';
 import AfterLink from './pages/AfterLink';
 import LinkPage from './pages/LinkPage';
 import LogoutPage from './pages/LogoutPage';
+import RepairList from './pages/RepairList';
 import OperationsManagement from './pages/OperationsManagement';
 import './App.css';
 
@@ -28,6 +29,8 @@ const App = () => {
             <Route path="before" element={<BeforeLink />} />
             <Route path="after" element={<AfterLink />} />
           </Route>
+          
+          <Route path="/repairlist" element={<RepairList />} />
           <Route path="/logout" element={<LogoutPage />} />
         </Routes>
       </div>

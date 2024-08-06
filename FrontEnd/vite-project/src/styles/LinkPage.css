@@ -45,6 +45,16 @@
   margin: 5px 0;
 }
 
+.modal {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: fixed;
+  inset: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 50;
+}
+
 .modal-content {
   display: flex;
   flex-direction: column;
@@ -52,15 +62,70 @@
   padding: 20px;
   background-color: #fff;
   border-radius: 10px;
-  max-width: 400px;
+  max-width: 600px;
+  width: 100%;
   margin: auto;
+  text-align: center;
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  margin-bottom: 16px;
 }
 
 .modal-image {
   width: 100%;
   height: auto;
+  border-radius: 8px;
   margin-bottom: 20px;
 }
+
+.modal-text {
+  margin: 16px 0;
+}
+
+.modal-footer {
+  display: flex;
+  justify-content: center;
+  gap: 16px;
+  margin-top: 16px;
+  width: 100%;
+}
+
+.modal-footer .report-button {
+  width: 100%;
+  max-width: 600px;
+  padding: 10px 20px;
+  background-color: #28a745;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.modal-footer .report-button:hover {
+  background-color: #218838;
+}
+
+.modal-footer .complete-button {
+  width: 100%;
+  max-width: 600px;
+  padding: 10px 20px;
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.modal-footer .complete-button:hover {
+  background-color: #0056b3;
+}
+
+
 
 .close-button {
   padding: 10px 20px;
@@ -71,8 +136,8 @@
   cursor: pointer;
 }
 
-.page-container {
-  position: relative;
+.close-button:hover {
+  background-color: #0056b3;
 }
 
 .backdrop {
@@ -127,7 +192,6 @@
   overflow-y: auto;
   max-height: 90vh;
 }
-
 
 .car-icon {
   width: 28px;

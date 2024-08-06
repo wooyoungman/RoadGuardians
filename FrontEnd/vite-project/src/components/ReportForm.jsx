@@ -95,6 +95,8 @@ const ReportForm = ({ isOpen, isClose, selectedItem }) => {
         mode: "cors",
         body: formData,
       });
+      
+      console.log(formData);
 
       if (response.ok) {
         isClose();

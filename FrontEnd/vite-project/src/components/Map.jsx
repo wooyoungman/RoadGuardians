@@ -4,7 +4,7 @@ import normalMarker from '../assets/normal_marker.png';
 import overMarker from '../assets/click_marker.png';
 import clickMarker from '../assets/click_marker.png';
 import NoPicture from '../assets/no_picture.PNG';
-import './Map.css';
+import '../styles/Map.css';
 
 const { kakao } = window;
 
@@ -112,7 +112,7 @@ function Kakao() {
         const ids = mapResponse.data.map(pothole => pothole.potholeId);
 
         const requests = ids.map(id =>
-          axios.get(`https://i11c104.p.ssafy.io:8080/api/v1/pothole/detail/${id}`)
+          axios.get(`https://i11c104.p.ssafy.io/api/v1/pothole/detail/${id}`)
         );
 
         const responses = await Promise.all(requests);
