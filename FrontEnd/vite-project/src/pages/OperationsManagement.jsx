@@ -114,6 +114,10 @@ const PotholeList = ({ potholeList, selectedPotholes, onPotholeClick }) => {
   return (
     <div className="pothole-list">
       <h1 className='pothole-name'>포트홀 목록</h1>
+      <div className='pothole-start'>
+        <div className='work_information'>현재 활성화 된 작업개수: {selectedPotholes.length}</div>
+        <button className='start-button'>작업 시작</button>
+      </div>
       <ul>
         {sortedPotholeList.map(pothole => (
           <li
@@ -124,7 +128,7 @@ const PotholeList = ({ potholeList, selectedPotholes, onPotholeClick }) => {
             }}
           >
             보수작업 {pothole.title} 
-             {pothole.potholeId} <br />{getCoordinates(pothole.location).lat}, {getCoordinates(pothole.location).lng})
+            {pothole.potholeId} <br />{getCoordinates(pothole.location).lat}, {getCoordinates(pothole.location).lng}
           </li>
         ))}
       </ul>
@@ -156,15 +160,11 @@ function Kakao() {
   useEffect(() => {
     const fetchPotholeData = async () => {
       try {
-        const mapResponse = await axios.get('http://i11c104.p.ssafy.io/api/v1/pothole/map');
-        const ids = mapResponse.data.map(pothole => pothole.potholeId);
-
-        const requests = ids.map(id =>
-          axios.get(`http://i11c104.p.ssafy.io/api/v1/pothole/detail/${id}`)
-        );
-
-        const responses = await Promise.all(requests);
-        const data = responses.map(response => response.data);
+        const response = await axios.get('https://i11c104.p.ssafy.io/api/v1/pothole/map');
+        const data = response.data.map(pothole => ({
+          potholeId: pothole.potholeId,
+          location: pothole.location
+        }));
         setPotholeList(data);
       } catch (error) {
         console.error('Error fetching pothole data:', error);
@@ -222,6 +222,7 @@ function Kakao() {
     saveDisabledMarkers([]);
   };
 
+
   return (
     <div>
       <div id="KakaoMap" style={{ width: '100vw', height: '100vh' }}>
@@ -230,15 +231,20 @@ function Kakao() {
             key={pothole.potholeId}
             map={map}
             position={parsePoint(pothole.location)}
-            title={pothole.title}
             onClick={() => handleMarkerClick(pothole)}
             isActive={true}
             isSelected={selectedMarkers.includes(pothole.potholeId)}
           />
         ))}
       </div>
-      <PotholeList potholeList={potholeList.filter(pothole => !disabledMarkers.includes(pothole.potholeId))} selectedPotholes={selectedMarkers} onPotholeClick={handleMarkerClick} />
-      <button onClick={handleRestoreMarkers}>작업시작</button>
+      <PotholeList
+        potholeList={potholeList.filter(pothole => !disabledMarkers.includes(pothole.potholeId))}
+        selectedPotholes={selectedMarkers}
+        onPotholeClick={handleMarkerClick}
+      />
+            <button onClick={handleRestoreMarkers} className='restore_button'>
+        마커 복원하기
+      </button>
     </div>
   );
 }
