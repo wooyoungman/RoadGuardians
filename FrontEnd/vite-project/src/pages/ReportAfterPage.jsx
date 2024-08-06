@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import './LinkPage.css';
+import '../styles/LinkPage.css';
 
 const groupByDate = (items) => {
   return items.reduce((acc, item) => {

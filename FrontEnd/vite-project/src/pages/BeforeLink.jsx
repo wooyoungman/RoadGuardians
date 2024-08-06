@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import LinkModal from '../components/LinkModal';
-import './LinkPage.css';
+import '../styles/LinkPage.css';
 
 const groupByDate = (items) => {
   return items.reduce((acc, item) => {
