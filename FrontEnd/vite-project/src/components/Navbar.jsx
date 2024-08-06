@@ -31,6 +31,11 @@ const Navbar = () => {
             신고 내역
           </NavLink>
         </li>
+        <li>
+          <NavLink to="/repairlist" className={({ isActive }) => (isActive || location.pathname === '/repairlist' ? 'active-link' : '')}>
+            유지 보수 팀
+          </NavLink>
+        </li>
       </ul>
     </nav>
   );
