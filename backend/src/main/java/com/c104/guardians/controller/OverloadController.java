@@ -31,8 +31,6 @@ public class OverloadController {
     @Autowired
     private OverloadService overloadService;
     @Autowired
-    private EmployeeService employeeService;
-    @Autowired
     private ReportRepository reportRepository;
     @Autowired
     private StorageClient storageClient;
