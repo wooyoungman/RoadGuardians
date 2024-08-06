@@ -22,7 +22,7 @@ function ReportAfterPage() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    fetch('http://i11c104.p.ssafy.io/api/v1/overload?confirm=true')
+    fetch('https://i11c104.p.ssafy.io/api/v1/overload?confirm=true')
       .then(response => {
         if (!response.ok) {
           throw new Error('Network response was not ok');

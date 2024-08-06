@@ -36,7 +36,7 @@ const AfterLink = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get('http://i11c104.p.ssafy.io/api/v1/pothole?confirm=true');
+        const response = await axios.get('https://i11c104.p.ssafy.io/api/v1/pothole?confirm=true');
         const uniqueData = response.data.filter((item, index, self) => 
           index === self.findIndex((t) => t.repairId === item.repairId)
         );
