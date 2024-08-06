@@ -3,7 +3,7 @@ import axios from 'axios';
 import normalMarker from '../assets/normal_marker.png';
 import overMarker from '../assets/click_marker.png';
 import clickMarker from '../assets/click_marker.png';
-import '../styles/OperationsManagement.css';
+import './OperationsManagement.css';
 
 const { kakao } = window;
 
@@ -103,8 +103,7 @@ const Marker = ({ map, position, title, onClick, isActive, isSelected }) => {
   return null;
 };
 
-const PotholeList = ({ potholeList, selectedPotholes, onPotholeClick }) => {
-  // Sort potholeList based on the selectedPotholes order
+const PotholeList = ({ potholeList, selectedPotholes, onPotholeClick, onStartWork }) => {
   const sortedPotholeList = [...potholeList].sort((a, b) => {
     const indexA = selectedPotholes.indexOf(a.potholeId);
     const indexB = selectedPotholes.indexOf(b.potholeId);
@@ -126,7 +125,7 @@ const PotholeList = ({ potholeList, selectedPotholes, onPotholeClick }) => {
       <h1 className='pothole-name'>포트홀 목록</h1>
       <div className='pothole-start'>
         <div className='work_information'>현재 활성화 된 작업개수: {selectedPotholes.length}</div>
-        <button className='start-button'>작업 시작</button>
+        <button className='start-button' onClick={onStartWork}>작업 시작</button>
       </div>
       <ul>
         {sortedPotholeList.map(pothole => (
@@ -151,7 +150,6 @@ function Kakao() {
   const [innerWidth, setInnerWidth] = useState(window.innerWidth);
   const [innerHeight, setInnerHeight] = useState(window.innerHeight);
   const [selectedMarkers, setSelectedMarkers] = useState([]);
-  const [buttonClicked, setButtonClicked] = useState(false);
   const [potholeList, setPotholeList] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -177,7 +175,6 @@ function Kakao() {
 
     fetchPotholeData();
 
-    // 5초마다 fetchPotholeData 호출
     const intervalId = setInterval(fetchPotholeData, 5000);
 
     return () => {
@@ -216,12 +213,20 @@ function Kakao() {
 
       return newSelectedMarkers;
     });
-    setButtonClicked(false);
   };
 
   const handleRestoreMarkers = () => {
     setDisabledMarkers([]);
     saveDisabledMarkers([]);
+  };
+
+  const handleStartWork = () => {
+    setDisabledMarkers((prevDisabledMarkers) => {
+      const newDisabledMarkers = [...prevDisabledMarkers, ...selectedMarkers];
+      saveDisabledMarkers(newDisabledMarkers);
+      return newDisabledMarkers;
+    });
+    setSelectedMarkers([]);
   };
 
   const updatePolyline = useCallback(async (selectedMarkers) => {
@@ -317,8 +322,9 @@ function Kakao() {
         potholeList={potholeList.filter(pothole => !disabledMarkers.includes(pothole.potholeId))}
         selectedPotholes={selectedMarkers}
         onPotholeClick={handleMarkerClick}
+        onStartWork={handleStartWork}
       />
-            <button onClick={handleRestoreMarkers} className='restore_button'>
+      <button onClick={handleRestoreMarkers} className='restore_button'>
         마커 복원하기
       </button>
     </div>
