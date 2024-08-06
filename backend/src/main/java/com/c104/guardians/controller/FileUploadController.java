@@ -59,6 +59,7 @@ public class FileUploadController {
                 "T_" + now.format(DateTimeFormatter.ofPattern("yyyyMMddHHmmss"))
                         + ".jpg";
 
+
         String imagePath = "src/main/resources/static/img/pothole/" + imageName;
         Files.copy(image.getInputStream(), Paths.get(imagePath));
 

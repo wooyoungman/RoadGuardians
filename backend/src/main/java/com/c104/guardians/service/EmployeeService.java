@@ -14,4 +14,6 @@ public class EmployeeService {
     public Employee getEmployeeById(Integer empId) {
         return employeeRepository.findById(empId).orElse(null);
     }
+
 }
+
