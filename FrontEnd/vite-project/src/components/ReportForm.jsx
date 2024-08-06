@@ -48,7 +48,7 @@ const ReportForm = ({ isOpen, isClose, selectedItem }) => {
   };
 
   useEffect(() => {
-    if (selectedItem) {
+    if (selectedItem && selectedItem.location) {
       const coordinates = selectedItem.location.match(/POINT \(([^ ]+) ([^ ]+)\)/);
       if (coordinates) {
         const lon = coordinates[1];
@@ -72,8 +72,12 @@ const ReportForm = ({ isOpen, isClose, selectedItem }) => {
     const pngFileHTML = document.getElementById('ReportForm');
 
     try {
-      const canvas = await html2canvas(pngFileHTML);
-      const blob = await new Promise((resolve) => canvas.toBlob(resolve, 'image/png'));
+      const canvas = await html2canvas(pngFileHTML, {
+        allowTaint: true,
+        useCORS: true
+      });
+      const dataURL = canvas.toDataURL('image/png');
+      const blob = await (await fetch(dataURL)).blob();
 
       const formData = new FormData();
       formData.append('image', blob, `${selectedItem?.overloadId}.png`);
@@ -85,13 +89,11 @@ const ReportForm = ({ isOpen, isClose, selectedItem }) => {
       // JSON 문자열로 변환하여 FormData에 추가
       formData.append('data', JSON.stringify(data));      
 
-      const response = await fetch('http://i11c104.p.ssafy.io/api/v1/overload/report', { // 엔드 포인트에 맞게
+      const response = await fetch('https://i11c104.p.ssafy.io/api/v1/overload/report', { // 엔드 포인트에 맞게
         method: 'POST',
         mode: "cors",
         body: formData,
       });
-      
-      console.log(formData);
 
       if (response.ok) {
         isClose();

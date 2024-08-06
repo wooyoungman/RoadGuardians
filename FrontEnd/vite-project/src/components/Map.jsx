@@ -105,11 +105,11 @@ function Kakao() {
   useEffect(() => {
     const fetchPotholeData = async () => {
       try {
-        const mapResponse = await axios.get('http://i11c104.p.ssafy.io/api/v1/pothole/map');
+        const mapResponse = await axios.get('https://i11c104.p.ssafy.io/api/v1/pothole/map');
         const ids = mapResponse.data.map(pothole => pothole.potholeId);
 
         const requests = ids.map(id =>
-          axios.get(`http://i11c104.p.ssafy.io:8080/api/v1/pothole/detail/${id}`)
+          axios.get(`https://i11c104.p.ssafy.io:8080/api/v1/pothole/detail/${id}`)
         );
 
         const responses = await Promise.all(requests);
