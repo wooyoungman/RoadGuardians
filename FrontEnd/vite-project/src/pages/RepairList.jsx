@@ -32,15 +32,15 @@ const ReportList = () => {
   const [error, setError] = useState(null);
   const [selectedItem, setSelectedItem] = useState(null);
   const [isModalOpen, setModalOpen] = useState(false);
-  const [isReported, setIsReported] = useState(false);
+  const [isRepairStarted, setIsRepairStarted] = useState(false);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         const [beforeResponse, duringResponse, doneResponse] = await Promise.all([
-          axios.get('http://i11c104.p.ssafy.io/api/v1/repair?status=before'),
-          axios.get('http://i11c104.p.ssafy.io/api/v1/repair?status=doing'),
-          axios.get('http://i11c104.p.ssafy.io/api/v1/repair?status=done'),
+          axios.get('https://i11c104.p.ssafy.io/api/v1/repair?status=before'),
+          axios.get('https://i11c104.p.ssafy.io/api/v1/repair?status=doing'),
+          axios.get('https://i11c104.p.ssafy.io/api/v1/repair?status=done'),
         ]);
 
         const allData = [
@@ -67,7 +67,7 @@ const ReportList = () => {
   const openModal = (item) => {
     setSelectedItem(item);
     setModalOpen(true);
-    setIsReported(false);
+    setIsRepairStarted(false);
   };
 
   const closeModal = () => {
@@ -75,18 +75,13 @@ const ReportList = () => {
     setSelectedItem(null);
   };
 
-  const handleReportClick = () => {
-    setIsReported(true);
-  };
-
   const handleStartClick = async () => {
     if (selectedItem) {
       try {
-        await axios.post('http://i11c104.p.ssafy.io/api/v1/repair/start', {
+        await axios.post('https://i11c104.p.ssafy.io/api/v1/repair/start', {
           repairId: [selectedItem.repairId],
         });
-        // POST 요청이 성공하면 필요한 후속 작업
-        closeModal();
+        setIsRepairStarted(true);
       } catch (error) {
         console.error('Failed to start repair:', error);
       }
@@ -96,10 +91,9 @@ const ReportList = () => {
   const handleCompleteClick = async () => {
     if (selectedItem) {
       try {
-        await axios.post('http://i11c104.p.ssafy.io/api/v1/repair/end', {
+        await axios.post('https://i11c104.p.ssafy.io/api/v1/repair/end', {
           repairId: [selectedItem.repairId],
         });
-        // POST 요청이 성공하면 필요한 후속 작업
         closeModal();
       } catch (error) {
         console.error('Failed to complete repair:', error);
@@ -167,15 +161,12 @@ const ReportList = () => {
               <p>수리 시간: {selectedItem.repairAt ? new Date(selectedItem.repairAt).toLocaleString() : 'Unknown'}</p>
             </div>
             <div className="modal-footer">
-              <button onClick={handleStartClick} className="report-button">
-                시작하기
-              </button>
-              {isReported ? (
+              {isRepairStarted ? (
                 <button onClick={handleCompleteClick} className="complete-button">
                   보수완료
                 </button>
               ) : (
-                <button onClick={handleReportClick} className="report-button">
+                <button onClick={() => setIsRepairStarted(true)} className="report-button">
                   신고하기
                 </button>
               )}

@@ -86,7 +86,7 @@ const ReportForm = ({ isOpen, isClose, selectedItem }) => {
       // JSON 문자열로 변환하여 FormData에 추가
       formData.append('data', JSON.stringify(data));      
 
-      const response = await fetch('http://i11c104.p.ssafy.io/api/v1/overload/report', { // 엔드 포인트에 맞게
+      const response = await fetch('https://i11c104.p.ssafy.io/api/v1/overload/report', { // 엔드 포인트에 맞게
         method: 'POST',
         mode: "cors",
         body: formData,
