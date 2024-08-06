@@ -64,7 +64,7 @@ public class RepairController {
             @RequestBody RepairList repairList
     ) throws IOException {
 
-        statusEdit("done", repairList);
+        statusEdit("complete", repairList);
 
         return ResponseEntity.ok(repairList);
     }

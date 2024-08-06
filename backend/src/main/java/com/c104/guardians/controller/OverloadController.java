@@ -1,19 +1,16 @@
 package com.c104.guardians.controller;
 
-import com.c104.guardians.dto.RepairRequest;
 import com.c104.guardians.dto.ReportRequest;
 import com.c104.guardians.entity.*;
 import com.c104.guardians.repository.OverloadRepository;
 import com.c104.guardians.repository.ReportRepository;
-import com.c104.guardians.service.EmployeeService;
+import com.c104.guardians.service.UserService;
 import com.c104.guardians.service.OverloadService;
 import com.c104.guardians.service.ReportService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -27,7 +24,7 @@ public class OverloadController {
     @Autowired
     private OverloadService overloadService;
     @Autowired
-    private EmployeeService employeeService;
+    private UserService userService;
     @Autowired
     private ReportRepository reportRepository;
 
@@ -54,10 +51,11 @@ public class OverloadController {
             @RequestBody ReportRequest reportRequest
     ) {
         Overload overload = overloadService.getOverloadById(reportRequest.getOverloadId());
-        Employee employee = employeeService.getEmployeeById(reportRequest.getEmpId());
+        User user = userService.getUserById(reportRequest.getId());
+//        Employee employee = employeeService.getEmployeeById(reportRequest.getEmpId());
 
         // 오류
-        if (overload == null || employee == null) {
+        if (overload == null || user == null) {
             return ResponseEntity.badRequest().build();
         }
 
@@ -65,7 +63,7 @@ public class OverloadController {
         overload.setConfirm(true);
         Report report = new Report();
         report.setOverload(overload);
-        report.setEmployee(employee);
+        report.setUser(user);
 
         Report createdReport = reportService.saveReport(report);
         return ResponseEntity.ok(createdReport);

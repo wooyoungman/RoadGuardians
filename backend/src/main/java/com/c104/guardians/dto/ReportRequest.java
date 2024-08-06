@@ -5,6 +5,6 @@ import lombok.Data;
 @Data
 public class ReportRequest {
     private Integer overloadId;
-    private Integer empId;
+    private String id;
 }
 
