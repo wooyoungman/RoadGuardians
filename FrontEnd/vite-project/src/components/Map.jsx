@@ -4,7 +4,7 @@ import normalMarker from '../assets/normal_marker.png';
 import overMarker from '../assets/click_marker.png';
 import clickMarker from '../assets/click_marker.png';
 import NoPicture from '../assets/no_picture.PNG';
-import './Map.css';
+import '../styles/Map.css';
 
 const { kakao } = window;
 
