@@ -1,0 +1,89 @@
+/* src/components/Login.css */
+.login-container {
+  text-align: center;
+  max-width: 400px;
+  margin: 0 auto;
+}
+
+.logo img {
+  width: 150px;
+  margin-bottom: 10px;
+}
+
+.team-selector {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+
+.team-selector button {
+  padding: 10px 30px;
+  border: 2px solid #6c2bd9;
+  background-color: white;
+  margin: 0 10px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, color 0.3s ease;
+  font-size: 16px;
+  font-weight: bold;
+}
+
+.team-selector .active {
+  background-color: #6c2bd9;
+  color: #fff;
+  border: 2px solid #6c2bd9;
+}
+
+.login-form {
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  background-color: #fff;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+}
+
+.login-form input {
+  padding: 10px;
+  margin-bottom: 10px;
+  border: 2px solid #ddd;
+  border-radius: 4px;
+  font-size: 16px;
+  transition: border-color 0.3s ease;
+  text-align: left;
+}
+
+.login-form input:focus {
+  border-color: #6c2bd9;
+  outline: none;
+}
+
+.login-form button {
+  padding: 10px;
+  background-color: #6c2bd9;
+  color: #fff;
+  border: none;
+  cursor: pointer;
+  border-radius: 4px;
+  font-size: 16px;
+  transition: background-color 0.3s ease;
+}
+
+.login-form button:hover {
+  background-color: #522ea9;
+}
+
+.register-link {
+  margin-top: 10px;
+  font-size: 14px;
+}
+
+.register-link span {
+  color: #6c2bd9;
+  cursor: pointer;
+  text-decoration: underline;
+}
+
+.register-link span:hover {
+  color: #522ea9;
+}

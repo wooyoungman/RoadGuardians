@@ -1,9 +1,9 @@
-import React, { useEffect, useState, useCallback, useRef } from 'react';
+import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import normalMarker from '../assets/normal_marker.png';
 import overMarker from '../assets/click_marker.png';
 import clickMarker from '../assets/click_marker.png';
-import './OperationsManagement.css';
+import '../styles/OperationsManagement.css';
 
 const { kakao } = window;
 
@@ -104,6 +104,7 @@ const Marker = ({ map, position, title, onClick, isActive, isSelected }) => {
 };
 
 const PotholeList = ({ potholeList, selectedPotholes, onPotholeClick }) => {
+  // Sort potholeList based on the selectedPotholes order
   const sortedPotholeList = [...potholeList].sort((a, b) => {
     const indexA = selectedPotholes.indexOf(a.potholeId);
     const indexB = selectedPotholes.indexOf(b.potholeId);
@@ -176,6 +177,7 @@ function Kakao() {
 
     fetchPotholeData();
 
+    // 5초마다 fetchPotholeData 호출
     const intervalId = setInterval(fetchPotholeData, 5000);
 
     return () => {
@@ -316,7 +318,7 @@ function Kakao() {
         selectedPotholes={selectedMarkers}
         onPotholeClick={handleMarkerClick}
       />
-      <button onClick={handleRestoreMarkers} className='restore_button'>
+            <button onClick={handleRestoreMarkers} className='restore_button'>
         마커 복원하기
       </button>
     </div>

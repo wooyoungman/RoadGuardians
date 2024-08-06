@@ -1,12 +1,12 @@
-import React from 'react';
+import React, { useEffect } from 'react';
+import { Navigate } from 'react-router-dom';
 
-const LogoutPage = () => {
-  return (
-    <div>
-      <h1>로그아웃 페이지</h1>
-      <p>여기에 로그아웃 페이지 내용이 들어갑니다.</p>
-    </div>
-  );
+const LogoutPage = ({ onLogout }) => {
+  useEffect(() => {
+    onLogout();
+  }, [onLogout]);
+
+  return <Navigate to="/" replace />;
 };
 
 export default LogoutPage;
