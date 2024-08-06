@@ -3,7 +3,7 @@ import axios from 'axios';
 import Cookies from 'js-cookie';
 
 const instance = axios.create({
-  baseURL: 'http://localhost:8080', // 백엔드 URL 설정
+  baseURL: 'https://i11c104.p.ssafy.io/', // 백엔드 URL 설정
   headers: {
     'Content-Type': 'application/json',
   },
@@ -33,7 +33,7 @@ instance.interceptors.response.use((response) => {
     const refreshToken = Cookies.get('refreshToken');
     if (refreshToken) {
       try {
-        const response = await instance.post('/api/auth/refresh-token', { refreshToken });
+        const response = await instance.post('/api/v1/auth/refresh-token', { refreshToken });
         if (response.data.accessToken) {
           Cookies.set('accessToken', response.data.accessToken, { path: '/' });
           axios.defaults.headers.common['Authorization'] = `Bearer ${response.data.accessToken}`;
@@ -54,7 +54,7 @@ instance.interceptors.response.use((response) => {
 
 export const checkTokenValidity = async () => {
   try {
-    const response = await instance.get('/api/auth/check-token');
+    const response = await instance.get('/api/v1/auth/check-token');
     return response.status === 200;
   } catch (error) {
     return false;
