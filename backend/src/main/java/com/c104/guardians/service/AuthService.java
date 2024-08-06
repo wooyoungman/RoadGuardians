@@ -4,7 +4,9 @@ import com.c104.guardians.dto.Login;
 import com.c104.guardians.dto.LoginResponse;
 import com.c104.guardians.dto.Response;
 import com.c104.guardians.dto.SignUp;
+import com.c104.guardians.entity.Department;
 import com.c104.guardians.entity.User;
+import com.c104.guardians.repository.DepartmentRepository;
 import com.c104.guardians.repository.UserRepository;
 import com.c104.guardians.Security.TokenProvider;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,9 +19,13 @@ import org.springframework.stereotype.Service;
 public class AuthService {
     @Autowired UserRepository userRepository;
     @Autowired TokenProvider tokenProvider;
+    @Autowired DepartmentRepository departmentRepository;
+
     public Response<?> signUp(SignUp dto) {
         String id = dto.getId();
         String password = dto.getPassword();
+        Integer deptId = dto.getDeptId();
+
         // id 중복 확인
         try {
             // 존재하는 경우 : true / 존재하지 않는 경우 : false
@@ -31,9 +37,12 @@ public class AuthService {
             return Response.setFailed("데이터베이스 연결에 실패하였습니다.");
         }
 
+        // Department 조회
+        Department department = departmentRepository.findById(deptId)
+                .orElseThrow(() -> new IllegalArgumentException("Invalid department ID"));
 
         // UserEntity 생성
-        User userEntity = new User(dto);
+        User userEntity = new User(dto, department);
 
         // 비밀번호 암호화
         BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
@@ -56,6 +65,47 @@ public class AuthService {
 
         return Response.setSuccess("회원 생성에 성공했습니다.");
     }
+
+
+//    public Response<?> signUp(SignUp dto) {
+//        String id = dto.getId();
+//        String password = dto.getPassword();
+//        // id 중복 확인
+//        try {
+//            // 존재하는 경우 : true / 존재하지 않는 경우 : false
+//            if(userRepository.existsById(id)) {
+//                return Response.setFailed("중복된 id 입니다.");
+//            }
+//        } catch (Exception e) {
+//
+//            return Response.setFailed("데이터베이스 연결에 실패하였습니다.");
+//        }
+//
+//
+//        // UserEntity 생성
+//        User userEntity = new User(dto);
+//
+//        // 비밀번호 암호화
+//        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+//        String hashedPassword = passwordEncoder.encode(password);
+//
+//        boolean isPasswordMatch = passwordEncoder.matches(password, hashedPassword);
+//
+//        if(!isPasswordMatch) {
+//            return Response.setFailed("암호화에 실패하였습니다.");
+//        }
+//
+//        userEntity.setPassword(hashedPassword);
+//
+//        // UserRepository를 이용하여 DB에 Entity 저장 (데이터 적재)
+//        try {
+//            userRepository.save(userEntity);
+//        } catch (Exception e) {
+//            return Response.setFailed("데이터베이스 연결에 실패하였습니다.");
+//        }
+//
+//        return Response.setSuccess("회원 생성에 성공했습니다.");
+//    }
 
 //    public Response<LoginResponse> login(Login dto) {
 //        String id = dto.getId();

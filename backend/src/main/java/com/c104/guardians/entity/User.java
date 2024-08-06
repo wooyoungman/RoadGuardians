@@ -1,14 +1,16 @@
 package com.c104.guardians.entity;
 
 import com.c104.guardians.dto.SignUp;
-import jakarta.persistence.Column;
+import com.c104.guardians.repository.DepartmentRepository;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import org.springframework.beans.factory.annotation.Autowired;
+
+import com.c104.guardians.repository.DepartmentRepository;
+
 import java.time.LocalDateTime;
 
 @Data
@@ -39,7 +41,12 @@ public class User {
     @Column(name = "lastLoginAt")
     private LocalDateTime lastLoginAt;
 
-    public User(SignUp dto) {
+    @ManyToOne
+    @JoinColumn(name = "dept_id")
+    private Department department;
+
+
+    public User(SignUp dto, Department department) {
         this.id = dto.getId();
         this.email = dto.getEmail();
         this.password = dto.getPassword();
@@ -49,5 +56,7 @@ public class User {
         this.token = "";
         this.createdAt = LocalDateTime.now();
         this.editedAt = LocalDateTime.now();
+        this.department = department;
+
     }
 }
