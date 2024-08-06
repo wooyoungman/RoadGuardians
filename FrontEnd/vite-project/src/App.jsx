@@ -9,6 +9,7 @@ import BeforeLink from './pages/BeforeLink';
 import AfterLink from './pages/AfterLink';
 import LinkPage from './pages/LinkPage';
 import LogoutPage from './pages/LogoutPage';
+import OperationsManagement from './pages/OperationsManagement';
 import './App.css';
 
 const App = () => {
@@ -17,6 +18,7 @@ const App = () => {
       <Navbar />
       <div style={{ paddingTop: '80px' }}>
         <Routes>
+        <Route path='/operation' element={<OperationsManagement/>} />
           <Route path="/" element={<MainPage />} />
           <Route path="/stats" element={<StatsPage />} />
           <Route path="/report" element={<ReportPage />} />
