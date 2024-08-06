@@ -5,7 +5,7 @@ const ModalContent = ({ item, isOpen, onRequestClose, onConnect, closeButtonText
   return (
     <Modal isOpen={isOpen} onRequestClose={onRequestClose} contentLabel="포트홀 상세 정보">
       <div className="modal-content">
-        <img src={`http://localhost:8080${item.imageUrl}`} alt="포트홀 이미지" className="modal-image" />
+        <img src={`https://localhost${item.imageUrl}`} alt="포트홀 이미지" className="modal-image" />
         <div className="modal-text">
           {type === 'before' ? (
             <>

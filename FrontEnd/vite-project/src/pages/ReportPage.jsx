@@ -26,7 +26,7 @@ const ReportPage = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get('http://i11c104.p.ssafy.io/api/v1/overload?confirm=false');
+        const response = await axios.get('https://i11c104.p.ssafy.io/api/v1/overload?confirm=false');
         const uniqueData = response.data.filter((item, index, self) => 
           index === self.findIndex((t) => t.overloadId === item.overloadId)
         );
@@ -60,7 +60,7 @@ const ReportPage = () => {
     // 신고서 제출 후 목록 갱신
     const fetchData = async () => {
       try {
-        const response = await axios.get('http://i11c104.p.ssafy.io/api/v1/overload?confirm=false');
+        const response = await axios.get('https://i11c104.p.ssafy.io/api/v1/overload?confirm=false');
         const uniqueData = response.data.filter((item, index, self) => 
           index === self.findIndex((t) => t.overloadId === item.overloadId)
         );
@@ -131,7 +131,7 @@ const ReportPage = () => {
         isOpen={isFormOpen} 
         isClose={formCloseClick} 
         selectedItem={selectedItem} 
-        onFormSubmitted={handleFormSubmitted} // 변경된 부분
+        onFormSubmitted={handleFormSubmitted}
       />
       <Outlet />
     </div>
