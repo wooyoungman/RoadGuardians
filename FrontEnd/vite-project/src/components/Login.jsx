@@ -23,7 +23,7 @@ function Login({ onLogin }) {
     console.log('Login Data:', loginData); // 콘솔에 로그인 데이터 출력
 
     try {
-      const response = await axios.post('http://localhost:8080/api/auth/login', loginData);
+      const response = await axios.post('https://i11c104.p.ssafy.io/api/v1/auth/login', loginData);
       console.log(response)
 
       if (response.data.result) {

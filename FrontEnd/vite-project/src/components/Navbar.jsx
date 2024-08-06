@@ -11,6 +11,11 @@ const Navbar = () => {
         </NavLink>
       </div>
       <ul className="nav-links">
+      <li>
+          <NavLink to="/operation" className={({ isActive }) => (isActive ? 'active-link' : '')}>
+            관리자 페이지
+          </NavLink>
+        </li>
         <li>
           <NavLink to="/" className={({ isActive }) => (isActive ? 'active-link' : '')}>
             포트홀 지도

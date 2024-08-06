@@ -32,7 +32,7 @@ function Register() {
 
   const handleIdCheck = async () => {
     try {
-      const response = await axios.get('http://localhost:8080/api/auth/check-id', {
+      const response = await axios.get('https://i11c104.p.ssafy.io/api/v1/auth/check-id', {
         params: {
           id: formData.id,
         }
@@ -70,7 +70,7 @@ function Register() {
     const userTypeValue = formData.user_type === '운영관리팀' ? 1 : 2;
 
     try {
-      const response = await axios.post('http://localhost:8080/api/auth/signUp', {
+      const response = await axios.post('https://i11c104.p.ssafy.io/api/v1/auth/signUp', {
         id: formData.id,
         email: formData.email,
         password: formData.password,
