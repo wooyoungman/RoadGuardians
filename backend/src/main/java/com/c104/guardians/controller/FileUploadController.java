@@ -6,6 +6,7 @@ import com.c104.guardians.repository.OverloadRepository;
 import com.c104.guardians.repository.PotholeRepository;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.cloud.storage.Blob;
 import com.google.firebase.cloud.StorageClient;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.GeometryFactory;
@@ -20,8 +21,6 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
@@ -44,7 +43,7 @@ public class FileUploadController {
 
     // 포트홀 DB 추가
     @PostMapping("/pothole")
-    public ResponseEntity<?> addPotholeWithImage(
+    public ResponseEntity<?> uploadPothole(
             @RequestParam("image") MultipartFile image,
             @RequestParam("data") String data
     ) throws IOException {
@@ -70,8 +69,8 @@ public class FileUploadController {
 
         String blobString = "pothole" + "/" + imageName;
 
-        storageClient.bucket().create(blobString, image.getInputStream(), image.getContentType());
-
+        Blob blob = storageClient.bucket().create(blobString, image.getInputStream(), image.getContentType());
+        System.out.println(blob);
         // https://firebasestorage.googleapis.com/v0/b/c104-10f5a.appspot.com/o/overload%2F20240802103159-97ba967a-93f7-4ed4-86cb-4f41cd877822.jpg?alt=media
         System.out.println(baseUrl + "/pothole%2F" + imageName + "?alt=media");
 
@@ -87,7 +86,7 @@ public class FileUploadController {
     }
 
     @PostMapping("/overload")
-    public ResponseEntity<?> addOverloadWithImage(
+    public ResponseEntity<?> uploadOverload(
             @RequestParam("image") MultipartFile image,
             @RequestParam("data") String data
     ) throws IOException {
@@ -107,8 +106,8 @@ public class FileUploadController {
 
         String blobString = "overload" + "/" + imageName;
 
-        storageClient.bucket().create(blobString, image.getInputStream(), image.getContentType());
-
+        Blob blob = storageClient.bucket().create(blobString, image.getInputStream(), image.getContentType());
+        System.out.println(blob);
 
         System.out.println(baseUrl + "/overload%2F" + imageName + "?alt=media");
 

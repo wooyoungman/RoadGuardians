@@ -49,7 +49,7 @@ public class RepairController {
             @RequestBody RepairList repairList
     ) throws IOException {
 
-        statusEdit("during", repairList);
+        statusEdit("ongoing", repairList);
 
         return ResponseEntity.ok(repairList);
     }
@@ -59,7 +59,7 @@ public class RepairController {
             @RequestBody RepairList repairList
     ) throws IOException {
 
-        statusEdit("done", repairList);
+        statusEdit("complete", repairList);
 
         return ResponseEntity.ok(repairList);
     }
