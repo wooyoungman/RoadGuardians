@@ -17,10 +17,10 @@ const getStatusClass = (status) => {
   switch (status) {
     case 'before':
       return 'before';
-    case 'doing':
-      return 'doing';
-    case 'done':
-      return 'done transparent';
+    case 'ongoing':
+      return 'ongoing';
+    case 'complete':
+      return 'complete transparent';
     default:
       return '';
   }
@@ -33,14 +33,15 @@ const ReportList = () => {
   const [selectedItem, setSelectedItem] = useState(null);
   const [isModalOpen, setModalOpen] = useState(false);
   const [isRepairStarted, setIsRepairStarted] = useState(false);
+  const [showResetButton, setShowResetButton] = useState(false);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         const [beforeResponse, duringResponse, doneResponse] = await Promise.all([
           axios.get('https://i11c104.p.ssafy.io/api/v1/repair?status=before'),
-          axios.get('https://i11c104.p.ssafy.io/api/v1/repair?status=doing'),
-          axios.get('https://i11c104.p.ssafy.io/api/v1/repair?status=done'),
+          axios.get('https://i11c104.p.ssafy.io/api/v1/repair?status=ongoing'),
+          axios.get('https://i11c104.p.ssafy.io/api/v1/repair?status=complete'),
         ]);
 
         const allData = [
@@ -50,7 +51,7 @@ const ReportList = () => {
         ];
 
         const uniqueData = allData.filter((item, index, self) => 
-          index === self.findIndex((t) => t.overloadId === item.overloadId)
+          index === self.findIndex((t) => t.repairId === item.repairId)
         );
 
         setList(uniqueData);
@@ -62,6 +63,18 @@ const ReportList = () => {
     };
 
     fetchData();
+
+    const handleKeyPress = (event) => {
+      if (event.key === 'R' || event.key === 'r') {
+        setShowResetButton(prev => !prev);
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyPress);
+
+    return () => {
+      window.removeEventListener('keydown', handleKeyPress);
+    };
   }, []);
 
   const openModal = (item) => {
@@ -81,7 +94,17 @@ const ReportList = () => {
         await axios.post('https://i11c104.p.ssafy.io/api/v1/repair/start', {
           repairId: [selectedItem.repairId],
         });
+        // 상태를 ongoing으로 업데이트
+        setSelectedItem((prevItem) => ({ ...prevItem, status: 'ongoing' }));
         setIsRepairStarted(true);
+        // list 상태 업데이트
+        setList((prevList) =>
+          prevList.map((item) =>
+            item.repairId === selectedItem.repairId
+              ? { ...item, status: 'ongoing' }
+              : item
+          )
+        );
       } catch (error) {
         console.error('Failed to start repair:', error);
       }
@@ -94,11 +117,29 @@ const ReportList = () => {
         await axios.post('https://i11c104.p.ssafy.io/api/v1/repair/end', {
           repairId: [selectedItem.repairId],
         });
+        // 상태를 complete로 업데이트
+        setSelectedItem((prevItem) => ({ ...prevItem, status: 'complete' }));
+        setIsRepairStarted(false);
+        // list 상태 업데이트
+        setList((prevList) =>
+          prevList.map((item) =>
+            item.repairId === selectedItem.repairId
+              ? { ...item, status: 'complete' }
+              : item
+          )
+        );
         closeModal();
       } catch (error) {
         console.error('Failed to complete repair:', error);
       }
     }
+  };
+
+  const handleResetClick = () => {
+    setSelectedItem(null);
+    setModalOpen(false);
+    setIsRepairStarted(false);
+    setShowResetButton(false); // 상태를 리셋하고 버튼을 숨깁니다.
   };
 
   const groupedItems = groupByDate(list);
@@ -114,6 +155,11 @@ const ReportList = () => {
   return (
     <div className="container mx-auto p-4">
       <h1 className="text-2xl font-bold mb-4">작업 페이지</h1>
+      {showResetButton && (
+        <button onClick={handleResetClick} className="reset-button mb-4">
+          상태 리셋
+        </button>
+      )}
       {list.length === 0 ? (
         <div>데이터가 없습니다.</div>
       ) : (
@@ -161,13 +207,14 @@ const ReportList = () => {
               <p>수리 시간: {selectedItem.repairAt ? new Date(selectedItem.repairAt).toLocaleString() : 'Unknown'}</p>
             </div>
             <div className="modal-footer">
-              {isRepairStarted ? (
+              {selectedItem.status === 'before' && !isRepairStarted && (
+                <button onClick={handleStartClick} className="report-button">
+                  시작하기
+                </button>
+              )}
+              {((selectedItem.status === 'before' && isRepairStarted) || selectedItem.status === 'ongoing') && (
                 <button onClick={handleCompleteClick} className="complete-button">
                   보수완료
-                </button>
-              ) : (
-                <button onClick={() => setIsRepairStarted(true)} className="report-button">
-                  신고하기
                 </button>
               )}
             </div>

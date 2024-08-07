@@ -132,15 +132,15 @@ const AfterLink = () => {
                         <div
                           className="absolute h-full bg-violet-500 rounded-full"
                           style={{
-                            width: item.status === 'before' ? '13%' : item.status === 'ongoing' ? '55%' : '100%',
+                            width: item.status === 'before' ? '13%' : (item.status === 'ongoing' || item.status === 'during') ? '55%' : '100%',
                           }}
                         ></div>
                         <div
                           className="absolute w-10 h-10 bg-cover bg-center car-icon"
                           style={{
                             backgroundImage: `url('/path/to/car-icon.png')`,
-                            left: item.status === 'before' ? '0%' : item.status === 'ongoing' ? '50%' : '100%',
-                            transform: item.status === 'ongoing' ? 'translateX(-50%)' : item.status === 'complete' ? 'translateX(-100%)' : '',
+                            left: item.status === 'before' ? '0%' : (item.status === 'ongoing' || item.status === 'during') ? '50%' : '100%',
+                            transform: (item.status === 'ongoing' || item.status === 'during') ? 'translateX(-50%)' : (item.status === 'complete' || item.status === 'done') ? 'translateX(-100%)' : '',
                           }}
                         ></div>
                       </div>
