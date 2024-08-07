@@ -33,9 +33,10 @@ instance.interceptors.response.use((response) => {
     if (refreshToken) {
       try {
         const response = await instance.post('/auth/refresh-token', { refreshToken });
-        if (response.data.accessToken) {
-          sessionStorage.setItem('accessToken', response.data.accessToken);
-          instance.defaults.headers.common['Authorization'] = `Bearer ${response.data.accessToken}`;
+        // console.log(response.data.data.accessToken)
+        if (response.data.data.accessToken) {
+          sessionStorage.setItem('accessToken', response.data.data.accessToken);
+          instance.defaults.headers.common['Authorization'] = `Bearer ${response.data.data.accessToken}`;
           return instance(originalRequest);
         }
       } catch (err) {

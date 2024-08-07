@@ -16,7 +16,6 @@ import RepairList from './pages/RepairList';
 import OperationsManagement from './pages/OperationsManagement';
 import ProtectedRoute from './ProtectedRoute';  // 경로 보호 컴포넌트 import
 import './App.css';
-import Cookies from 'js-cookie';
 
 const App = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
