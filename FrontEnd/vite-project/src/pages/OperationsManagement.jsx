@@ -1,9 +1,9 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback, useRef } from 'react';
 import axios from 'axios';
 import normalMarker from '../assets/normal_marker.png';
 import overMarker from '../assets/click_marker.png';
 import clickMarker from '../assets/click_marker.png';
-import '../styles/OperationsManagement.css';
+import './OperationsManagement.css';
 
 const { kakao } = window;
 
@@ -15,6 +15,16 @@ const parsePoint = (pointStr) => {
     return new kakao.maps.LatLng(lat, lng);
   }
   return null;
+};
+
+const getCoordinates = (location) => {
+  const coords = location.match(/POINT \(([^ ]+) ([^ ]+)\)/);
+  if (coords) {
+    const lat = parseFloat(coords[2]);
+    const lng = parseFloat(coords[1]);
+    return { lat, lng };
+  }
+  return { lat: null, lng: null };
 };
 
 const getDisabledMarkers = () => {
@@ -93,11 +103,10 @@ const Marker = ({ map, position, title, onClick, isActive, isSelected }) => {
   return null;
 };
 
-const PotholeList = ({ potholeList, selectedPotholes, onPotholeClick }) => {
-  // Sort potholeList based on the selectedPotholes order
+const PotholeList = ({ potholeList, selectedPotholes, onPotholeClick, onStartWork }) => {
   const sortedPotholeList = [...potholeList].sort((a, b) => {
-    const indexA = selectedPotholes.indexOf(a.potholeId);
-    const indexB = selectedPotholes.indexOf(b.potholeId);
+    const indexA = selectedPotholes.indexOf(a.repairId);
+    const indexB = selectedPotholes.indexOf(b.repairId);
 
     if (indexA !== -1 && indexB !== -1) {
       return indexA - indexB;
@@ -112,38 +121,30 @@ const PotholeList = ({ potholeList, selectedPotholes, onPotholeClick }) => {
   });
 
   return (
-    <div className="pothole-list">
-      <h1 className='pothole-name'>포트홀 목록</h1>
-      <div className='pothole-start'>
-        <div className='work_information'>현재 활성화 된 작업개수: {selectedPotholes.length}</div>
-        <button className='start-button'>작업 시작</button>
+    <div className="operations-management-container">
+      <div className="pothole-list">
+        <h1 className='pothole-name'>포트홀 목록</h1>
+        <div className='pothole-start'>
+          <div className='work_information'>현재 활성화 된 작업개수: {selectedPotholes.length}</div>
+          <button className='start-button' onClick={onStartWork}>작업 시작</button>
+        </div>
+        <ul>
+          {sortedPotholeList.map(pothole => (
+            <li
+              key={pothole.repairId}
+              onClick={() => onPotholeClick(pothole)}
+              style={{
+                backgroundColor: selectedPotholes.includes(pothole.repairId) ? 'lavender' : 'transparent'
+              }}
+            >
+              보수작업 {pothole.title}
+              {pothole.repairId} <br />{getCoordinates(pothole.location).lat}, {getCoordinates(pothole.location).lng}
+            </li>
+          ))}
+        </ul>
       </div>
-      <ul>
-        {sortedPotholeList.map(pothole => (
-          <li
-            key={pothole.potholeId}
-            onClick={() => onPotholeClick(pothole)}
-            style={{
-              backgroundColor: selectedPotholes.includes(pothole.potholeId) ? 'lavender' : 'transparent'
-            }}
-          >
-            보수작업 {pothole.title} 
-            {pothole.potholeId} <br />{getCoordinates(pothole.location).lat}, {getCoordinates(pothole.location).lng}
-          </li>
-        ))}
-      </ul>
     </div>
   );
-};
-
-const getCoordinates = (location) => {
-  const coords = location.match(/POINT \(([^ ]+) ([^ ]+)\)/);
-  if (coords) {
-    const lat = parseFloat(coords[2]);
-    const lng = parseFloat(coords[1]);
-    return { lat, lng };
-  }
-  return { lat: null, lng: null };
 };
 
 function Kakao() {
@@ -151,34 +152,40 @@ function Kakao() {
   const [innerWidth, setInnerWidth] = useState(window.innerWidth);
   const [innerHeight, setInnerHeight] = useState(window.innerHeight);
   const [selectedMarkers, setSelectedMarkers] = useState([]);
-  const [buttonClicked, setButtonClicked] = useState(false);
   const [potholeList, setPotholeList] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [disabledMarkers, setDisabledMarkers] = useState(getDisabledMarkers);
+  const polylineRef = useRef(null);
 
   useEffect(() => {
-    const fetchPotholeData = async () => {
+    const fetchRepairData = async () => {
       try {
-        const response = await axios.get('https://i11c104.p.ssafy.io/api/v1/pothole/map');
-        const data = response.data.map(pothole => ({
-          potholeId: pothole.potholeId,
-          location: pothole.location
+        // 새로운 API에 GET 요청을 보내고 응답을 기다림
+        const response = await axios.get('https://i11c104.p.ssafy.io/api/v1/repair/map');
+        
+        // 응답 데이터에서 repairId와 위치를 추출하여 새 배열 생성
+        const data = response.data.map(repair => ({
+          repairId: repair.repairId,
+          location: repair.pothole.location
         }));
+        
+        // 변환된 데이터를 상태에 저장
         setPotholeList(data);
       } catch (error) {
-        console.error('Error fetching pothole data:', error);
-        setError('Failed to load pothole data.');
+        console.error('Error fetching repair data:', error);
+        setError('Failed to load repair data.');
       } finally {
         setLoading(false);
       }
     };
 
-    fetchPotholeData();
+    fetchRepairData();
 
-    // 5초마다 fetchPotholeData 호출
-    const intervalId = setInterval(fetchPotholeData, 5000);
+    // 5초마다 데이터를 갱신
+    const intervalId = setInterval(fetchRepairData, 5000);
 
+    // 컴포넌트 언마운트 시 인터벌 정리
     return () => {
       clearInterval(intervalId);
     };
@@ -209,12 +216,12 @@ function Kakao() {
 
   const handleMarkerClick = (marker) => {
     setSelectedMarkers((prevSelectedMarkers) => {
-      if (prevSelectedMarkers.includes(marker.potholeId)) {
-        return prevSelectedMarkers.filter(id => id !== marker.potholeId);
-      }
-      return [...prevSelectedMarkers, marker.potholeId];
+      const newSelectedMarkers = prevSelectedMarkers.includes(marker.repairId)
+        ? prevSelectedMarkers.filter(id => id !== marker.repairId)
+        : [...prevSelectedMarkers, marker.repairId];
+
+      return newSelectedMarkers;
     });
-    setButtonClicked(false);
   };
 
   const handleRestoreMarkers = () => {
@@ -222,27 +229,111 @@ function Kakao() {
     saveDisabledMarkers([]);
   };
 
+  const handleStartWork = () => {
+    setDisabledMarkers((prevDisabledMarkers) => {
+      const newDisabledMarkers = [...prevDisabledMarkers, ...selectedMarkers];
+      saveDisabledMarkers(newDisabledMarkers);
+      return newDisabledMarkers;
+    });
+    setSelectedMarkers([]);
+  };
+
+  const updatePolyline = useCallback(async (selectedMarkers) => {
+    if (polylineRef.current) {
+      polylineRef.current.setMap(null);
+      polylineRef.current = null;
+    }
+
+    if (selectedMarkers.length > 0) {
+      const selectedPotholeLocations = selectedMarkers.map(id => {
+        const pothole = potholeList.find(p => p.repairId === id);
+        return getCoordinates(pothole.location);
+      });
+
+      const origin = selectedPotholeLocations[0];
+      const destination = selectedPotholeLocations[selectedPotholeLocations.length - 1];
+      const waypoints = selectedPotholeLocations.slice(1, -1).map((location, index) => ({
+        name: `waypoint${index}`,
+        x: location.lng,
+        y: location.lat
+      }));
+
+      try {
+        const response = await axios.post('https://apis-navi.kakaomobility.com/v1/waypoints/directions', {
+          origin: { x: origin.lng, y: origin.lat },
+          destination: { x: destination.lng, y: destination.lat },
+          waypoints: waypoints,
+          priority: 'RECOMMEND',
+          car_fuel: 'GASOLINE',
+          car_hipass: false,
+          alternatives: false,
+          road_details: false
+        }, {
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `KakaoAK ${import.meta.env.VITE_KAKAO_REST_API_KEY}`
+          }
+        });
+
+        console.log('API Response:', response.data);
+
+        const routePoints = response.data.routes[0].sections.flatMap(section =>
+          section.roads.flatMap(road =>
+            road.vertexes.reduce((acc, val, index, array) => {
+              if (index % 2 === 0) {
+                acc.push(new kakao.maps.LatLng(array[index + 1], val));
+              }
+              return acc;
+            }, [])
+          )
+        );
+
+        const newPolyline = new kakao.maps.Polyline({
+          path: routePoints,
+          strokeWeight: 5,
+          strokeColor: '#3C00BA',
+          strokeOpacity: 0.5,
+          strokeStyle: 'solid'
+        });
+
+        newPolyline.setMap(map);
+        polylineRef.current = newPolyline;
+
+        const bounds = new kakao.maps.LatLngBounds();
+        routePoints.forEach(point => bounds.extend(point));
+        map.setBounds(bounds);
+
+      } catch (error) {
+        console.error('Error fetching route:', error);
+      }
+    }
+  }, [map, potholeList]);
+
+  useEffect(() => {
+    updatePolyline(selectedMarkers);
+  }, [selectedMarkers, updatePolyline]);
 
   return (
-    <div>
+    <div className="operations-management-container">
       <div id="KakaoMap" style={{ width: '100vw', height: '100vh' }}>
-        {potholeList.filter(pothole => !disabledMarkers.includes(pothole.potholeId)).map((pothole) => (
+        {potholeList.filter(pothole => !disabledMarkers.includes(pothole.repairId)).map((pothole) => (
           <Marker
-            key={pothole.potholeId}
+            key={pothole.repairId}
             map={map}
             position={parsePoint(pothole.location)}
             onClick={() => handleMarkerClick(pothole)}
             isActive={true}
-            isSelected={selectedMarkers.includes(pothole.potholeId)}
+            isSelected={selectedMarkers.includes(pothole.repairId)}
           />
         ))}
       </div>
       <PotholeList
-        potholeList={potholeList.filter(pothole => !disabledMarkers.includes(pothole.potholeId))}
+        potholeList={potholeList.filter(pothole => !disabledMarkers.includes(pothole.repairId))}
         selectedPotholes={selectedMarkers}
         onPotholeClick={handleMarkerClick}
+        onStartWork={handleStartWork}
       />
-            <button onClick={handleRestoreMarkers} className='restore_button'>
+      <button onClick={handleRestoreMarkers} className='restore_button'>
         마커 복원하기
       </button>
     </div>
