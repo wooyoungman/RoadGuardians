@@ -30,7 +30,6 @@ function Login({ onLogin }) {
         sessionStorage.setItem('accessToken', response.data.data.accessToken);
         sessionStorage.setItem('refreshToken', response.data.data.refreshToken);
         onLogin();
-        console.log(sessionStorage)
         if (userType === '1') {
           navigate('/map');
         } else if (userType === '2') {
