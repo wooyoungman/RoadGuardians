@@ -105,8 +105,8 @@ const Marker = ({ map, position, title, onClick, isActive, isSelected }) => {
 
 const PotholeList = ({ potholeList, selectedPotholes, onPotholeClick, onStartWork }) => {
   const sortedPotholeList = [...potholeList].sort((a, b) => {
-    const indexA = selectedPotholes.indexOf(a.potholeId);
-    const indexB = selectedPotholes.indexOf(b.potholeId);
+    const indexA = selectedPotholes.indexOf(a.repairId);
+    const indexB = selectedPotholes.indexOf(b.repairId);
 
     if (indexA !== -1 && indexB !== -1) {
       return indexA - indexB;
@@ -131,14 +131,14 @@ const PotholeList = ({ potholeList, selectedPotholes, onPotholeClick, onStartWor
         <ul>
           {sortedPotholeList.map(pothole => (
             <li
-              key={pothole.potholeId}
+              key={pothole.repairId}
               onClick={() => onPotholeClick(pothole)}
               style={{
-                backgroundColor: selectedPotholes.includes(pothole.potholeId) ? 'lavender' : 'transparent'
+                backgroundColor: selectedPotholes.includes(pothole.repairId) ? 'lavender' : 'transparent'
               }}
             >
               보수작업 {pothole.title}
-              {pothole.potholeId} <br />{getCoordinates(pothole.location).lat}, {getCoordinates(pothole.location).lng}
+              {pothole.repairId} <br />{getCoordinates(pothole.location).lat}, {getCoordinates(pothole.location).lng}
             </li>
           ))}
         </ul>
@@ -159,26 +159,33 @@ function Kakao() {
   const polylineRef = useRef(null);
 
   useEffect(() => {
-    const fetchPotholeData = async () => {
+    const fetchRepairData = async () => {
       try {
-        const response = await axios.get('https://i11c104.p.ssafy.io/api/v1/pothole/map');
-        const data = response.data.map(pothole => ({
-          potholeId: pothole.potholeId,
-          location: pothole.location
+        // 새로운 API에 GET 요청을 보내고 응답을 기다림
+        const response = await axios.get('https://i11c104.p.ssafy.io/api/v1/repair/map');
+        
+        // 응답 데이터에서 repairId와 위치를 추출하여 새 배열 생성
+        const data = response.data.map(repair => ({
+          repairId: repair.repairId,
+          location: repair.pothole.location
         }));
+        
+        // 변환된 데이터를 상태에 저장
         setPotholeList(data);
       } catch (error) {
-        console.error('Error fetching pothole data:', error);
-        setError('Failed to load pothole data.');
+        console.error('Error fetching repair data:', error);
+        setError('Failed to load repair data.');
       } finally {
         setLoading(false);
       }
     };
 
-    fetchPotholeData();
+    fetchRepairData();
 
-    const intervalId = setInterval(fetchPotholeData, 5000);
+    // 5초마다 데이터를 갱신
+    const intervalId = setInterval(fetchRepairData, 5000);
 
+    // 컴포넌트 언마운트 시 인터벌 정리
     return () => {
       clearInterval(intervalId);
     };
@@ -209,9 +216,9 @@ function Kakao() {
 
   const handleMarkerClick = (marker) => {
     setSelectedMarkers((prevSelectedMarkers) => {
-      const newSelectedMarkers = prevSelectedMarkers.includes(marker.potholeId)
-        ? prevSelectedMarkers.filter(id => id !== marker.potholeId)
-        : [...prevSelectedMarkers, marker.potholeId];
+      const newSelectedMarkers = prevSelectedMarkers.includes(marker.repairId)
+        ? prevSelectedMarkers.filter(id => id !== marker.repairId)
+        : [...prevSelectedMarkers, marker.repairId];
 
       return newSelectedMarkers;
     });
@@ -239,7 +246,7 @@ function Kakao() {
 
     if (selectedMarkers.length > 0) {
       const selectedPotholeLocations = selectedMarkers.map(id => {
-        const pothole = potholeList.find(p => p.potholeId === id);
+        const pothole = potholeList.find(p => p.repairId === id);
         return getCoordinates(pothole.location);
       });
 
@@ -309,19 +316,19 @@ function Kakao() {
   return (
     <div className="operations-management-container">
       <div id="KakaoMap" style={{ width: '100vw', height: '100vh' }}>
-        {potholeList.filter(pothole => !disabledMarkers.includes(pothole.potholeId)).map((pothole) => (
+        {potholeList.filter(pothole => !disabledMarkers.includes(pothole.repairId)).map((pothole) => (
           <Marker
-            key={pothole.potholeId}
+            key={pothole.repairId}
             map={map}
             position={parsePoint(pothole.location)}
             onClick={() => handleMarkerClick(pothole)}
             isActive={true}
-            isSelected={selectedMarkers.includes(pothole.potholeId)}
+            isSelected={selectedMarkers.includes(pothole.repairId)}
           />
         ))}
       </div>
       <PotholeList
-        potholeList={potholeList.filter(pothole => !disabledMarkers.includes(pothole.potholeId))}
+        potholeList={potholeList.filter(pothole => !disabledMarkers.includes(pothole.repairId))}
         selectedPotholes={selectedMarkers}
         onPotholeClick={handleMarkerClick}
         onStartWork={handleStartWork}
