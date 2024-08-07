@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import '../styles/LinkPage.css';
 
@@ -22,21 +23,18 @@ function ReportAfterPage() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    fetch('https://i11c104.p.ssafy.io/api/v1/overload?confirm=true')
-      .then(response => {
-        if (!response.ok) {
-          throw new Error('Network response was not ok');
-        }
-        return response.json();
-      })
-      .then(data => {
-        setList(data);
-        setLoading(false);
-      })
-      .catch(error => {
+    const fetchData = async () => {
+      try {
+        const response = await axios.get('https://i11c104.p.ssafy.io/api/v1/overload?confirm=true');
+        setList(response.data);
+      } catch (error) {
         setError(error);
+      } finally {
         setLoading(false);
-      });
+      }
+    };
+
+    fetchData();
   }, []);
 
   const openModal = (item) => {
@@ -65,6 +63,7 @@ function ReportAfterPage() {
 
   return (
     <div className='p-6'>
+      {/* 상위 버튼 */}
       <div style={{ display: 'flex', justifyContent: 'flex-start', marginTop: '120px', position: 'fixed', top: '10px', left: '10px', zIndex: 10 }}>
         <div>
           <button
@@ -81,7 +80,8 @@ function ReportAfterPage() {
           </button>
         </div>
       </div>
-      <h1 className="text-2xl font-bold mb-4">신고 후 페이지</h1>
+      
+      <div className='post-list'>
         {Object.keys(groupedItems).map((date) => (
           <div key={date} className='text-black'>
             <h2 className="text-xl font-semibold mb-4 text-left">{date}</h2>
@@ -89,7 +89,7 @@ function ReportAfterPage() {
               {groupedItems[date].map((item) => (
                 <div
                   key={item.reportId}
-                  className="relative bg-white border border-gray-200 rounded-lg overflow-hidden shadow-md transition-transform transform hover:scale-110 cursor-pointer"
+                  className="bg-white border border-gray-200 rounded-lg overflow-hidden shadow-md transition-transform transform hover:scale-110 cursor-pointer"
                   onClick={() => openModal(item)}
                 >
                   <img src={`https://firebasestorage.googleapis.com/v0/b/c104-10f5a.appspot.com/o/report%2F${item.reportId}.png?alt=media`} alt={`Overload ${item.reportId}`} className="w-full h-40 object-cover" />
@@ -98,6 +98,8 @@ function ReportAfterPage() {
             </div>
           </div>
         ))}
+      </div>
+
       {isModalOpen && selectedItem && (
         // Modal 백그라운드
         <div className="fixed inset-0 flex items-center justify-center bg-gray-500 bg-opacity-30 z-50" onClick={closeModal}>
@@ -121,8 +123,11 @@ function ReportAfterPage() {
           </div>
         </div>
       )}
+
+
+
     </div>
   );
-}
+};
 
 export default ReportAfterPage;
