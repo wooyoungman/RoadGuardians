@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { Outlet, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import ReportForm from '../components/ReportForm';
 import '../styles/LinkPage.css';
 
@@ -86,7 +86,7 @@ const ReportPage = () => {
   }
 
   return (
-    <div className="p-6">
+    <div className="">
       {/* 상위 버튼 */}
       <div style={{ display: 'flex', justifyContent: 'flex-start', marginTop: '120px', position: 'fixed', top: '10px', left: '10px', zIndex: 10 }}>
         <div>
@@ -104,6 +104,7 @@ const ReportPage = () => {
           </button>
         </div>
       </div>
+      
       <h2>신고 페이지</h2>
 
       {/* 내용 */}
@@ -133,7 +134,6 @@ const ReportPage = () => {
         selectedItem={selectedItem} 
         onFormSubmitted={handleFormSubmitted} // 변경된 부분
       />
-      <Outlet />
     </div>
   );
 };
