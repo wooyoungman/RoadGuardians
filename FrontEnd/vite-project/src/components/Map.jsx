@@ -1,9 +1,10 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import axios from 'axios';
 import normalMarker from '../assets/normal_marker.png';
 import overMarker from '../assets/click_marker.png';
 import clickMarker from '../assets/click_marker.png';
 import NoPicture from '../assets/no_picture.PNG';
+import LinkModal from '../components/LinkModal'; // LinkModal 임포트
 import '../styles/Map.css';
 
 const { kakao } = window;
@@ -104,6 +105,47 @@ function Kakao() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [disabledMarkers, setDisabledMarkers] = useState(getDisabledMarkers);
+  const [locationName, setLocationName] = useState('DB 받아서 넣기');
+  const [isModalOpen, setModalOpen] = useState(false);
+  const [deptName, setDeptName] = useState('');
+
+  const apiKey = import.meta.env.VITE_GOOGLE_API_KEY;
+
+  const reverseGeocode = useCallback(async (lat, lon) => {
+    try {
+      const response = await axios.get(`https://maps.googleapis.com/maps/api/geocode/json?latlng=${lat},${lon}&key=${apiKey}&language=ko`);
+      const { results } = response.data;
+      if (results && results.length > 0) {
+        const { formatted_address, address_components } = results[0];
+        setLocationName(formatted_address);
+
+        const district = address_components.find(component => component.types.includes('sublocality_level_1') || component.types.includes('locality'));
+        if (district) {
+          setDeptName(district.long_name);
+        } else {
+          setDeptName('정보 없음');
+        }
+      } else {
+        setLocationName('위치 정보를 찾을 수 없습니다.');
+        setDeptName('정보 없음');
+      }
+    } catch (error) {
+      console.error('역지오코딩 오류:', error);
+      setLocationName('역지오코딩 오류');
+      setDeptName('역지오코딩 오류');
+    }
+  }, [apiKey]);
+
+  useEffect(() => {
+    if (selectedMarker && selectedMarker.location) {
+      const coordinates = selectedMarker.location.match(/POINT \(([^ ]+) ([^ ]+)\)/);
+      if (coordinates) {
+        const lon = coordinates[1];
+        const lat = coordinates[2];
+        reverseGeocode(lat, lon);
+      }
+    }
+  }, [selectedMarker, reverseGeocode]);
 
   useEffect(() => {
     const fetchPotholeData = async () => {
@@ -168,6 +210,7 @@ function Kakao() {
     setDisabledMarkers(updatedDisabledMarkers);
     saveDisabledMarkers(updatedDisabledMarkers);
     setPotholeList(potholeList.filter(pothole => pothole.potholeId !== selectedMarker.potholeId));
+    setModalOpen(true);
   };
 
   const handleRestoreMarkers = () => {
@@ -183,6 +226,10 @@ function Kakao() {
       return { lat, lng };
     }
     return { lat: null, lng: null };
+  };
+
+  const modalCloseClick = () => {
+    setModalOpen(false);
   };
 
   return (
@@ -206,7 +253,7 @@ function Kakao() {
           <img src={selectedMarker.imageUrl || NoPicture} alt={selectedMarker.title} className='no_picture'/>
           <h2 className='information_box1'><div className='title'>포트홀 정보</div> <div className='ID'>ID: {selectedMarker.potholeId}</div></h2>
           <div className='information_box2'>
-            <p>위치: {selectedMarker.location}</p>
+            <p>위치: {locationName}</p>
             <p>좌표: {`위도 ${getCoordinates(selectedMarker.location).lat}, 경도 ${getCoordinates(selectedMarker.location).lng}`}</p>
             <p>시각: {selectedMarker.detectAt}</p>
             <p>상태: {selectedMarker.confirm ? '연계 후' : '연계 전'}</p>
@@ -223,6 +270,15 @@ function Kakao() {
       <button onClick={handleRestoreMarkers} className='restore_button'>
         마커 복원하기
       </button>
+
+      {selectedMarker && (
+        <LinkModal
+          isOpen={isModalOpen}
+          isClose={modalCloseClick}
+          selectedItem={selectedMarker}
+          deptName={deptName}
+        />
+      )}
     </div>
   );
 }
