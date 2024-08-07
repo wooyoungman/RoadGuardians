@@ -20,7 +20,46 @@ const BeforeLink = () => {
   const [error, setError] = useState(null);
   const [showOffcanvas, setShowOffcanvas] = useState(false);
   const [isModalOpen, setModalOpen] = useState(false);
+  const [locationName, setLocationName] = useState('DB 받아서 넣기');
   const [selectedItem, setSelectedItem] = useState(null);
+  const [deptName, setDeptName] = useState('');
+
+  const apiKey = import.meta.env.VITE_GOOGLE_API_KEY;
+  const reverseGeocode = async (lat, lon) => {
+    try {
+      const response = await axios.get(`https://maps.googleapis.com/maps/api/geocode/json?latlng=${lat},${lon}&key=${apiKey}&language=ko`);
+      const { results } = response.data;
+      if (results && results.length > 0) {
+        const { formatted_address, address_components } = results[0];
+        setLocationName(formatted_address);
+
+        const district = address_components.find(component => component.types.includes('sublocality_level_1') || component.types.includes('locality'));
+        if (district) {
+          setDeptName(district.long_name);
+        } else {
+          setDeptName('정보 없음');
+        }
+      } else {
+        setLocationName('위치 정보를 찾을 수 없습니다.');
+        setDeptName('정보 없음');
+      }
+    } catch (error) {
+      console.error('역지오코딩 오류:', error);
+      setLocationName('역지오코딩 오류');
+      setDeptName('역지오코딩 오류');
+    }
+  };
+
+  useEffect(() => {
+    if (selectedItem && selectedItem.location) {
+      const coordinates = selectedItem.location.match(/POINT \(([^ ]+) ([^ ]+)\)/);
+      if (coordinates) {
+        const lon = coordinates[1];
+        const lat = coordinates[2];
+        reverseGeocode(lat, lon);
+      }
+    }
+  }, [selectedItem]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -89,10 +128,10 @@ const BeforeLink = () => {
                 <div key={item.potholeId} className="post-item" onClick={() => openOffcanvas(item)}>
                   <img src={item.imageUrl} alt="Pothole Image" className="post-image" />
                   <div className="post-content">
-                    <p>ID: {item.potholeId}</p>
-                    <p>Detect At: {new Date(item.detectAt).toLocaleString()}</p>
-                    <p>Location: {item.location}</p>
-                    <p>Confirmed: {item.confirm.toString()}</p>
+                    <p>ID : {item.potholeId}</p>
+                    <p>발견 시간 : {new Date(item.detectAt).toLocaleString()}</p>
+                    <p>위치 : {item.location}</p>
+                    <p>확인 여부 : {item.confirm.toString()}</p>
                   </div>
                 </div>
               ))}
@@ -111,7 +150,7 @@ const BeforeLink = () => {
                 <div>
                   <p className="my-4">ID: {selectedItem.potholeId}</p>
                   <p className="my-4">발견 시간: {new Date(selectedItem.detectAt).toLocaleString()}</p>
-                  <p className="my-4">위치: {selectedItem.location}</p>
+                  <p className="my-4">위치: {locationName}</p>
                   <p className="my-4">확인 여부: {selectedItem.confirm ? "확인됨" : "확인되지 않음"}</p>
                 </div>
               </>
@@ -120,7 +159,7 @@ const BeforeLink = () => {
           </div>
         </div>
 
-        <LinkModal isOpen={isModalOpen} isClose={modalCloseClick} selectedItem={selectedItem} />
+        <LinkModal isOpen={isModalOpen} isClose={modalCloseClick} selectedItem={selectedItem} deptName={deptName} />
       </div>
     </div>
   );
