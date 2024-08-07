@@ -16,16 +16,29 @@ import RepairList from './pages/RepairList';
 import OperationsManagement from './pages/OperationsManagement';
 import ProtectedRoute from './ProtectedRoute';  // 경로 보호 컴포넌트 import
 import './App.css';
-import Cookies from 'js-cookie';
 
 const App = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
 
-  useEffect(() => {
-    const accessToken = Cookies.get('accessToken');
-    if (accessToken) {
-      setIsAuthenticated(true);
+  const checkAuthentication = async () => {
+    const accessToken = localStorage.getItem('accessToken');
+    if (!accessToken) {
+      setIsAuthenticated(false);
+      return;
     }
+
+    try {
+      const response = await axios.get('https://i11c104.p.ssafy.io/api/v1/auth/check-token', {
+        headers: {'Authorization' : `Bearer ${accessToken}`}
+      });
+      setIsAuthenticated(response.status === 200);
+    } catch {
+      setIsAuthenticated(false);
+    }
+  };
+
+  useEffect(() => {
+    checkAuthentication();
   }, []);
 
   const handleLogin = () => {
@@ -34,8 +47,8 @@ const App = () => {
 
   const handleLogout = () => {
     setIsAuthenticated(false);
-    Cookies.remove('accessToken');
-    Cookies.remove('refreshToken');
+    sessionStorage.remove('accessToken');
+    sessionStorage.remove('refreshToken');
   };
 
   return (

@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import '../styles/LinkPage.css';
 
@@ -22,21 +23,18 @@ function ReportAfterPage() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    fetch('https://i11c104.p.ssafy.io/api/v1/overload?confirm=true')
-      .then(response => {
-        if (!response.ok) {
-          throw new Error('Network response was not ok');
-        }
-        return response.json();
-      })
-      .then(data => {
-        setList(data);
-        setLoading(false);
-      })
-      .catch(error => {
+    const fetchData = async () => {
+      try {
+        const response = await axios.get('https://i11c104.p.ssafy.io/api/v1/overload?confirm=true');
+        setList(response.data);
+      } catch (error) {
         setError(error);
+      } finally {
         setLoading(false);
-      });
+      }
+    };
+
+    fetchData();
   }, []);
 
   const openModal = (item) => {
@@ -65,6 +63,7 @@ function ReportAfterPage() {
 
   return (
     <div className='p-6'>
+      {/* 상위 버튼 */}
       <div style={{ display: 'flex', justifyContent: 'flex-start', marginTop: '120px', position: 'fixed', top: '10px', left: '10px', zIndex: 10 }}>
         <div>
           <button
@@ -81,30 +80,29 @@ function ReportAfterPage() {
           </button>
         </div>
       </div>
-      <h1 className="text-2xl font-bold mb-4">신고 후 페이지</h1>
+      
+      <div className='post-list'>
         {Object.keys(groupedItems).map((date) => (
           <div key={date} className='text-black'>
             <h2 className="text-xl font-semibold mb-4 text-left">{date}</h2>
             <div className="grid grid-cols-4 gap-4">
               {groupedItems[date].map((item) => (
                 <div
-                  key={item.id}
-                  className="relative bg-white border border-gray-200 rounded-lg overflow-hidden shadow-md transition-transform transform hover:scale-110 cursor-pointer"
+                  key={item.reportId}
+                  className="bg-white border border-gray-200 rounded-lg overflow-hidden shadow-md transition-transform transform hover:scale-110 cursor-pointer"
                   onClick={() => openModal(item)}
                 >
-                  <img src={item.overload.imageUrl} alt={`Pothole ${item.id}`} className="w-full h-40 object-cover" />
-                  <div className="p-4">
-                    <p>ID: {item.reportId}</p>
-                    <p>Detected at: {new Date(item.reportAt).toLocaleString()}</p>
-                  </div>
+                  <img src={`https://firebasestorage.googleapis.com/v0/b/c104-10f5a.appspot.com/o/report%2F${item.reportId}.png?alt=media`} alt={`Overload ${item.reportId}`} className="w-full h-40 object-cover" />
                 </div>
               ))}
             </div>
           </div>
         ))}
+      </div>
+
       {isModalOpen && selectedItem && (
         // Modal 백그라운드
-        <div className="fixed inset-0 flex items-center justify-center bg-gray-500 bg-opacity-30" onClick={closeModal}>
+        <div className="fixed inset-0 flex items-center justify-center bg-gray-500 bg-opacity-30 z-50" onClick={closeModal}>
           {/* Modal 바디 */}
           <div
             className="bg-white text-black rounded-lg shadow-lg p-4 w-3/5 max-h-[90vh] flex flex-col"
@@ -112,21 +110,24 @@ function ReportAfterPage() {
           >
             {/* 헤더 */}
             <header className='flex justify-between items-center mb-4'>
-              <h2 className="text-xl font-semibold">신고 상세보기</h2>
+              <h2 className="text-xl font-semibold">신고 번호 {selectedItem.reportId}번 상세보기</h2>
               <button onClick={closeModal} className="top-2 right-2 text-gray-600">
                 X
               </button>
             </header>
-            <img src={selectedItem.overload.imageUrl} alt={`과적 차량 ${selectedItem.reportId}`} className="flex w-3/5 mb-4" />
-            <p>신고 ID : {selectedItem.reportId}</p>
-            <p>신고 시각 : {new Date(selectedItem.reportAt).toLocaleString()}</p>
-            <p>포인트 벡터 : {selectedItem.overload.location}</p>
-            <p>신고 상태 : {selectedItem.overload.confirm ? '신고 완료' : '신고 전'}</p>
+            {/* 신고서 보기 */}
+            <div className="flex justify-center w-3/5 h-2/5 overflow-y-auto">
+              <img src={`https://firebasestorage.googleapis.com/v0/b/c104-10f5a.appspot.com/o/report%2F${selectedItem.reportId}.png?alt=media`} alt={`Overload ${selectedItem.reportId}`}
+              />
+            </div>
           </div>
         </div>
       )}
+
+
+
     </div>
   );
-}
+};
 
 export default ReportAfterPage;

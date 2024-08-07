@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-const LinkModal = ({ isOpen, isClose, selectedItem }) => {
+const LinkModal = ({ isOpen, isClose, selectedItem, deptName }) => {
   const [deptId, setDeptId] = useState('');
   const [potholeId, setPotholeId] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -10,9 +10,22 @@ const LinkModal = ({ isOpen, isClose, selectedItem }) => {
   useEffect(() => {
     if (selectedItem) {
       setPotholeId(selectedItem.potholeId || '');
-      // setDeptId(user.department.deptId || '');
     }
   }, [selectedItem]);
+
+  useEffect(() => {
+    const deptMapping = {
+      '광산구': 2,
+      '동구': 3,
+      '서구': 4,
+      '남구': 5,
+      '북구': 6,
+    };
+
+    if (deptName) {
+      setDeptId(deptMapping[deptName] || '');
+    }
+  }, [deptName]);
 
   const handleBackgroundClick = (e) => {
     if (e.target === e.currentTarget) {
@@ -24,8 +37,14 @@ const LinkModal = ({ isOpen, isClose, selectedItem }) => {
     e.preventDefault();
     setIsSubmitting(true);
 
+    if (!deptId) {
+      alert('부서 ID가 설정되지 않았습니다. 작업 지시를 할 수 없습니다.');
+      setIsSubmitting(false);
+      return;
+    }
+
     try {
-      const response = await fetch('/api/v1/pothole/repair', {
+      const response = await fetch('https://i11c104.p.ssafy.io/api/v1/pothole/repair', {
         method: 'POST',
         body: JSON.stringify({
           potholeId: parseInt(potholeId),
