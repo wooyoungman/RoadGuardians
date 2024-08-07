@@ -37,7 +37,6 @@ public class Pothole {
     @Column(name = "confirm", columnDefinition = "BOOLEAN DEFAULT false")
     private Boolean confirm;
 
-
     @OneToOne(mappedBy = "pothole", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonBackReference // 무한 루프 방지
     private Repair repair;
