@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import html2canvas from 'html2canvas';
 import axios from 'axios';
 
-const ReportForm = ({ isOpen, isClose, selectedItem }) => {
+const ReportForm = ({ isOpen, isClose, selectedItem, onFormSubmitted }) => {
   const [authorName, setAuthorName] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [locationName, setLocationName] = useState('DB 받아서 넣기');
@@ -67,6 +67,18 @@ const ReportForm = ({ isOpen, isClose, selectedItem }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    // 만약, userName을 받을 수 있다면,
+    // if (authorName !== userName) {
+    //   alert('담당자 이름이 일치하지 않습니다!');
+    //   return;
+    // }
+
+    if (!authorName.trim()) {
+      alert('담당자 정보가 없습니다!')
+      return;
+    }
+
     setIsSubmitting(true);
 
     const pngFileHTML = document.getElementById('ReportForm');
@@ -79,26 +91,35 @@ const ReportForm = ({ isOpen, isClose, selectedItem }) => {
       });
       const dataURL = canvas.toDataURL('image/png')
       const blob = await (await fetch(dataURL)).blob();
-      const formData = new FormData();
-      formData.append('image', blob, `${selectedItem?.overloadId}.png`);
       const data = {
         overloadId: selectedItem?.overloadId,
-        username: authorName,
+        id: authorName,
       };
       
+      const formData = new FormData();
+      formData.append('image', blob, `${selectedItem?.overloadId}.png`);
       // JSON 문자열로 변환하여 FormData에 추가
-      formData.append('data', JSON.stringify(data));      
+      formData.append('data', JSON.stringify(data));
+      console.log(formData)
 
+      // 콘솔에서 FormData 내용 확인
+      for (let pair of formData.entries()) {
+        console.log(`${pair[0]}: ${pair[1]}`);
+      }
+      
       const response = await fetch('https://i11c104.p.ssafy.io/api/v1/overload/report', { // 엔드 포인트에 맞게
         method: 'POST',
         mode: "cors",
         body: formData,
       });
+
       if (response.ok) {
         isClose();
+        await onFormSubmitted(); // 폼 제출 후 데이터 갱신 함수 호출
         alert('신고가 접수되었습니다.');
         navigate('/report')
       } else {
+        console.log()
         alert('서버에 문제가 발생했습니다.');
       }
     } catch (error) {
