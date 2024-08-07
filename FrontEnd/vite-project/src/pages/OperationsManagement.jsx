@@ -121,26 +121,28 @@ const PotholeList = ({ potholeList, selectedPotholes, onPotholeClick, onStartWor
   });
 
   return (
-    <div className="pothole-list">
-      <h1 className='pothole-name'>포트홀 목록</h1>
-      <div className='pothole-start'>
-        <div className='work_information'>현재 활성화 된 작업개수: {selectedPotholes.length}</div>
-        <button className='start-button' onClick={onStartWork}>작업 시작</button>
+    <div className="operations-management-container">
+      <div className="pothole-list">
+        <h1 className='pothole-name'>포트홀 목록</h1>
+        <div className='pothole-start'>
+          <div className='work_information'>현재 활성화 된 작업개수: {selectedPotholes.length}</div>
+          <button className='start-button' onClick={onStartWork}>작업 시작</button>
+        </div>
+        <ul>
+          {sortedPotholeList.map(pothole => (
+            <li
+              key={pothole.potholeId}
+              onClick={() => onPotholeClick(pothole)}
+              style={{
+                backgroundColor: selectedPotholes.includes(pothole.potholeId) ? 'lavender' : 'transparent'
+              }}
+            >
+              보수작업 {pothole.title}
+              {pothole.potholeId} <br />{getCoordinates(pothole.location).lat}, {getCoordinates(pothole.location).lng}
+            </li>
+          ))}
+        </ul>
       </div>
-      <ul>
-        {sortedPotholeList.map(pothole => (
-          <li
-            key={pothole.potholeId}
-            onClick={() => onPotholeClick(pothole)}
-            style={{
-              backgroundColor: selectedPotholes.includes(pothole.potholeId) ? 'lavender' : 'transparent'
-            }}
-          >
-            보수작업 {pothole.title}
-            {pothole.potholeId} <br />{getCoordinates(pothole.location).lat}, {getCoordinates(pothole.location).lng}
-          </li>
-        ))}
-      </ul>
     </div>
   );
 };
@@ -305,7 +307,7 @@ function Kakao() {
   }, [selectedMarkers, updatePolyline]);
 
   return (
-    <div>
+    <div className="operations-management-container">
       <div id="KakaoMap" style={{ width: '100vw', height: '100vh' }}>
         {potholeList.filter(pothole => !disabledMarkers.includes(pothole.potholeId)).map((pothole) => (
           <Marker
