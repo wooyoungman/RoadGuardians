@@ -6,7 +6,6 @@ import com.c104.guardians.repository.OverloadRepository;
 import com.c104.guardians.repository.PotholeRepository;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.google.cloud.storage.Blob;
 import com.google.firebase.cloud.StorageClient;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.GeometryFactory;
@@ -21,6 +20,8 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
@@ -43,7 +44,7 @@ public class FileUploadController {
 
     // 포트홀 DB 추가
     @PostMapping("/pothole")
-    public ResponseEntity<?> uploadPothole(
+    public ResponseEntity<?> addPotholeWithImage(
             @RequestParam("image") MultipartFile image,
             @RequestParam("data") String data
     ) throws IOException {
@@ -64,20 +65,19 @@ public class FileUploadController {
 
         String imageName =
                 now.format(DateTimeFormatter.ofPattern("yyyyMMddHHmmss"))
-                + "-" + UUID.randomUUID().toString()
-                + ".jpg";
+                + "-" + UUID.randomUUID().toString();
 
-        String blobString = "pothole" + "/" + imageName;
+        String blobString = "pothole" + "/" + imageName + ".jpg";
 
-        Blob blob = storageClient.bucket().create(blobString, image.getInputStream(), image.getContentType());
-        System.out.println(blob);
-        // https://firebasestorage.googleapis.com/v0/b/c104-10f5a.appspot.com/o/overload%2F20240802103159-97ba967a-93f7-4ed4-86cb-4f41cd877822.jpg?alt=media
-        System.out.println(baseUrl + "/pothole%2F" + imageName + "?alt=media");
+        storageClient.bucket().create(blobString, image.getInputStream(), image.getContentType());
+
+        // https://firebasestorage.googleapis.com/v0/b/c104-10f5a.appspot.com/o/pothole%2F27025c38-b622-4dbc-9006-0d10388a4cfb-pot1.JPG?alt=media
+        System.out.println(baseUrl + "/pothole%" + imageName + ".JPG" + "?alt=media");
 
 
         Pothole newPothole = new Pothole();
         newPothole.setLocation(location);
-        newPothole.setImageUrl(baseUrl + "/pothole%2F" + imageName + "?alt=media" );
+        newPothole.setImageUrl(baseUrl + "/pothole%" + imageName + ".JPG" + "?alt=media" );
         newPothole.setConfirm(false);
 
         potholeRepository.save(newPothole);
@@ -86,7 +86,7 @@ public class FileUploadController {
     }
 
     @PostMapping("/overload")
-    public ResponseEntity<?> uploadOverload(
+    public ResponseEntity<?> addOverloadWithImage(
             @RequestParam("image") MultipartFile image,
             @RequestParam("data") String data
     ) throws IOException {
@@ -101,19 +101,18 @@ public class FileUploadController {
 
         String imageName =
                 now.format(DateTimeFormatter.ofPattern("yyyyMMddHHmmss"))
-                        + "-" + UUID.randomUUID().toString()
-                        + ".jpg";
+                        + "-" + UUID.randomUUID().toString();
 
-        String blobString = "overload" + "/" + imageName;
+        String blobString = "overload" + "/" + imageName + ".jpg";
 
-        Blob blob = storageClient.bucket().create(blobString, image.getInputStream(), image.getContentType());
-        System.out.println(blob);
+        storageClient.bucket().create(blobString, image.getInputStream(), image.getContentType());
 
-        System.out.println(baseUrl + "/overload%2F" + imageName + "?alt=media");
+
+        System.out.println(baseUrl + "/overload%" + imageName + ".JPG" + "?alt=media");
 
         Overload newOverload = new Overload();
         newOverload.setLocation(location);
-        newOverload.setImageUrl(baseUrl + "/overload%2F" + imageName + "?alt=media" );
+        newOverload.setImageUrl(baseUrl + "/overload%" + imageName + ".JPG" + "?alt=media" );
         newOverload.setType("");
         newOverload.setCarNumber(jsonNode.get("carNumber").asText());
         newOverload.setConfirm(false);

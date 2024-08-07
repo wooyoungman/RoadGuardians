@@ -29,8 +29,8 @@ public class Report {
     private Overload overload;
 
     @ManyToOne
-    @JoinColumn(name = "emp_id")
-    private Employee employee;
+    @JoinColumn(name = "id")
+    private User user;
 
     @PrePersist // 실시간 시간 먼저 입력되도록
     protected void onCreate() {

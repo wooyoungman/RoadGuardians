@@ -2,22 +2,15 @@ package com.c104.guardians.controller;
 
 import com.c104.guardians.dto.ReportRequest;
 import com.c104.guardians.entity.*;
-import com.c104.guardians.repository.EmployeeRepository;
 import com.c104.guardians.repository.OverloadRepository;
 import com.c104.guardians.repository.ReportRepository;
-import com.c104.guardians.service.EmployeeService;
+import com.c104.guardians.service.UserService;
 import com.c104.guardians.service.OverloadService;
 import com.c104.guardians.service.ReportService;
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.google.firebase.cloud.StorageClient;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
 import java.util.Optional;
 
 @RestController
@@ -31,11 +24,10 @@ public class OverloadController {
     @Autowired
     private OverloadService overloadService;
     @Autowired
+    private UserService userService;
+    @Autowired
     private ReportRepository reportRepository;
-    @Autowired
-    private StorageClient storageClient;
-    @Autowired
-    private EmployeeRepository employeeRepository;
+
 
 
     @GetMapping(params = "confirm")
@@ -53,7 +45,6 @@ public class OverloadController {
         return ResponseEntity.ok(overloadRepository.findById(overload_id));
     }
 
-    // 신고하기
     @PostMapping("/report")
     public ResponseEntity<?> createReport(
             @RequestParam("image") MultipartFile image,
@@ -68,9 +59,9 @@ public class OverloadController {
         }
 
         Overload overload = overloadService.getOverloadById(reportRequest.getOverloadId());
-        Employee employee = employeeRepository.findEmployeeByUsername(reportRequest.getUsername());
+        User user = userService.getUserById(reportRequest.getId());
 
-        if (overload == null || employee == null) {
+        if (overload == null || user == null) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                     .body("employee or overload not found");
         }
@@ -78,9 +69,10 @@ public class OverloadController {
         overload.setConfirm(true);
         Report report = new Report();
         report.setOverload(overload);
-        report.setEmployee(employee);
+        report.setUser(user);
 
         Report createdReport = reportService.saveReport(report);
+
 
         String imageName = createdReport.getReportId() + ".png";
         String blobString = "report/" + imageName;
@@ -91,9 +83,7 @@ public class OverloadController {
 //        https://firebasestorage.googleapis.com/v0/b/c104-10f5a.appspot.com/o/report%2F1.png?alt=media
 
         return ResponseEntity.ok(createdReport);
+
     }
-
-
-
 
 }
