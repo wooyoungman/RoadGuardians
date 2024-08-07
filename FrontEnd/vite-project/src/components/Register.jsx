@@ -133,16 +133,16 @@ function Register() {
           <button type="button" onClick={handleIdCheck}>중복 확인</button>
         </div>
 
-        <label htmlFor="password">password :</label>
+        <label htmlFor="password">비밀번호 :</label>
         <input type="password" id="password" name="password" value={formData.password} onChange={handleChange} />
 
-        <label htmlFor="passwordConfirm">password Confirmation :</label>
+        <label htmlFor="passwordConfirm">비밀번호 확인 :</label>
         <input type="password" id="passwordConfirm" name="passwordConfirm" value={formData.passwordConfirm} onChange={handleChange} />
 
         <label htmlFor="name">이름 :</label>
         <input type="text" id="name" name="name" value={formData.name} onChange={handleChange} />
 
-        <label htmlFor="email">email :</label>
+        <label htmlFor="email">이메일 :</label>
         <input type="email" id="email" name="email" value={formData.email} onChange={handleChange} />
 
         <label htmlFor="phone">전화번호 :</label>
@@ -154,9 +154,9 @@ function Register() {
           <option value="유지보수">유지보수</option>
         </select> */}
 
-        <label htmlFor="team">소속 부서를 선택해주세요. :</label>
+        <label htmlFor="team">소속 부서 :</label>
         <select id="dept_name" name="dept_name" value={formData.dept_name} onChange={handleDeptChange}>
-          <option value="-1">소속 부서</option>
+          <option value="-1">소속 부서를 선택해주세요.</option>
           <option value="1">운영관리팀</option>
           <option value="2">광산구 유지보수팀</option>
           <option value="3">동구 유지보수팀</option>
