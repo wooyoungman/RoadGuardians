@@ -45,20 +45,26 @@ public class OverloadController {
         return ResponseEntity.ok(overloadRepository.findById(overload_id));
     }
 
-    // 신고하기
     @PostMapping("/report")
-    public ResponseEntity<Report> createReport(
-            @RequestBody ReportRequest reportRequest
-    ) {
-        Overload overload = overloadService.getOverloadById(reportRequest.getOverloadId());
-        User user = userService.getUserById(reportRequest.getId());
-//        Employee employee = employeeService.getEmployeeById(reportRequest.getEmpId());
+    public ResponseEntity<?> createReport(
+            @RequestParam("image") MultipartFile image,
+            @RequestParam("data") String data
+    ) throws IOException {
+        ObjectMapper objectMapper = new ObjectMapper();
+        ReportRequest reportRequest = objectMapper.readValue(data, ReportRequest.class);
 
-        // 오류
-        if (overload == null || user == null) {
-            return ResponseEntity.badRequest().build();
+        if (image.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                    .body("image error");
         }
 
+        Overload overload = overloadService.getOverloadById(reportRequest.getOverloadId());
+        User user = userService.getUserById(reportRequest.getId());
+
+        if (overload == null || user == null) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                    .body("employee or overload not found");
+        }
 
         overload.setConfirm(true);
         Report report = new Report();
@@ -66,9 +72,18 @@ public class OverloadController {
         report.setUser(user);
 
         Report createdReport = reportService.saveReport(report);
+
+
+        String imageName = createdReport.getReportId() + ".png";
+        String blobString = "report/" + imageName;
+
+        storageClient.bucket().create(blobString, image.getInputStream(), image.getContentType());
+
+        System.out.println(imageName);
+//        https://firebasestorage.googleapis.com/v0/b/c104-10f5a.appspot.com/o/report%2F1.png?alt=media
+
         return ResponseEntity.ok(createdReport);
+
     }
-
-
 
 }
