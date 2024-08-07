@@ -17,7 +17,6 @@ const ProtectedRoute = ({ element }) => {
   if (isValid === null) {
     return <div>Loading...</div>;  // 로딩 표시
   }
-
   return isValid ? element : <Navigate to="/login" />;
 };
 

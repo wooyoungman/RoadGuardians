@@ -1,8 +1,15 @@
 import React from 'react';
-import { NavLink } from 'react-router-dom';
-
+import { NavLink, useNavigate } from 'react-router-dom';
 
 const Navbar = () => {
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    sessionStorage.removeItem('accessToken');
+    sessionStorage.removeItem('refreshToken');
+    navigate('/login');  // 로그아웃 후 로그인 페이지로 이동
+  };
+
   return (
     <nav>
       <div className="logo-container">
@@ -11,7 +18,7 @@ const Navbar = () => {
         </NavLink>
       </div>
       <ul className="nav-links">
-      <li>
+        <li>
           <NavLink to="/operation" className={({ isActive }) => (isActive ? 'active-link' : '')}>
             관리자 페이지
           </NavLink>
@@ -40,6 +47,11 @@ const Navbar = () => {
           <NavLink to="/repairlist" className={({ isActive }) => (isActive || location.pathname === '/repairlist' ? 'active-link' : '')}>
             유지 보수 팀
           </NavLink>
+        </li>
+        <li>
+          <button onClick={handleLogout} className="logout-button">
+            로그아웃
+          </button>
         </li>
       </ul>
     </nav>

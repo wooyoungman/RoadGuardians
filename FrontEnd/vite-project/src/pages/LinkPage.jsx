@@ -3,7 +3,7 @@ import { Outlet, useNavigate } from 'react-router-dom';
 import '../styles/LinkPage.css';
 
 const LinkPage = () => {
-  const [activeButton, setActiveButton] = useState(localStorage.getItem('activeButton') || 'before');
+  const [activeButton, setActiveButton] = useState(sessionStorage.getItem('activeButton') || 'before');
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -16,7 +16,7 @@ const LinkPage = () => {
 
   const handleButtonClick = (button) => {
     setActiveButton(button);
-    localStorage.setItem('activeButton', button);
+    sessionStorage.setItem('activeButton', button);
   };
 
   return (
