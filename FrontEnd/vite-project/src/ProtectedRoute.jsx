@@ -1,4 +1,3 @@
-// src/ProtectedRoute.jsx
 import React, { useEffect, useState } from 'react';
 import { Navigate } from 'react-router-dom';
 import { checkTokenValidity } from './axios';  // 토큰 검사 함수 import
