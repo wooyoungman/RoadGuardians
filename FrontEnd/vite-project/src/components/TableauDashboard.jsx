@@ -3,13 +3,10 @@ import React, { useEffect } from 'react';
 const TableauDashboard = () => {
   useEffect(() => {
     const divElement = document.getElementById('viz1721116189429');
-    const vizElement = divElement.getElementsByTagName('object')[0];
 
-    // Tableau JavaScript API를 로드합니다.
     const scriptElement = document.createElement('script');
     scriptElement.src = 'https://public.tableau.com/javascripts/api/viz_v1.js';
     scriptElement.onload = () => {
-      // Tableau 대시보드를 초기화합니다.
       if (window.tableau && divElement) {
         new window.tableau.Viz(divElement, 'https://public.tableau.com/views/RoadGuardians/RoadGuardians', {
           width: '100%',
@@ -26,14 +23,11 @@ const TableauDashboard = () => {
     <div
       id='viz1721116189429'
       style={{
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
-        width: '100vw', // 전체 화면 너비
-        height: 'calc(100vh - 60px)', // 네비게이션 바 높이를 제외한 전체 높이
-        overflow: 'hidden', // 스크롤 없애기
-        position: 'relative',
-        marginTop: '50px' // 네비게이션 바 높이만큼 위로 여백 추가
+        width: '100vw',
+        height: 'calc(100vh - 60px)',
+        overflow: 'hidden',
+        marginTop: '30px',
+        position: 'relative'
       }}
     >
       <object
