@@ -19,9 +19,8 @@ import './App.css';
 
 const App = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
-
   const checkAuthentication = async () => {
-    const accessToken = localStorage.getItem('accessToken');
+    const accessToken = sessionStorage.getItem('accessToken');
     if (!accessToken) {
       setIsAuthenticated(false);
       return;
