@@ -1,7 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
-import '../styles/LinkPage.css';
 
 const groupByDate = (items) => {
   return items.reduce((acc, item) => {
@@ -20,7 +18,6 @@ function ReportAfterPage() {
   const [error, setError] = useState(null);
   const [selectedItem, setSelectedItem] = useState(null);
   const [isModalOpen, setModalOpen] = useState(false);
-  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -47,10 +44,6 @@ function ReportAfterPage() {
     setSelectedItem(null);
   };
 
-  const handleButtonClick = (path) => {
-    navigate(path);
-  };
-
   const groupedItems = groupByDate(list);
 
   if (loading) {
@@ -62,28 +55,12 @@ function ReportAfterPage() {
   }
 
   return (
-    <div className='p-6'>
-      {/* 상위 버튼 */}
-      <div style={{ display: 'flex', justifyContent: 'flex-start', marginTop: '120px', position: 'fixed', top: '10px', left: '10px', zIndex: 10 }}>
-        <div>
-          <button
-            className={`bg-hover border border-borderHover text-white py-2 px-4 rounded-md ${window.location.pathname === '/report' ? 'bg-primary borderPrimary' : ''}`} 
-            onClick={() => handleButtonClick('/report')}
-          >
-            신고 전
-          </button>
-          <button
-            className={`bg-hover border border-borderHover text-white py-2 px-4 ms-4 rounded-md ${window.location.pathname === '/report/after' ? 'bg-primary borderPrimary' : ''}`} 
-            onClick={() => handleButtonClick('/report/after')}
-          >
-            신고 후
-          </button>
-        </div>
-      </div>
-      
+    <div className='relative p-5'>
+      {/* 갤러리 형식 목록 불러오기 */}
       <div className='post-list'>
         {Object.keys(groupedItems).map((date) => (
           <div key={date} className='text-black'>
+            {/* 날짜 별로 정렬 */}
             <h2 className="text-xl font-semibold mb-4 text-left">{date}</h2>
             <div className="grid grid-cols-4 gap-4">
               {groupedItems[date].map((item) => (
@@ -100,6 +77,7 @@ function ReportAfterPage() {
         ))}
       </div>
 
+      {/* 모달 펼치기 */}
       {isModalOpen && selectedItem && (
         // Modal 백그라운드
         <div className="fixed inset-0 flex items-center justify-center bg-gray-500 bg-opacity-30 z-50" onClick={closeModal}>
@@ -122,9 +100,7 @@ function ReportAfterPage() {
             </div>
           </div>
         </div>
-      )}
-
-
+      )};
 
     </div>
   );

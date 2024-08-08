@@ -55,6 +55,7 @@ instance.interceptors.response.use((response) => {
 export const checkTokenValidity = async () => {
   try {
     const response = await instance.get('/auth/check-token');
+    console.log(response)
     return response.status === 200;
   } catch (error) {
     return false;

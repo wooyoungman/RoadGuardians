@@ -7,7 +7,8 @@ import Register from './components/Register';
 import MainPage from './pages/MainPage';
 import StatsPage from './pages/StatsPage';
 import ReportPage from './pages/ReportPage';
-import ReportAfterPage from './pages/ReportAfterPage';
+import BeforeReport from './pages/ReportBeforePage';
+import AfterReport from './pages/ReportAfterPage';
 import BeforeLink from './pages/BeforeLink';
 import AfterLink from './pages/AfterLink';
 import LinkPage from './pages/LinkPage';
@@ -64,13 +65,13 @@ const App = () => {
             element={isAuthenticated ? <ProtectedRoute element={<StatsPage />} /> : <Navigate to="/login" />}
           />
           <Route
-            path="/report"
+            path="/report/*"
             element={isAuthenticated ? <ProtectedRoute element={<ReportPage />} /> : <Navigate to="/login" />}
-          />
-          <Route
-            path="/report/after"
-            element={isAuthenticated ? <ProtectedRoute element={<ReportAfterPage />} /> : <Navigate to="/login" />}
-          />
+          >
+            <Route path="" element={<Navigate to="before" replace />} />
+            <Route path="before" element={<BeforeReport />} />
+            <Route path="after" element={<AfterReport />} />
+          </Route>
           <Route
             path="/link/*"
             element={isAuthenticated ? <ProtectedRoute element={<LinkPage />} /> : <Navigate to="/login" />}
