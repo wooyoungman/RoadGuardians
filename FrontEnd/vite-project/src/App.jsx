@@ -6,7 +6,8 @@ import Register from './components/Register';
 import MainPage from './pages/MainPage';
 import StatsPage from './pages/StatsPage';
 import ReportPage from './pages/ReportPage';
-import ReportAfterPage from './pages/ReportAfterPage';
+import AfterReport from './pages/ReportAfterPage';
+import BeforeReport from './pages/ReportBeforePage';
 import BeforeLink from './pages/BeforeLink';
 import AfterLink from './pages/AfterLink';
 import LinkPage from './pages/LinkPage';
@@ -19,38 +20,33 @@ import api from './axios';  // axios import
 
 const App = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [accessToken, setAccessToken] = useState(null);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const checkAuth = async () => {
-      try {
-        const newAccessToken = await refreshAccessToken();
-        if (newAccessToken) {
-          setIsAuthenticated(true);
-          console.log('Authentication success:', isAuthenticated);
-        } else {
-          setIsAuthenticated(false);
-        }
-      } catch (error) {
-        console.error('Error during auth check:', error);
+      const newAccessToken = await refreshAccessToken();
+      if (newAccessToken) {
+        setIsAuthenticated(true);
+      } else {
         setIsAuthenticated(false);
       }
+      setLoading(false);
     };
 
-    const refreshAccessToken = async () => {
-      try {
-        const response = await api.post('/api/v1/auth/refresh-token');
-        console.log(response);
-        localStorage.setItem('accessToken', response.data.data.accessToken);
-        return response.data.data.accessToken;
-      } catch (error) {
-        console.error('Failed to refresh access token', error);
-        localStorage.removeItem('accessToken');
-        return null;
-      }
-    };
+const refreshAccessToken = async () => {
+  try {
+    const response = await api.post('/api/v1/auth/refresh-token');
+    console.log(response);
+    localStorage.setItem('accessToken', response.data.data.accessToken);
+    return response.data.data.accessToken;
+  } catch (error) {
+    console.error('Failed to refresh access token', error);
+    localStorage.removeItem('accessToken');
+    return null;
+  }
+};
 
-    checkAuth();
+checkAuth();
   }, []);
 
   useEffect(() => {
@@ -59,16 +55,17 @@ const App = () => {
 
   const handleLogin = (newAccessToken) => {
     localStorage.setItem('accessToken', newAccessToken);
-    setAccessToken(newAccessToken);
-    console.log("good")
     setIsAuthenticated(true);
   };
 
   const handleLogout = () => {
     localStorage.removeItem('accessToken');
-    setAccessToken(null);
     setIsAuthenticated(false);
   };
+
+  if (loading) {
+    return <div>Loading...</div>;  // 로딩 표시
+  }
 
   return (
     <Router>
@@ -84,13 +81,13 @@ const App = () => {
             element={isAuthenticated ? <ProtectedRoute element={<StatsPage />} /> : <Navigate to="/login" />}
           />
           <Route
-            path="/report"
+            path="/report/*"
             element={isAuthenticated ? <ProtectedRoute element={<ReportPage />} /> : <Navigate to="/login" />}
-          />
-          <Route
-            path="/report/after"
-            element={isAuthenticated ? <ProtectedRoute element={<ReportAfterPage />} /> : <Navigate to="/login" />}
-          />
+          >
+            <Route path="" element={<Navigate to="before" replace />} />
+            <Route path="before" element={<BeforeReport />} />
+            <Route path="after" element={<AfterReport />} />
+          </Route>
           <Route
             path="/link/*"
             element={isAuthenticated ? <ProtectedRoute element={<LinkPage />} /> : <Navigate to="/login" />}
