@@ -108,10 +108,57 @@ const AfterLink = () => {
         <div>데이터가 없습니다.</div>
       ) : (
         <div>
-          {Object.keys(groupedItems).map((date) => (
+          {Object.keys(groupedItems).sort((a, b) => new Date(b) - new Date(a)).map((date) => (
             <div key={date} className="mb-8">
               <h2 className="text-xl font-semibold mb-2">{date}</h2>
-              {groupedItems[date].map((item) => (
+              {groupedItems[date].filter(item => item.status !== 'complete').map((item) => (
+                <div
+                  key={item.repairId}
+                  className={`bg-white p-4 shadow-md rounded-lg mb-4 ${getStatusClass(item.status)} flex items-center`}
+                  onClick={() => openOffcanvas(item)}
+                >
+                  <img src={item.pothole.imageUrl} alt="Pothole" className="w-1/3 h-40 object-cover rounded-lg mb-4" />
+                  <div className="w-2/3 ml-4">
+                    <div className="text-gray-800 mb-4">
+                      <p>ID: {item.repairId}</p>
+                      <p>Location: {locationNames[item.repairId] || 'Loading...'}</p>
+                      <p>Status: {item.status}</p>
+                      <p>Department: {item.department.deptName}</p>
+                      <p>Confirmed: {item.pothole.confirm !== undefined ? item.pothole.confirm.toString() : 'Unknown'}</p>
+                      <p>Repair At: {item.repairAt}</p>
+                    </div>
+                    <div className="flex items-center mt-8">
+                      <div className="relative flex-1 h-4 bg-gray-300 rounded-full">
+                        <div
+                          className="absolute h-full bg-violet-500 rounded-full"
+                          style={{
+                            width: item.status === 'before' ? '13%' : (item.status === 'ongoing' || item.status === 'during') ? '55%' : '100%',
+                          }}
+                        ></div>
+                        <div
+                          className="absolute w-10 h-10 bg-cover bg-center car-icon"
+                          style={{
+                            backgroundImage: `url('/path/to/car-icon.png')`,
+                            left: item.status === 'before' ? '0%' : (item.status === 'ongoing' || item.status === 'during') ? '50%' : '100%',
+                            transform: (item.status === 'ongoing' || item.status === 'during') ? 'translateX(-50%)' : (item.status === 'complete' || item.status === 'done') ? 'translateX(-100%)' : '',
+                          }}
+                        ></div>
+                      </div>
+                    </div>
+                    <div className="flex justify-between mt-6 text-sm text-gray-600">
+                      <span>공사 전</span>
+                      <span>공사 중</span>
+                      <span>공사 완료</span>
+                    </div>
+                    
+                  </div>
+                </div>
+              ))}
+            </div>
+          ))}
+          {Object.keys(groupedItems).sort((a, b) => new Date(b) - new Date(a)).map((date) => (
+            <div key={date} className="mb-8">
+              {groupedItems[date].filter(item => item.status === 'complete').map((item) => (
                 <div
                   key={item.repairId}
                   className={`bg-white p-4 shadow-md rounded-lg mb-4 ${getStatusClass(item.status)} flex items-center`}

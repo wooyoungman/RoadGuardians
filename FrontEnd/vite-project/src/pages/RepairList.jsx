@@ -18,12 +18,34 @@ const getStatusClass = (status) => {
     case 'before':
       return 'before';
     case 'ongoing':
+    case 'during':
       return 'ongoing';
     case 'complete':
+    case 'done':
       return 'complete transparent';
     default:
       return '';
   }
+};
+
+const fetchData = async () => {
+  const [beforeResponse, ongoingResponse, completeResponse] = await Promise.all([
+    axios.get('https://i11c104.p.ssafy.io/api/v1/repair?status=before'),
+    axios.get('https://i11c104.p.ssafy.io/api/v1/repair?status=ongoing'),
+    axios.get('https://i11c104.p.ssafy.io/api/v1/repair?status=complete'),
+  ]);
+
+  const allData = [
+    ...beforeResponse.data,
+    ...ongoingResponse.data,
+    ...completeResponse.data,
+  ];
+
+  const uniqueData = allData.filter((item, index, self) => 
+    index === self.findIndex((t) => t.repairId === item.repairId)
+  );
+
+  return uniqueData;
 };
 
 const ReportList = () => {
@@ -36,24 +58,9 @@ const ReportList = () => {
   const [showResetButton, setShowResetButton] = useState(false);
 
   useEffect(() => {
-    const fetchData = async () => {
+    const fetchDataEffect = async () => {
       try {
-        const [beforeResponse, duringResponse, doneResponse] = await Promise.all([
-          axios.get('https://i11c104.p.ssafy.io/api/v1/repair?status=before'),
-          axios.get('https://i11c104.p.ssafy.io/api/v1/repair?status=ongoing'),
-          axios.get('https://i11c104.p.ssafy.io/api/v1/repair?status=complete'),
-        ]);
-
-        const allData = [
-          ...beforeResponse.data,
-          ...duringResponse.data,
-          ...doneResponse.data,
-        ];
-
-        const uniqueData = allData.filter((item, index, self) => 
-          index === self.findIndex((t) => t.repairId === item.repairId)
-        );
-
+        const uniqueData = await fetchData();
         setList(uniqueData);
       } catch (error) {
         setError(error);
@@ -62,7 +69,7 @@ const ReportList = () => {
       }
     };
 
-    fetchData();
+    fetchDataEffect();
 
     const handleKeyPress = (event) => {
       if (event.key === 'R' || event.key === 'r') {
@@ -94,17 +101,10 @@ const ReportList = () => {
         await axios.post('https://i11c104.p.ssafy.io/api/v1/repair/start', {
           repairId: [selectedItem.repairId],
         });
-        // 상태를 ongoing으로 업데이트
-        setSelectedItem((prevItem) => ({ ...prevItem, status: 'ongoing' }));
+        const uniqueData = await fetchData();
+        setList(uniqueData);
         setIsRepairStarted(true);
-        // list 상태 업데이트
-        setList((prevList) =>
-          prevList.map((item) =>
-            item.repairId === selectedItem.repairId
-              ? { ...item, status: 'ongoing' }
-              : item
-          )
-        );
+        setSelectedItem((prevItem) => ({ ...prevItem, status: 'ongoing' }));
       } catch (error) {
         console.error('Failed to start repair:', error);
       }
@@ -117,17 +117,10 @@ const ReportList = () => {
         await axios.post('https://i11c104.p.ssafy.io/api/v1/repair/end', {
           repairId: [selectedItem.repairId],
         });
-        // 상태를 complete로 업데이트
+        const uniqueData = await fetchData();
+        setList(uniqueData);
         setSelectedItem((prevItem) => ({ ...prevItem, status: 'complete' }));
         setIsRepairStarted(false);
-        // list 상태 업데이트
-        setList((prevList) =>
-          prevList.map((item) =>
-            item.repairId === selectedItem.repairId
-              ? { ...item, status: 'complete' }
-              : item
-          )
-        );
         closeModal();
       } catch (error) {
         console.error('Failed to complete repair:', error);
@@ -139,7 +132,7 @@ const ReportList = () => {
     setSelectedItem(null);
     setModalOpen(false);
     setIsRepairStarted(false);
-    setShowResetButton(false); // 상태를 리셋하고 버튼을 숨깁니다.
+    setShowResetButton(false);
   };
 
   const groupedItems = groupByDate(list);
@@ -212,7 +205,7 @@ const ReportList = () => {
                   시작하기
                 </button>
               )}
-              {((selectedItem.status === 'before' && isRepairStarted) || selectedItem.status === 'ongoing') && (
+              {((selectedItem.status === 'before' && isRepairStarted) || selectedItem.status === 'ongoing' || selectedItem.status === 'during') && (
                 <button onClick={handleCompleteClick} className="complete-button">
                   보수완료
                 </button>
