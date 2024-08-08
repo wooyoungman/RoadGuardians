@@ -9,8 +9,8 @@ const instance = axios.create({
 });
 
 // 요청 인터셉터 설정
-instance.interceptors.request.use((config) => {
-  const token = sessionStorage.getItem('accessToken');
+instance.interceptors.request.use(async (config) => {
+  const token = localStorage.getItem('accessToken');
   if (token) {
     config.headers.Authorization = `Bearer ${token}`;
   }
@@ -29,21 +29,21 @@ instance.interceptors.response.use((response) => {
     originalRequest._retry = true;
 
     // 엑세스 토큰 만료시 리프레시 토큰으로 재발급 요청
-    const refreshToken = sessionStorage.getItem('refreshToken');
+    const refreshToken = localStorage.getItem('refreshToken');
     if (refreshToken) {
       try {
         const response = await instance.post('/auth/refresh-token', { refreshToken });
         // console.log(response.data.data.accessToken)
         if (response.data.data.accessToken) {
-          sessionStorage.setItem('accessToken', response.data.data.accessToken);
+          localStorage.setItem('accessToken', response.data.data.accessToken);
           instance.defaults.headers.common['Authorization'] = `Bearer ${response.data.data.accessToken}`;
           return instance(originalRequest);
         }
       } catch (err) {
         console.error('Refresh token error', err);
         // Refresh token이 유효하지 않으면 로그아웃 처리
-        sessionStorage.removeItem('accessToken');
-        sessionStorage.removeItem('refreshToken');
+        localStorage.removeItem('accessToken');
+        localStorage.removeItem('refreshToken');
         window.location.href = '/login';
       }
     }
