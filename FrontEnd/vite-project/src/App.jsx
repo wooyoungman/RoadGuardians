@@ -16,7 +16,7 @@ import RepairList from './pages/RepairList';
 import OperationsManagement from './pages/OperationsManagement';
 import ProtectedRoute from './ProtectedRoute';  // 경로 보호 컴포넌트 import
 import './App.css';
-import api from './axios';  // axios import
+import api, {logout} from './axios';  // axios import
 
 const App = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -70,7 +70,7 @@ const App = () => {
 
   return (
     <Router>
-      {isAuthenticated && <Navbar onLogout={handleLogout} />}
+      {isAuthenticated && <Navbar handleLogout={handleLogout} />}
       <div style={{ paddingTop: isAuthenticated ? '80px' : '0' }}>
         <Routes>
           <Route
