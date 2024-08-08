@@ -53,7 +53,7 @@ public class User {
         this.name = dto.getName();
         this.phoneNumber = dto.getPhoneNumber();
         this.userType = dto.getUserType();
-        this.token = "";
+        this.token = dto.getToken();
         this.createdAt = LocalDateTime.now();
         this.editedAt = LocalDateTime.now();
         this.department = department;
