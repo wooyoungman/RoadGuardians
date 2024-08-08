@@ -108,6 +108,7 @@ function Kakao() {
   const [locationName, setLocationName] = useState('DB 받아서 넣기');
   const [isModalOpen, setModalOpen] = useState(false);
   const [deptName, setDeptName] = useState('');
+  const [newMarker, setNewMarker] = useState(false); // websocket
 
   const apiKey = import.meta.env.VITE_GOOGLE_API_KEY;
 
@@ -169,7 +170,7 @@ function Kakao() {
     };
 
     fetchPotholeData();
-  }, []);
+  }, [newMarker]); // websocket을 위한 state 추가
 
   useEffect(() => {
     const resizeListener = () => {
@@ -192,6 +193,22 @@ function Kakao() {
     return () => {
       window.removeEventListener('resize', resizeListener);
     };
+  }, []);
+
+  // 실시간 반영 wwebSocket
+  useEffect(() => {
+    // const socket = new WebSocket('ws://localhost:8080/ws');
+    const socket = new WebSocket('wss://i11c104.p.ssafy.io/ws'); // 보안 WebSocket wws
+
+    socket.onmessage = (event) => {
+      if (event.data === 'newMarker') {
+        setNewMarker(sync => !sync);
+        // setNewMarker(true); 비동기 때문에 처리 안될 수 있음
+        // setNewMarker(false);
+      }
+    };
+
+    return () => {socket.close(); };
   }, []);
 
   const handleMarkerClick = (marker) => {
