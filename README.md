@@ -1,7 +1,7 @@
 <table align="center">
 <tr>
 <td align="center">
-<img alt='logo' src='./README IMG/logo.png'>
+<img alt='logo' src='./README IMG/typo.png' width=60% align='center'>
 
 </a>
 </td>
@@ -9,18 +9,20 @@
 </table>
 
 
-<a href='i11c104.p.ssafy.io' style="color:#270083"><p align='center' style='font-size:30px; font-weight:bold; line-height:10%; '>로드 가디언즈</p><p align='center' style="font-size:10px">i11c104.p.ssafy.io</p></a>
+<a href='i11c104.p.ssafy.io' style="color:#270083">
+  <p align='center' style='font-size:30px; font-weight:bold; line-height:10%; '>로드 가디언즈</p>
+  <p align='center' style="font-size:10px">i11c104.p.ssafy.io</p>
+</a>
 <a href="i11c104.p.ssafy.io">
 
-<summary>Index</summary>
+## Index
 <ol>
-<li><a href="#about-the-project" style=" color: black;"> ➤ 프로젝트 소개</a></li>
-<li><a href="#folder-structure" style=" color: black;"> ➤ 프로젝트 설계</a></li>
-<li><a href="#function" style=" color: black;"> ➤ 기능 소개</a></li>
-
-<li><a href="#deliverable" style=" color: black;"> ➤ 산출물</a></li>
+<a href="#about-the-project"><h4 style=" color: black;">➤ 프로젝트 소개</h4></a>
+<a href="#folder-structure"><h4  style=" color: black;">➤ 프로젝트 설계</h4></a>
+<a href="#function"><h4 style=" color: black;">➤ 기능 소개</h4></a>
+<a href="#deliverable"><h4 style=" color: black;">➤ 산출물</h4></a>
 </ol>
-</details>
+<br>
 
 
 ## 🚔 프로젝트 소개
@@ -31,44 +33,44 @@
 3. 실시간 포트홀 모니터링 및 관리
 4. 과적 차량 적발
 5. ????통계
+<br>
 
 ## 🚔 프로젝트 기간
 
 | 프로젝트 기간 | 2024.07.08 ~ 2024.08.16 (6주) |
 |---|---|
+<br>
 
 ## 🚔 팀 소개
-
-
 <table>
   <thead>
     <tr>
-      <th align="center">박건국</th>
-      <th align="center">정우영</th>
-      <th align="center">정하림</th>
-      <th align="center">강효린</th>
-      <th align="center">박민철</th>
-      <th align="center">지민경</th>
+      <th style="text-align: center;">박건국</th>
+      <th style="text-align: center;">정우영</th>
+      <th style="text-align: center;">정하림</th>
+      <th style="text-align: center;">강효린</th>
+      <th style="text-align: center;">박민철</th>
+      <th style="text-align: center;">지민경</th>
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td align="center">Embedded/팀장</td>
-      <td align="center">Embedded</td>
-      <td align="center">Backend/Infra</td>
-      <td align="center">Frontend</td>
-      <td align="center">Frontend/AI</td>
-      <td align="center">Frontend</td>
+      <td style="text-align: center;">EM</td>
+      <td style="text-align: center;">EM</td>
+      <td style="text-align: center;">BE / Infra</td>
+      <td style="text-align: center;">FE</td>
+      <td style="text-align: center;">FE / AI</td>
+      <td style="text-align: center;">FE</td>
     </tr>
   </tbody>
 </table>
-
-</div>
+<br>
 
 ## 🚔 기획 배경
 포트홀 현상이 급증하면서 사회적 문제로 부각되고 있다.<br>
-최근 2년간 접수된 ‘포트홀’ 관련 민원은 총 52,262건이며, 2024년 1월부터 포트홀 민원은 전년 같은 기간에 비해 약 5.8배 증가했다.<br>
-<img alt='chart' src="./README IMG/chart.png" width=50%><br>
+최근 2년간 접수된 ‘포트홀’ 관련 민원은 총 52,262건이며, 2024년 1월부터 포트홀 민원은 전년 같은 기간에 비해 약 5.8배 증가했다.
+<br><br>
+<img alt='chart' src="./README IMG/chart.PNG" width=70%><br>
 
 <p>
 "신고에 의존하는 포트홀 관리" 
@@ -86,9 +88,10 @@
 
 <br>
 <p><span style="font-size:17px; font-weight:bold;">"포트홀을 빠르게 탐지 및 보수"</span> 하고, <span style="font-size:17px; font-weight:bold;">"과적 차량 단속 강화"</span>로 근본적인 포트홀 저감 할 수 있는 시스템이 필요하다.</p>
+<br>
 
 ## 🚔 개발 환경
-
+<span id="folder-structure"></span>
 <h3>Embedded</h3>
 <img alt="c++" src="https://img.shields.io/badge/C++-512BD4?style=for-the-badge&logo=Cplusplus&logoColor=white">
 <img alt="python" src="https://img.shields.io/badge/Python-3776AB?style=for-the-badge&logo=Python&logoColor=white"/> 
@@ -127,6 +130,7 @@
 <img alt="docker"src="https://img.shields.io/badge/docker-2496ED?style=for-the-badge&logo=docker&logoColor=white"> 
 <img alt="ubuntu" src="https://img.shields.io/badge/ubuntu-E95420?style=for-the-badge&logo=ubuntu&logoColor=white"> 
 </p>
+<br>
 
 ## 🚔 기능 소개
 <span id="function"></span>
@@ -134,60 +138,71 @@
 ### 1.???Lane Detection을 통한 차량 주행
 
 <p style='font-size:16px;'>1.1 차선 탐지...</p>
-<img alt='erd' src=''>
+<img alt='func1.1' src='#'>
 
 ### 2. On-Device AI를 통한 포트홀, 과적 차량 탐지
 <p style='font-size:16px;'>2.1 포트홀 탐지...</p>
-<img alt='erd' src=''>
+<img alt='func2.1' src='#'>
 <p style='font-size:16px;'>2.2 과적 차량 탐지...</p>
-<img alt='erd' src=''>
+<img alt='func2.2' src='#'>
 
 
 ### 3. 실시간 포트홀 모니터링 및 관리
 <p style='font-size:16px;'>3.1 포트홀 지도</p>
-<img alt='erd' src=''>
+<img alt='func3.1' src='#'>
 <p style='font-size:16px;'>3.2 포트홀 보수 작업 지시</p>
-<img alt='erd' src=''>
+<img alt='func3.2' src='#'>
 <p style='font-size:16px;'>3.3 포트홀 보수 작업 경로 생성</p>
-<img alt='erd' src=''>
+<img alt='func3.3' src='#'>
 <p style='font-size:16px;'>3.4 포트홀 보수 작업 모니터링</p>
-<img alt='erd' src=''>
+<img alt='func3.4' src='#'>
 
 ### 4. 과적 차량 적발
 <p style='font-size:16px;'>4.1 과적 차량 적발 리스트</p>
-<img alt='erd' src=''>
+<img alt='func4.1' src='#'>
 <p style='font-size:16px;'>4.2 과적 차량 신고 </p>
-<img alt='erd' src=''>
+<img alt='func4.2' src='#'>
 
 ### 5. ????통계
 <p style='font-size:16px;'>5.1 통계 설명1</p>
-<img alt='erd' src=''>
+<img alt='func5.1' src='#'>
 
 
 
 
 
-<h3>###명세서  연결하기  </h3>
-<!-- <img alt="jenkins" src="https://img.shields.io/badge/jenkins-D24939?style=for-the-badge&logo=jenkins&logoColor=white"> -->
-</p>
+
+
 
 
 ## 🚔 산출물
 <span id="deliverable"></span>
-<ul>
-<li> <a href=""> 
-<img alt="RED" src ="https://img.shields.io/badge/Notion-000000.svg?&style=for-the-badge&logo=Notion&logoColor=white"/>
-</a></li>
+<h3>###노션 명세서 등  연결하기  </h3>
+<a href="#"><img alt="RED" src ="https://img.shields.io/badge/Notion-000000.svg?&style=for-the-badge&logo=Notion&logoColor=white"/></a><br>
 <br>
-<li>Architecture : <a href=""><img alt='erd' src=''></a></li>
-<br>
-<li>요구사항 명세서 <a href=""></a></li>
-<br>
-<li>API 명세서 <a href=""></a></li>
-<br>
-<li>ERD <a href=""><img alt='erd' src=''></a></li>
-<br>
-<li>시연 영상 <a href=""></a></li>
+<a href="#">
+  <h4 style='color:black !important;' >⚙ Architecture</h4>
+</a>
+<br><br>
+<a href="#">
+  <h4 style='color:black !important;' >⚙ ERD</h4>
+</a>
+<br><br>
+<a href="https://www.notion.so/40f35404a065441985d2ec0eb3b14caf">
+  <h4 style='color:black !important;' >📋 요구사항 명세서</h4>
+</a>
+<br><br>
+<a href="https://www.notion.so/API-2e721ae0c1474faa8d40a807dec25bb9">
+  <h4 style='color:black !important;' >📋 API 명세서</h4>
+</a>
+<br><br>
+
+
+
+
+<a href="#">
+  <h4 style='color:black !important;' >🎞 시연 영상</h4>
+</a>
 
 
 
