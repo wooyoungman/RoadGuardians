@@ -67,5 +67,4 @@ export async function logout() {
   }
 }
 
-
 export default api;
