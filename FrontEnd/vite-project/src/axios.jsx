@@ -1,65 +1,71 @@
-// src/axios.js
+
 import axios from 'axios';
 
-const instance = axios.create({
-  baseURL: 'https://i11c104.p.ssafy.io/api/v1', // API 버전 포함
-  headers: {
-    'Content-Type': 'application/json',
-  },
+const api = axios.create({
+  baseURL: 'https://i11c104.p.ssafy.io', // 백엔드 URL
+  withCredentials: true, // 쿠키 전송 설정
 });
 
-// 요청 인터셉터 설정
-instance.interceptors.request.use(async (config) => {
-  const token = localStorage.getItem('accessToken');
-  if (token) {
-    config.headers.Authorization = `Bearer ${token}`;
-  }
-  return config;
-}, (error) => {
-  return Promise.reject(error);
-});
-
-// 응답 인터셉터 설정
-instance.interceptors.response.use((response) => {
-  return response;
-}, async (error) => {
-  const originalRequest = error.config;
-
-  if (error.response && error.response.status === 401 && !originalRequest._retry) {
-    originalRequest._retry = true;
-
-    // 엑세스 토큰 만료시 리프레시 토큰으로 재발급 요청
-    const refreshToken = localStorage.getItem('refreshToken');
-    if (refreshToken) {
-      try {
-        const response = await instance.post('/auth/refresh-token', { refreshToken });
-        // console.log(response.data.data.accessToken)
-        if (response.data.data.accessToken) {
-          localStorage.setItem('accessToken', response.data.data.accessToken);
-          instance.defaults.headers.common['Authorization'] = `Bearer ${response.data.data.accessToken}`;
-          return instance(originalRequest);
-        }
-      } catch (err) {
-        console.error('Refresh token error', err);
-        // Refresh token이 유효하지 않으면 로그아웃 처리
-        localStorage.removeItem('accessToken');
-        localStorage.removeItem('refreshToken');
-        window.location.href = '/login';
-      }
+api.interceptors.request.use(
+  config => {
+    const token = localStorage.getItem('accessToken');
+    if (token) {
+      config.headers.Authorization = `Bearer ${token}`;
     }
+    return config;
+  },
+  error => {
+    return Promise.reject(error);
   }
+);
 
-  return Promise.reject(error);
-});
+api.interceptors.response.use(
+  response => response,
+  async (error) => {
+    const originalRequest = error.config;
+    if (error.response && error.response.status === 401 && !originalRequest._retry) {
+      originalRequest._retry = true;
+      const newAccessToken = await refreshAccessToken();
+      originalRequest.headers.Authorization = `Bearer ${newAccessToken}`;
+      return api(originalRequest);
+    }
+    return Promise.reject(error);
+  }
+);
 
-export const checkTokenValidity = async () => {
+async function refreshAccessToken() {
   try {
-    const response = await instance.get('/auth/check-token');
-    console.log(response)
-    return response.status === 200;
+    const response = await api.post('/api/v1/auth/refresh-token');
+    localStorage.setItem('accessToken', response.data.data.accessToken);
+    return response.data.data.accessToken;
   } catch (error) {
+    console.error('Failed to refresh access token', error);
+    localStorage.removeItem('accessToken');
+    window.location.href = '/login';
+  }
+}
+
+export async function checkTokenValidity() {
+  const token = localStorage.getItem('accessToken');
+  if (!token) return false;
+  try {
+    const response = await api.get('/api/v1/auth/check-token', {
+      headers: { Authorization: `Bearer ${token}` }
+    });
+    return response.data.result;
+  } catch (error) {
+    console.error('Token validation error', error);
     return false;
   }
-};
+}
 
-export default instance;
+export async function logout() {
+  try {
+    await api.post('/api/v1/auth/logout');
+  } catch (error) {
+    console.error('Failed to logout', error);
+  }
+}
+
+
+export default api;

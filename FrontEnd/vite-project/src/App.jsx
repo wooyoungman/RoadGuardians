@@ -33,20 +33,20 @@ const App = () => {
       setLoading(false);
     };
 
-const refreshAccessToken = async () => {
-  try {
-    const response = await api.post('/api/v1/auth/refresh-token');
-    console.log(response);
-    localStorage.setItem('accessToken', response.data.data.accessToken);
-    return response.data.data.accessToken;
-  } catch (error) {
-    console.error('Failed to refresh access token', error);
-    localStorage.removeItem('accessToken');
-    return null;
-  }
-};
+    const refreshAccessToken = async () => {
+      try {
+        const response = await api.post('/api/v1/auth/refresh-token');
+        console.log(response);
+        localStorage.setItem('accessToken', response.data.data.accessToken);
+        return response.data.data.accessToken;
+      } catch (error) {
+        console.error('Failed to refresh access token', error);
+        localStorage.removeItem('accessToken');
+        return null;
+      }
+    };
 
-checkAuth();
+    checkAuth();
   }, []);
 
   useEffect(() => {
@@ -58,7 +58,8 @@ checkAuth();
     setIsAuthenticated(true);
   };
 
-  const handleLogout = () => {
+  const handleLogout = async () => {
+    await logout();
     localStorage.removeItem('accessToken');
     setIsAuthenticated(false);
   };
