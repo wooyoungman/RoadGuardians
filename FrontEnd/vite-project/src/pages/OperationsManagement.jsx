@@ -229,13 +229,30 @@ function Kakao() {
     saveDisabledMarkers([]);
   };
 
-  const handleStartWork = () => {
-    setDisabledMarkers((prevDisabledMarkers) => {
-      const newDisabledMarkers = [...prevDisabledMarkers, ...selectedMarkers];
-      saveDisabledMarkers(newDisabledMarkers);
-      return newDisabledMarkers;
-    });
-    setSelectedMarkers([]);
+  const handleStartWork = async () => {
+    try {
+      await axios.post('https://i11c104.p.ssafy.io/api/v1/repair/start', {
+        repairId: selectedMarkers,
+      });
+      
+      setPotholeList((prevList) =>
+        prevList.map((item) =>
+          selectedMarkers.includes(item.repairId)
+            ? { ...item, status: 'ongoing' }
+            : item
+        )
+      );
+
+      setDisabledMarkers((prevDisabledMarkers) => {
+        const newDisabledMarkers = [...prevDisabledMarkers, ...selectedMarkers];
+        saveDisabledMarkers(newDisabledMarkers);
+        return newDisabledMarkers;
+      });
+
+      setSelectedMarkers([]);
+    } catch (error) {
+      console.error('Failed to start repair:', error);
+    }
   };
 
   const updatePolyline = useCallback(async (selectedMarkers) => {
