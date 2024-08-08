@@ -4,6 +4,7 @@ import com.c104.guardians.entity.Overload;
 import com.c104.guardians.entity.Pothole;
 import com.c104.guardians.repository.OverloadRepository;
 import com.c104.guardians.repository.PotholeRepository;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.firebase.cloud.StorageClient;
@@ -20,12 +21,14 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.UUID;
+
+import com.c104.guardians.websocket.WebSocketHandler;
+
+import javax.swing.text.html.parser.Entity;
 
 
 @RestController
@@ -33,37 +36,42 @@ import java.util.UUID;
 public class FileUploadController {
 
     @Autowired
+    private WebSocketHandler webSocketHandler;
+    @Autowired
     private PotholeRepository potholeRepository;
     @Autowired
     private OverloadRepository overloadRepository;
-
     @Autowired
     private StorageClient storageClient;
 
     private final String baseUrl = "https://firebasestorage.googleapis.com/v0/b/c104-10f5a.appspot.com/o";
 
-    // 포트홀 DB 추가
     @PostMapping("/pothole")
     public ResponseEntity<?> addPotholeWithImage(
             @RequestParam("image") MultipartFile image,
             @RequestParam("data") String data
-    ) throws IOException {
+    ) {
+
         ObjectMapper objectMapper = new ObjectMapper();
 
-//        JsonNode jsonNode = objectMapper.readTree(data);
         JsonNode jsonNode;
         try {
             jsonNode = objectMapper.readTree(data);
-        } catch (IOException e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                    .body("Invalid JSON data");
+        } catch (JsonProcessingException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
         }
+
 
         double x = jsonNode.get("x").asDouble();
         double y = jsonNode.get("y").asDouble();
-        LocalDateTime now = LocalDateTime.now();
+
 
         Point location = new GeometryFactory().createPoint(new Coordinate(x, y));
+
+        LocalDateTime now = LocalDateTime.now();
+        String imageName =
+                now.format(DateTimeFormatter.ofPattern("yyyyMMddHHmmss"))
+                        + "-" + UUID.randomUUID().toString().substring(0, 7) + ".jpg";
 
         List<Pothole> duplication = potholeRepository.checkDuplication(now.minusDays(7), location, 10);
 
@@ -71,23 +79,12 @@ public class FileUploadController {
             return ResponseEntity.status(HttpStatus.CONFLICT).body("Same report within 10m recently");
         }
 
-        String imageName =
-                now.format(DateTimeFormatter.ofPattern("yyyyMMddHHmmss"))
-                        + "-" + UUID.randomUUID().toString()
-                        + ".jpg";
 
-        String blobString = "pothole" + "/" + imageName;
-
-//        storageClient.bucket().create(blobString, image.getInputStream(), image.getContentType());
         try {
-            storageClient.bucket().create(blobString, image.getInputStream(), image.getContentType());
-        } catch (IOException e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                    .body("Image upload error");
+            storageClient.bucket().create("pothole" + "/" + imageName, image.getInputStream(), image.getContentType());
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("fail image upload");
         }
-
-        System.out.println(baseUrl + "/pothole%2F" + imageName + "?alt=media");
-
 
         Pothole newPothole = new Pothole();
         newPothole.setLocation(location);
@@ -97,12 +94,16 @@ public class FileUploadController {
 //        potholeRepository.save(newPothole);
         try {
             potholeRepository.save(newPothole);
+            System.out.println("포트홀 업로드 완료");
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body("Database error");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("fail pothole save");
         }
 
-        System.out.println("포트홀 업로드 완료");
+
+        // 웹소켓 ; 새로운 마커 추가
+        webSocketHandler.sendMessageToClients("newMarker");
+        System.out.println("추가된 마커 알림");
+
         return ResponseEntity.ok().build();
     }
 
@@ -110,64 +111,55 @@ public class FileUploadController {
     public ResponseEntity<?> addOverloadWithImage(
             @RequestParam("image") MultipartFile image,
             @RequestParam("data") String data
-    ) throws IOException {
+    ) {
         ObjectMapper objectMapper = new ObjectMapper();
 
-//        JsonNode jsonNode = objectMapper.readTree(data);
         JsonNode jsonNode;
         try {
             jsonNode = objectMapper.readTree(data);
-        } catch (IOException e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                    .body("Invalid JSON data");
+        } catch (JsonProcessingException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
         }
 
-        LocalDateTime now = LocalDateTime.now();
 
         double x = jsonNode.get("x").asDouble();
         double y = jsonNode.get("y").asDouble();
+
+
         Point location = new GeometryFactory().createPoint(new Coordinate(x, y));
 
+        LocalDateTime now = LocalDateTime.now();
         String imageName =
                 now.format(DateTimeFormatter.ofPattern("yyyyMMddHHmmss"))
-                        + "-" + UUID.randomUUID().toString()
-                        + ".jpg";
-
-        String blobString = "overload" + "/" + imageName;
+                        + "-" + UUID.randomUUID().toString().substring(0, 7) + ".jpg";
 
 
-
-
-
-
-//        storageClient.bucket().create(blobString, image.getInputStream(), image.getContentType());
         try {
-            storageClient.bucket().create(blobString, image.getInputStream(), image.getContentType());
-        } catch (IOException e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                    .body("Image upload error");
+            storageClient.bucket().create("overload" + "/" + imageName, image.getInputStream(), image.getContentType());
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("fail image upload");
         }
-        System.out.println(baseUrl + "/overload%2F" + imageName + "?alt=media");
+
 
         Overload newOverload = new Overload();
-        newOverload.setLocation(location);
-        newOverload.setImageUrl(baseUrl + "/overload%2F" + imageName + "?alt=media" );
-        newOverload.setType("과적");
-        newOverload.setCarNumber(jsonNode.get("carNumber").asText());
-        newOverload.setConfirm(false);
+            newOverload.setLocation(location);
+            newOverload.setImageUrl(baseUrl + "/overload%2F" + imageName + "?alt=media" );
+            newOverload.setType("과적");
+            newOverload.setCarNumber(jsonNode.get("carNumber").asText());
+            newOverload.setConfirm(false);
 
 
 //        overloadRepository.save(newOverload);
-        try {
-            overloadRepository.save(newOverload);
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body("Database error");
+            try {
+                overloadRepository.save(newOverload);
+                System.out.println("과적 차량 업로드 완료");
+            } catch (Exception e) {
+                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("fail overload save");
+            }
+
+            return ResponseEntity.ok().build();
         }
 
-        System.out.println("과적 차량 업로드 완료");
-        return ResponseEntity.ok().build();
-    }
 
 
 }
