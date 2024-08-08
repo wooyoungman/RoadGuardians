@@ -27,9 +27,8 @@ function Login({ onLogin }) {
       const response = await axios.post('https://i11c104.p.ssafy.io/api/v1/auth/login', loginData);
 
       if (response.data.result) {
-        sessionStorage.setItem('accessToken', response.data.data.accessToken);
-        sessionStorage.setItem('refreshToken', response.data.data.refreshToken);
-        onLogin();
+        localStorage.setItem('accessToken', response.data.data.accessToken);
+        onLogin(response.data.data.accessToken);
         if (userType === '1') {
           navigate('/map');
         } else if (userType === '2') {
@@ -84,7 +83,7 @@ function Login({ onLogin }) {
         <input 
           type="password"
           id='userPassword'
-          placeholder="Password" 
+          placeholder="Password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
         />
