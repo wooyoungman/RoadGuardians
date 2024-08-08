@@ -7,10 +7,16 @@ import com.c104.guardians.repository.ReportRepository;
 import com.c104.guardians.service.UserService;
 import com.c104.guardians.service.OverloadService;
 import com.c104.guardians.service.ReportService;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+import com.google.firebase.cloud.StorageClient;
 
+
+import java.io.IOException;
 import java.util.Optional;
 
 @RestController
@@ -27,6 +33,8 @@ public class OverloadController {
     private UserService userService;
     @Autowired
     private ReportRepository reportRepository;
+    @Autowired
+    private StorageClient storageClient;
 
 
 

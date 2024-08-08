@@ -49,7 +49,15 @@ public class FileUploadController {
             @RequestParam("data") String data
     ) throws IOException {
         ObjectMapper objectMapper = new ObjectMapper();
-        JsonNode jsonNode = objectMapper.readTree(data);
+
+//        JsonNode jsonNode = objectMapper.readTree(data);
+        JsonNode jsonNode;
+        try {
+            jsonNode = objectMapper.readTree(data);
+        } catch (IOException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                    .body("Invalid JSON data");
+        }
 
         double x = jsonNode.get("x").asDouble();
         double y = jsonNode.get("y").asDouble();
@@ -65,23 +73,36 @@ public class FileUploadController {
 
         String imageName =
                 now.format(DateTimeFormatter.ofPattern("yyyyMMddHHmmss"))
-                + "-" + UUID.randomUUID().toString();
+                        + "-" + UUID.randomUUID().toString()
+                        + ".jpg";
 
-        String blobString = "pothole" + "/" + imageName + ".jpg";
+        String blobString = "pothole" + "/" + imageName;
 
-        storageClient.bucket().create(blobString, image.getInputStream(), image.getContentType());
+//        storageClient.bucket().create(blobString, image.getInputStream(), image.getContentType());
+        try {
+            storageClient.bucket().create(blobString, image.getInputStream(), image.getContentType());
+        } catch (IOException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                    .body("Image upload error");
+        }
 
-        // https://firebasestorage.googleapis.com/v0/b/c104-10f5a.appspot.com/o/pothole%2F27025c38-b622-4dbc-9006-0d10388a4cfb-pot1.JPG?alt=media
-        System.out.println(baseUrl + "/pothole%" + imageName + ".JPG" + "?alt=media");
+        System.out.println(baseUrl + "/pothole%2F" + imageName + "?alt=media");
 
 
         Pothole newPothole = new Pothole();
         newPothole.setLocation(location);
-        newPothole.setImageUrl(baseUrl + "/pothole%" + imageName + ".JPG" + "?alt=media" );
+        newPothole.setImageUrl(baseUrl + "/pothole%2F" + imageName + "?alt=media" );
         newPothole.setConfirm(false);
 
-        potholeRepository.save(newPothole);
+//        potholeRepository.save(newPothole);
+        try {
+            potholeRepository.save(newPothole);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("Database error");
+        }
 
+        System.out.println("포트홀 업로드 완료");
         return ResponseEntity.ok().build();
     }
 
@@ -91,7 +112,15 @@ public class FileUploadController {
             @RequestParam("data") String data
     ) throws IOException {
         ObjectMapper objectMapper = new ObjectMapper();
-        JsonNode jsonNode = objectMapper.readTree(data);
+
+//        JsonNode jsonNode = objectMapper.readTree(data);
+        JsonNode jsonNode;
+        try {
+            jsonNode = objectMapper.readTree(data);
+        } catch (IOException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                    .body("Invalid JSON data");
+        }
 
         LocalDateTime now = LocalDateTime.now();
 
@@ -101,24 +130,42 @@ public class FileUploadController {
 
         String imageName =
                 now.format(DateTimeFormatter.ofPattern("yyyyMMddHHmmss"))
-                        + "-" + UUID.randomUUID().toString();
+                        + "-" + UUID.randomUUID().toString()
+                        + ".jpg";
 
-        String blobString = "overload" + "/" + imageName + ".jpg";
-
-        storageClient.bucket().create(blobString, image.getInputStream(), image.getContentType());
+        String blobString = "overload" + "/" + imageName;
 
 
-        System.out.println(baseUrl + "/overload%" + imageName + ".JPG" + "?alt=media");
+
+
+
+
+//        storageClient.bucket().create(blobString, image.getInputStream(), image.getContentType());
+        try {
+            storageClient.bucket().create(blobString, image.getInputStream(), image.getContentType());
+        } catch (IOException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                    .body("Image upload error");
+        }
+        System.out.println(baseUrl + "/overload%2F" + imageName + "?alt=media");
 
         Overload newOverload = new Overload();
         newOverload.setLocation(location);
-        newOverload.setImageUrl(baseUrl + "/overload%" + imageName + ".JPG" + "?alt=media" );
-        newOverload.setType("");
+        newOverload.setImageUrl(baseUrl + "/overload%2F" + imageName + "?alt=media" );
+        newOverload.setType("과적");
         newOverload.setCarNumber(jsonNode.get("carNumber").asText());
         newOverload.setConfirm(false);
 
-        overloadRepository.save(newOverload);
 
+//        overloadRepository.save(newOverload);
+        try {
+            overloadRepository.save(newOverload);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("Database error");
+        }
+
+        System.out.println("과적 차량 업로드 완료");
         return ResponseEntity.ok().build();
     }
 
