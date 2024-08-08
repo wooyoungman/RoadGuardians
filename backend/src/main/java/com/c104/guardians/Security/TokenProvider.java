@@ -11,6 +11,8 @@ import com.nimbusds.jose.crypto.MACVerifier;
 
 import java.time.Instant;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.annotation.PostConstruct;
 
@@ -95,7 +97,7 @@ public class TokenProvider {
         }
     }
     // JWT 검증 메서드
-    public String validateJwt(String token) {
+    public Map<String,Object> validateJwt(String token) {
         try {
             // 서명 확인을 통한 JWT 검증
             SignedJWT signedJWT = SignedJWT.parse(token);
@@ -106,7 +108,12 @@ public class TokenProvider {
                 if (expirationTime != null && expirationTime.before(new Date())) {
                     return null;
                 }
-                return signedJWT.getJWTClaimsSet().getSubject();
+
+                Map<String, Object> tokenData = new HashMap<>();
+                tokenData.put("userId", signedJWT.getJWTClaimsSet().getSubject());
+                tokenData.put("issuedAt", signedJWT.getJWTClaimsSet().getIssueTime());
+                tokenData.put("expiration", expirationTime);
+                return tokenData;
             } else {
                 // 서명이 유효하지 않은 경우
                 return null;
