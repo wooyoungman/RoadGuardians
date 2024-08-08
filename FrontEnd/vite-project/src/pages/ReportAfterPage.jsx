@@ -57,19 +57,27 @@ function ReportAfterPage() {
   return (
     <div className='relative p-5'>
       {/* 갤러리 형식 목록 불러오기 */}
-      <div className='post-list'>
+      <div>
         {Object.keys(groupedItems).map((date) => (
           <div key={date} className='text-black'>
-            {/* 날짜 별로 정렬 */}
+            {/* 날짜 Title */}
             <h2 className="text-xl font-semibold mb-4 text-left">{date}</h2>
-            <div className="grid grid-cols-4 gap-4">
+            {/* 갤러리 세션 */}
+            <div className="grid grid-cols-4 gap-4 ">
               {groupedItems[date].map((item) => (
                 <div
                   key={item.reportId}
-                  className="bg-white border border-gray-200 rounded-lg overflow-hidden shadow-md transition-transform transform hover:scale-110 cursor-pointer"
+                  className="pt-2 max-w-[50vh] max-h-[50vh] bg-white border border-gray-200 rounded-md overflow-hidden shadow-md transition-transform transform hover:scale-105 hover:shadow-xl cursor-pointer"
                   onClick={() => openModal(item)}
                 >
-                  <img src={`https://firebasestorage.googleapis.com/v0/b/c104-10f5a.appspot.com/o/report%2F${item.reportId}.png?alt=media`} alt={`Overload ${item.reportId}`} className="w-full h-40 object-cover" />
+                  <div
+                  className='pb-2'
+                  >신고 Id : {item.reportId}</div>
+                  <hr/>
+                  <img src={`https://firebasestorage.googleapis.com/v0/b/c104-10f5a.appspot.com/o/report%2F${item.reportId}.png?alt=media`}
+                  alt={`Overload ${item.reportId}`}
+                  className="flex justify-center w-full grayscale brightness-90 hover:brightness-100 hover:grayscale-0 object-cover"
+                  />
                 </div>
               ))}
             </div>
@@ -80,28 +88,31 @@ function ReportAfterPage() {
       {/* 모달 펼치기 */}
       {isModalOpen && selectedItem && (
         // Modal 백그라운드
-        <div className="fixed inset-0 flex items-center justify-center bg-gray-500 bg-opacity-30 z-50" onClick={closeModal}>
+        <div className="fixed inset-0 flex items-center justify-center bg-gray-500 bg-opacity-30 z-30" onClick={closeModal}>
           {/* Modal 바디 */}
           <div
-            className="bg-white text-black rounded-lg shadow-lg p-4 w-3/5 max-h-[90vh] flex flex-col"
+            className="flex flex-col bg-white text-black rounded-md shadow-lg p-4 w-3/5 max-h-[80vh] z-50"
             onClick={(e) => e.stopPropagation()}
           >
             {/* 헤더 */}
-            <header className='flex justify-between items-center mb-4'>
-              <h2 className="text-xl font-semibold">신고 번호 {selectedItem.reportId}번 상세보기</h2>
+            <header className='flex justify-between items-center'>
+              <h2 className="text-xl font-semibold">신고서 {selectedItem.reportId}번 상세 보기</h2>
               <button onClick={closeModal} className="top-2 right-2 text-gray-600">
                 X
               </button>
             </header>
+            <hr className='mt-4 mb-4'/>
+
             {/* 신고서 보기 */}
-            <div className="flex justify-center w-3/5 h-2/5 overflow-y-auto">
-              <img src={`https://firebasestorage.googleapis.com/v0/b/c104-10f5a.appspot.com/o/report%2F${selectedItem.reportId}.png?alt=media`} alt={`Overload ${selectedItem.reportId}`}
+            <div className="flex justify-center overflow-y-auto"> 
+              <img src={`https://firebasestorage.googleapis.com/v0/b/c104-10f5a.appspot.com/o/report%2F${selectedItem.reportId}.png?alt=media`}
+              alt={`Overload ${selectedItem.reportId}`}
+              className='w-3/5 h-3/5'
               />
             </div>
           </div>
         </div>
-      )};
-
+      )}
     </div>
   );
 };

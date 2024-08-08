@@ -13,7 +13,7 @@ const groupByDate = (items) => {
   }, {});
 };
 
-const ReportPage = () => {
+const ReportBeforePage = () => {
   const [list, setList] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -49,7 +49,6 @@ const ReportPage = () => {
   };
 
   const handleFormSubmitted = () => {
-    // 신고서 제출 후 목록 갱신
     const fetchData = async () => {
       try {
         const response = await axios.get('https://i11c104.p.ssafy.io/api/v1/overload?confirm=false');
@@ -79,18 +78,14 @@ const ReportPage = () => {
 
   return (
     <div className="relative p-5 text-black">
-      {/* 내용 */}
       <div className='relative m-5'>
         {Object.keys(groupedItems).map((date) => (
           <div key={date}>
-            <h2 className='text-xl font-bold w-full'>{date}</h2>
-            <hr className='mb-5'/>
-            {/* 요일 별 */}
+            <h2 className='text-xl font-bold w-full mb-5'>{date}</h2>
             {groupedItems[date].map((item) => (
               <div key={item.overloadId} onClick={() => formOpenClick(item)}
-              className='flex items-center border rounded-xl my-2.5 p-5 w-100 cursor-pointer'>
-                <img src={item.imageUrl} alt="Report Image"
-                className='me-5 w-52 h-52 object-fit'/>
+                className='flex items-center border rounded-xl my-2.5 p-5 w-100 cursor-pointer'>
+                <img src={item.imageUrl} alt="Report" className='me-5 w-52 h-52 object-fit'/>
                 <div className='flex-1'>
                   <p className='mx-1.5'>ID: {item.overloadId}</p>
                   <p className='mx-1.5'>Detected At: {item.detectAt ? new Date(item.detectAt).toLocaleString() : 'Unknown'}</p>
@@ -113,4 +108,4 @@ const ReportPage = () => {
   );
 };
 
-export default ReportPage;
+export default ReportBeforePage;

@@ -204,7 +204,7 @@ const ReportForm = ({ isOpen, isClose, selectedItem, onFormSubmitted }) => {
                   </div>
                 </div>
                 <div className='grid grid-cols-6'>
-                  <div className='p-2 border-solid border-e-2 border-zinc-700'>위반 사진</div>
+                  <div className='flex justify-center items-center p-2 border-solid border-e-2 border-zinc-700'>위반 사진</div>
                   <div className='p-2 col-span-5 content-center'>
                     <img src={selectedItem?.imageUrl} alt="위반 사진" />
                   </div>
