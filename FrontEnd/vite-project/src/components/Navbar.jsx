@@ -1,13 +1,11 @@
 import React from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
 
-const Navbar = ({ userType, handleLogout }) => {
+const Navbar = ({ userType, onLogout }) => {
   const navigate = useNavigate();
 
   const onLogoutClick = async () => {
-    sessionStorage.removeItem('accessToken');
-    sessionStorage.removeItem('refreshToken');
-    await handleLogout();
+    await onLogout();
     navigate('/login');
   };
 

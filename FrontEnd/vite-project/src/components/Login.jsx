@@ -22,17 +22,15 @@ function Login({ onLogin }) {
       password: password,
       userType: userType
     };
+    console.log('Login Data:', loginData); // 콘솔에 로그인 데이터 출력
 
     try {
       const response = await axios.post('https://i11c104.p.ssafy.io/api/v1/auth/login', loginData);
 
       if (response.data.result) {
-        const accessToken = response.data.data.accessToken;
-        const refreshToken = response.data.data.refreshToken;
-        sessionStorage.setItem('accessToken', accessToken);
-        sessionStorage.setItem('refreshToken', refreshToken);
-        onLogin(accessToken, userType);
-        
+        sessionStorage.setItem('accessToken', response.data.data.accessToken);
+        sessionStorage.setItem('refreshToken', response.data.data.refreshToken);
+        onLogin(userType); // userType 전달
         if (userType === '1') {
           navigate('/');
         } else if (userType === '2') {
