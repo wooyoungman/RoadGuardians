@@ -1,67 +1,94 @@
 import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import axios from 'axios';
 import Navbar from './components/Navbar';
 import Login from './components/Login';
 import Register from './components/Register';
 import MainPage from './pages/MainPage';
 import StatsPage from './pages/StatsPage';
 import ReportPage from './pages/ReportPage';
-import AfterReport from './pages/ReportAfterPage';
-import BeforeReport from './pages/ReportBeforePage';
+import ReportAfterPage from './pages/ReportAfterPage';
 import BeforeLink from './pages/BeforeLink';
 import AfterLink from './pages/AfterLink';
 import LinkPage from './pages/LinkPage';
 import LogoutPage from './pages/LogoutPage';
 import RepairList from './pages/RepairList';
 import OperationsManagement from './pages/OperationsManagement';
-import ProtectedRoute from './ProtectedRoute';  // 경로 보호 컴포넌트 import
+import ProtectedRoute from './ProtectedRoute';
 import './App.css';
-import api, {logout} from './axios';  // axios import
 
 const App = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [userType, setUserType] = useState(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const checkAuth = async () => {
-      const newAccessToken = await refreshAccessToken();
-      if (newAccessToken) {
+      const storedAccessToken = sessionStorage.getItem('accessToken');
+      const storedUserType = sessionStorage.getItem('userType');
+
+      if (storedAccessToken && storedUserType) {
         setIsAuthenticated(true);
+        setUserType(storedUserType);
+        setLoading(false);
       } else {
-        setIsAuthenticated(false);
+        const newAccessToken = await refreshAccessToken();
+        if (newAccessToken) {
+          setIsAuthenticated(true);
+          await fetchUserType(newAccessToken);
+        } else {
+          setIsAuthenticated(false);
+        }
+        setLoading(false);
       }
-      setLoading(false);
     };
 
     const refreshAccessToken = async () => {
       try {
-        const response = await api.post('/api/v1/auth/refresh-token');
-        console.log(response);
-        localStorage.setItem('accessToken', response.data.data.accessToken);
-        return response.data.data.accessToken;
+        const accessToken = sessionStorage.getItem('accessToken');
+        if (accessToken) {
+          return accessToken;
+        }
+        return null;
       } catch (error) {
         console.error('Failed to refresh access token', error);
-        localStorage.removeItem('accessToken');
+        sessionStorage.removeItem('accessToken');
         return null;
+      }
+    };
+
+    const fetchUserType = async (accessToken) => {
+      try {
+        const response = await axios.get('https://i11c104.p.ssafy.io/api/v1/auth/check-token', {
+          headers: { 'Authorization': `Bearer ${accessToken}` }
+        });
+        if (response.status === 200) {
+          const userType = response.data.userType;
+          sessionStorage.setItem('userType', userType);  // userType을 sessionStorage에 저장
+          setUserType(userType);
+        }
+      } catch (error) {
+        console.error('Failed to fetch user type', error);
+        setUserType(null);
       }
     };
 
     checkAuth();
   }, []);
 
-  useEffect(() => {
-    console.log('Authentication status changed:', isAuthenticated);
-  }, [isAuthenticated]);
-
-  const handleLogin = (newAccessToken) => {
-    localStorage.setItem('accessToken', newAccessToken);
+  const handleLogin = (newAccessToken, type) => {
+    sessionStorage.setItem('accessToken', newAccessToken);
+    sessionStorage.setItem('userType', type);  // 로그인 시 userType을 sessionStorage에 저장
     setIsAuthenticated(true);
+    setUserType(type);
   };
 
   const handleLogout = async () => {
-    await logout();
-    localStorage.removeItem('accessToken');
+    await axios.post('https://i11c104.p.ssafy.io/api/v1/auth/logout'); // 로그아웃 요청
+    sessionStorage.removeItem('accessToken');
+    sessionStorage.removeItem('userType');
     setIsAuthenticated(false);
+    setUserType(null);
   };
 
   if (loading) {
@@ -70,28 +97,28 @@ const App = () => {
 
   return (
     <Router>
-      {isAuthenticated && <Navbar handleLogout={handleLogout} />}
+      {isAuthenticated && <Navbar userType={userType} handleLogout={handleLogout} />}
       <div style={{ paddingTop: isAuthenticated ? '80px' : '0' }}>
         <Routes>
           <Route
             path="/"
-            element={isAuthenticated ? <ProtectedRoute element={<MainPage />} /> : <Navigate to="/login" />}
+            element={isAuthenticated ? <MainPage /> : <Navigate to="/login" />}
           />
           <Route
             path="/stats"
-            element={isAuthenticated ? <ProtectedRoute element={<StatsPage />} /> : <Navigate to="/login" />}
+            element={isAuthenticated ? <StatsPage /> : <Navigate to="/login" />}
           />
           <Route
-            path="/report/*"
-            element={isAuthenticated ? <ProtectedRoute element={<ReportPage />} /> : <Navigate to="/login" />}
-          >
-            <Route path="" element={<Navigate to="before" replace />} />
-            <Route path="before" element={<BeforeReport />} />
-            <Route path="after" element={<AfterReport />} />
-          </Route>
+            path="/report"
+            element={isAuthenticated ? <ReportPage /> : <Navigate to="/login" />}
+          />
+          <Route
+            path="/report/after"
+            element={isAuthenticated ? <ReportAfterPage /> : <Navigate to="/login" />}
+          />
           <Route
             path="/link/*"
-            element={isAuthenticated ? <ProtectedRoute element={<LinkPage />} /> : <Navigate to="/login" />}
+            element={isAuthenticated ? <LinkPage /> : <Navigate to="/login" />}
           >
             <Route path="" element={<Navigate to="before" replace />} />
             <Route path="before" element={<BeforeLink />} />
@@ -99,15 +126,15 @@ const App = () => {
           </Route>
           <Route
             path="/repairlist"
-            element={isAuthenticated ? <ProtectedRoute element={<RepairList />} /> : <Navigate to="/login" />}
+            element={isAuthenticated ? <RepairList /> : <Navigate to="/login" />}
           />
           <Route
             path="/operation"
-            element={isAuthenticated ? <ProtectedRoute element={<OperationsManagement />} /> : <Navigate to="/login" />}
+            element={isAuthenticated ? <OperationsManagement /> : <Navigate to="/login" />}
           />
           <Route
             path="/logout"
-            element={isAuthenticated ? <ProtectedRoute element={<LogoutPage onLogout={handleLogout} />} /> : <Navigate to="/login" />}
+            element={isAuthenticated ? <LogoutPage onLogout={handleLogout} /> : <Navigate to="/login" />}
           />
           <Route path="/login" element={<Login onLogin={handleLogin} />} />
           <Route path="/signup" element={<Register />} />
