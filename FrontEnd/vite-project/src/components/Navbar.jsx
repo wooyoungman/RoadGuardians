@@ -9,10 +9,12 @@ const Navbar = ({ userType, onLogout }) => {
     navigate('/login');
   };
 
+  const logoLink = userType === '1' ? '/' : '/operation';
+
   return (
     <nav>
       <div className="logo-container">
-        <NavLink to="/">
+        <NavLink to={logoLink}>
           <img src="/path/to/logo.png" alt="Logo" className="logo" />
         </NavLink>
       </div>
