@@ -1,3 +1,5 @@
+###docker
+
 # Stage 1: Build the React application with Vite
 FROM node:16 AS build
 
@@ -21,3 +23,4 @@ COPY nginx.conf /etc/nginx/conf.d/default.conf
 EXPOSE 80
 
 CMD ["nginx", "-g", "daemon off;"]
+
