@@ -8,7 +8,7 @@
 </tr>
 </table>
 
-
+[로드 가디언즈](https://i11c104.p.ssafy.io/)
 <a href='i11c104.p.ssafy.io' style="color:#270083">
   <p align='center' style='font-size:30px; font-weight:bold; line-height:10%; '>로드 가디언즈</p>
   <p align='center' style="font-size:10px">i11c104.p.ssafy.io</p>
@@ -16,17 +16,15 @@
 <a href="https://i11c104.p.ssafy.io/">
 
 ## Index
-<ol>
-<a href="#about-the-project"><h4 style=" color: black;">➤ 프로젝트 소개</h4></a>
-<a href="#folder-structure"><h4  style=" color: black;">➤ 프로젝트 설계</h4></a>
-<a href="#function"><h4 style=" color: black;">➤ 기능 소개</h4></a>
-<a href="#deliverable"><h4 style=" color: black;">➤ 산출물</h4></a>
-</ol>
+[➤ 프로젝트 소개](#-프로젝트-소개)<br>
+[➤ 프로젝트 설계](#-프로젝트-설계)<br>
+[➤ 기능 소개](#-기능-소개)<br>
+[➤ 산출물](#-산출물)<br>
 <br>
 
 
-## 🚔 프로젝트 소개
-<h2 id="about-the-project"></h2>
+# 🚔 프로젝트 소개
+### 서비스 소개
 &nbsp;&nbsp;**On-Device AI를 활용한 도로 관리 시스템**
 1. ???Lane Detection을 통한 차량 주행
 2. On-Device AI를 통한 포트홀, 과적 차량 탐지
@@ -35,13 +33,13 @@
 5. ????통계
 <br>
 
-## 🚔 프로젝트 기간
+## 프로젝트 기간
 
 | 프로젝트 기간 | 2024.07.08 ~ 2024.08.16 (6주) |
 |---|---|
 <br>
 
-## 🚔 팀 소개
+## 팀 소개
 <table>
   <thead>
     <tr>
@@ -55,18 +53,18 @@
   </thead>
   <tbody>
     <tr>
-      <td style="text-align: center;">EM</td>
-      <td style="text-align: center;">EM</td>
+      <td style="text-align: center;">Leader / EM</td>
+      <td style="text-align: center;">EM / BE</td>
       <td style="text-align: center;">BE / Infra</td>
-      <td style="text-align: center;">FE</td>
-      <td style="text-align: center;">FE / AI</td>
-      <td style="text-align: center;">FE</td>
+      <td style="text-align: center;">FE / Design</td>
+      <td style="text-align: center;">AI / FE</td>
+      <td style="text-align: center;">FE / Data Viz </td>
     </tr>
   </tbody>
 </table>
 <br>
 
-## 🚔 기획 배경
+## 기획 배경
 포트홀 현상이 급증하면서 사회적 문제로 부각되고 있다.<br>
 최근 2년간 접수된 ‘포트홀’ 관련 민원은 총 52,262건이며, 2024년 1월부터 포트홀 민원은 전년 같은 기간에 비해 약 5.8배 증가했다.
 <br><br>
@@ -90,50 +88,61 @@
 <p><span style="font-size:17px; font-weight:bold;">"포트홀을 빠르게 탐지 및 보수"</span> 하고, <span style="font-size:17px; font-weight:bold;">"과적 차량 단속 강화"</span>로 근본적인 포트홀 저감 할 수 있는 시스템이 필요하다.</p>
 <br>
 
-## 🚔 개발 환경
-<h2 id="folder-structure"></h2>
+# 🚔 프로젝트 설계
+## 개발 환경
 <h3>Embedded</h3>
-<img alt="c++" src="https://img.shields.io/badge/C++-512BD4?style=for-the-badge&logo=Cplusplus&logoColor=white">
-<img alt="python" src="https://img.shields.io/badge/Python-3776AB?style=for-the-badge&logo=Python&logoColor=white"/> 
-<img alt="openvc" src="https://img.shields.io/badge/OpenCV-a?style=for-the-badge&logo=OpenCV&logoColor=white">
+<img alt="python" src="https://img.shields.io/badge/Python 3.9-3776AB?style=for-the-badge&logo=Python&logoColor=white"/> 
+<img alt="openvc" src="https://img.shields.io/badge/OpenCV-black?style=for-the-badge&logo=OpenCV&logoColor=white">
+<img alt="Raspberry-Pi5" src="https://img.shields.io/badge/-RaspberryPi 5-C51A4A?style=for-the-badge&logo=Raspberry-Pi">
+<img alt="Jetson Orin Nano" src="https://img.shields.io/badge/Jetson Orin Nano-%236DB33F?style=for-the-badge&logo=Jetson Orin Nano&logoColor=black">
 </p>
 
 <h3>AI</h3>
 <p>
-<img alt="python" src="https://img.shields.io/badge/Python-3776AB?style=for-the-badge&logo=Python&logoColor=white"/> 
+<img alt="python" src="https://img.shields.io/badge/Python 3.9-3776AB?style=for-the-badge&logo=Python&logoColor=white"/> 
 <img alt ="pytorch" src="https://img.shields.io/badge/PyTorch-E34F26?logo=PyTorch&style=for-the-badge&logoColor=white">
+<img alt="YOLO v8" src="https://img.shields.io/badge/YOLO v8-0000C9?style=for-the-badge&logo=YOLO-v8">
 </p>
 
 <h3>Frontend</h3>
 <p>
-<img alt="HTML" src="https://img.shields.io/badge/HTML-E34F26.svg?&style=for-the-badge&logo=HTML5&logoColor=white"/>
+<img alt="HTML5" src="https://img.shields.io/badge/HTML5-E34F26.svg?&style=for-the-badge&logo=HTML5&logoColor=white"/>
+
+<img alt="js" src="https://img.shields.io/badge/javascript-%23323330.svg?style=for-the-badge&logo=javascript&logoColor=%23F7DF1E">
+<img alt="React" src="https://img.shields.io/badge/React-61DAFB?style=for-the-badge&logo=React&logoColor=black">
+<img alt="vite" src="https://img.shields.io/badge/Vite-646CFF?style=for-the-badge&logo=Vite&logoColor=white">
 <img alt="CSS" src="https://img.shields.io/badge/CSS-1572B6.svg?&style=for-the-badge&logo=CSS3&logoColor=white"/>
-<img alt="JavaScript" src="https://img.shields.io/badge/JAVASCRIPT-F7DF1E.svg?&style=for-the-badge&logo=JavaScript&logoColor=black"/>
-<img alt="React"src="https://img.shields.io/badge/React-61DAFB?style=for-the-badge&logo=React&logoColor=black">
 <img alt="Tailwind" src="https://img.shields.io/badge/TailwindCSS-38B2AC?style=for-the-badge&logoColor=white&logo=tailwindcss">
 <img alt="tableau" src='https://img.shields.io/badge/Tableau-E97627?style=for-the-badge&logo=Tableau&logoColor=white'>
 </p>
 
 <h3>Backend</h3>
 <p>
-<img alt="SpringBoot" src="https://img.shields.io/badge/springboot-%236DB33F.svg?style=for-the-badge&logo=springboot&logoColor=white">
+<img alt="JAVA" src="https://img.shields.io/badge/Java 17-ED8B00?style=for-the-badge&logo=openjdk&logoColor=white">
+<img alt="SpringBoot" src="https://img.shields.io/badge/springboot 3-%236DB33F.svg?style=for-the-badge&logo=springboot&logoColor=white">
+<img alt ="gradle" src="https://img.shields.io/badge/Gradle-02303A?style=for-the-badge&logo=Gradle">
 <img alt="SpringSecurity" src="https://img.shields.io/badge/Spring%20Security-6DB33F?style=for-the-badge&logo=Spring%20Security&logoColor=white">
 <img alt="JWT" src="https://img.shields.io/badge/JWT-black?style=for-the-badge&logo=JSON%20web%20tokens">
-<img alt="MySQL" src="https://img.shields.io/badge/MySQL-4479A1?style=for-the-badge&logo=MySQL&logoColor=white">
+
+<br>
+<img alt="MySQL" src="https://img.shields.io/badge/MySQL 8.0-4479A1?style=for-the-badge&logo=MySQL&logoColor=white">
 <img alt="firebase" src="https://img.shields.io/badge/firebase-ffca28?style=for-the-badge&logo=firebase&logoColor=black">
 </p>
 
 <h3>Infra</h3>
 <p>
 <img alt="Nginx" src="https://img.shields.io/badge/nginx-009539?style=for-the-badge&logo=nginx&logoColor=white"> 
-<img alt="amazonaws" src="https://img.shields.io/badge/amazonaws-orange?style=for-the-badge&logo=amazonaws"> 
+<img src="https://img.shields.io/badge/Amazon%20EC2-FF9900?style=for-the-badge&logo=Amazon%20EC2&logoColor=white">
 <img alt="docker"src="https://img.shields.io/badge/docker-2496ED?style=for-the-badge&logo=docker&logoColor=white"> 
 <img alt="ubuntu" src="https://img.shields.io/badge/ubuntu-E95420?style=for-the-badge&logo=ubuntu&logoColor=white"> 
 </p>
 <br>
+<h3>Infra</h3>
+<p>
+<img alt='jira' src="https://img.shields.io/badge/Jira-0052CC?style=for-the-badge&logo=Jira&logoColor=white">
+</p>
 
-## 🚔 기능 소개
-<h2 id="function"></h2>
+# 🚔 기능 소개
 
 ### 1.???Lane Detection을 통한 차량 주행
 
@@ -175,34 +184,26 @@
 
 
 
-## 🚔 산출물
-<h2 id="deliverable"></h2>
+# 🚔 산출물
 <h3>###노션 명세서 등  연결하기  </h3>
-<a href="#"><img alt="RED" src ="https://img.shields.io/badge/Notion-000000.svg?&style=for-the-badge&logo=Notion&logoColor=white"/></a><br>
+<a href="#"><img alt="Notion" src ="https://img.shields.io/badge/Notion-000000.svg?&style=for-the-badge&logo=Notion&logoColor=white"/></a><br>
 <br>
-<a href="#">
-  <h4 style='color:black !important;' >⚙ Architecture</h4>
-</a>
-<br><br>
-<a href="#">
-  <h4 style='color:black !important;' >⚙ ERD</h4>
-</a>
-<br><br>
-<a href="https://www.notion.so/40f35404a065441985d2ec0eb3b14caf">
-  <h4 style='color:black !important;' >📋 요구사항 명세서</h4>
-</a>
-<br><br>
-<a href="https://www.notion.so/API-2e721ae0c1474faa8d40a807dec25bb9">
-  <h4 style='color:black !important;' >📋 API 명세서</h4>
-</a>
+
+##### [⚙ Architecture](#)
+
+##### [⚙ ERD](#)
+
+##### [📋 요구사항 명세서](#)
+
+##### [📋 API 명세서](#)
+
+
 <br><br>
 
 
 
+##### [🎞 시연 영상](#)
 
-<a href="#">
-  <h4 style='color:black !important;' >🎞 시연 영상</h4>
-</a>
 
 
 
