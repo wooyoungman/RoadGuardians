@@ -8,6 +8,7 @@ const ReportForm = ({ isOpen, isClose, selectedItem, onFormSubmitted }) => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [locationName, setLocationName] = useState('DB 받아서 넣기');
   const [deptName, setDeptName] = useState('DB 받아서 넣기');
+  const [isAuthorValid, setIsAuthorValid] = useState(null);
   const navigate = useNavigate();
 
   const apiKey = import.meta.env.VITE_GOOGLE_API_KEY;
@@ -64,15 +65,31 @@ const ReportForm = ({ isOpen, isClose, selectedItem, onFormSubmitted }) => {
       isClose();
     }
   };
+  const handleChange = (e) => {
+    setAuthorName(e.target.value)
 
+    if (e.target.name === 'authorName') {
+      setIsAuthorValid(null);
+    }
+  };
+  
+  const handleAuthorCheck = async () => {
+    if (authorName !== window.localStorage.getItem('name')) {
+      alert('담당자 이름이 일치하지 않습니다!');
+      setIsAuthorValid(false);
+    } else {
+      alert('담당자 확인에 성공하였습니다.');
+      setIsAuthorValid(true); 
+    }
+  };
+  
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // 만약, userName을 받을 수 있다면,
-    // if (authorName !== userName) {
-    //   alert('담당자 이름이 일치하지 않습니다!');
-    //   return;
-    // }
+    if (isAuthorValid !== true) {
+      alert('담당자를 확인해 주세요.');
+      return;
+    }
 
     if (!authorName.trim()) {
       alert('담당자 정보가 없습니다!')
@@ -93,7 +110,8 @@ const ReportForm = ({ isOpen, isClose, selectedItem, onFormSubmitted }) => {
       const blob = await (await fetch(dataURL)).blob();
       const data = {
         overloadId: selectedItem?.overloadId,
-        id: authorName,
+        id: window.localStorage.getItem('id'),
+
       };
       
       const formData = new FormData();
@@ -171,9 +189,11 @@ const ReportForm = ({ isOpen, isClose, selectedItem, onFormSubmitted }) => {
                   type="text"
                   placeholder='이름을 입력해주세요.'
                   value={authorName}
-                  onChange={(e) => setAuthorName(e.target.value)}
+                  onChange={handleChange}
                   className="col-span-2 rounded-md focus:ring-indigo-500 focus:border-indigo-500 text-center bg-white"
                 />
+                <button type="button" onClick={handleAuthorCheck}>작성자 확인</button>
+
               </div>
               <div className='border-solid border-t-2 border-e-2 border-zinc-700 h-full content-center'>
                 위반내용
