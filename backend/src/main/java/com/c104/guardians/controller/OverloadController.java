@@ -1,19 +1,22 @@
 package com.c104.guardians.controller;
 
-import com.c104.guardians.dto.RepairRequest;
 import com.c104.guardians.dto.ReportRequest;
 import com.c104.guardians.entity.*;
 import com.c104.guardians.repository.OverloadRepository;
 import com.c104.guardians.repository.ReportRepository;
-import com.c104.guardians.service.EmployeeService;
+import com.c104.guardians.service.UserService;
 import com.c104.guardians.service.OverloadService;
 import com.c104.guardians.service.ReportService;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+import com.google.firebase.cloud.StorageClient;
 
-import java.util.List;
+
+import java.io.IOException;
 import java.util.Optional;
 
 @RestController
@@ -27,9 +30,11 @@ public class OverloadController {
     @Autowired
     private OverloadService overloadService;
     @Autowired
-    private EmployeeService employeeService;
+    private UserService userService;
     @Autowired
     private ReportRepository reportRepository;
+    @Autowired
+    private StorageClient storageClient;
 
 
 
@@ -48,29 +53,45 @@ public class OverloadController {
         return ResponseEntity.ok(overloadRepository.findById(overload_id));
     }
 
-    // 신고하기
     @PostMapping("/report")
-    public ResponseEntity<Report> createReport(
-            @RequestBody ReportRequest reportRequest
-    ) {
-        Overload overload = overloadService.getOverloadById(reportRequest.getOverloadId());
-        Employee employee = employeeService.getEmployeeById(reportRequest.getEmpId());
+    public ResponseEntity<?> createReport(
+            @RequestParam("image") MultipartFile image,
+            @RequestParam("data") String data
+    ) throws IOException {
+        ObjectMapper objectMapper = new ObjectMapper();
+        ReportRequest reportRequest = objectMapper.readValue(data, ReportRequest.class);
 
-        // 오류
-        if (overload == null || employee == null) {
-            return ResponseEntity.badRequest().build();
+        if (image.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                    .body("image error");
         }
 
+        Overload overload = overloadService.getOverloadById(reportRequest.getOverloadId());
+        User user = userService.getUserById(reportRequest.getId());
+
+        if (overload == null || user == null) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                    .body("employee or overload not found");
+        }
 
         overload.setConfirm(true);
         Report report = new Report();
         report.setOverload(overload);
-        report.setEmployee(employee);
+        report.setUser(user);
 
         Report createdReport = reportService.saveReport(report);
+
+
+        String imageName = createdReport.getReportId() + ".png";
+        String blobString = "report/" + imageName;
+
+        storageClient.bucket().create(blobString, image.getInputStream(), image.getContentType());
+
+        System.out.println(imageName);
+//        https://firebasestorage.googleapis.com/v0/b/c104-10f5a.appspot.com/o/report%2F1.png?alt=media
+
         return ResponseEntity.ok(createdReport);
+
     }
-
-
 
 }
