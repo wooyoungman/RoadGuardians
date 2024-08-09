@@ -26,7 +26,7 @@
 
 
 ## 🚔 프로젝트 소개
-<span id="about-the-project"></span>
+<h2 id="about-the-project"></h2>
 &nbsp;&nbsp;**On-Device AI를 활용한 도로 관리 시스템**
 1. ???Lane Detection을 통한 차량 주행
 2. On-Device AI를 통한 포트홀, 과적 차량 탐지
@@ -91,7 +91,7 @@
 <br>
 
 ## 🚔 개발 환경
-<span id="folder-structure"></span>
+<h2 id="folder-structure"></h2>
 <h3>Embedded</h3>
 <img alt="c++" src="https://img.shields.io/badge/C++-512BD4?style=for-the-badge&logo=Cplusplus&logoColor=white">
 <img alt="python" src="https://img.shields.io/badge/Python-3776AB?style=for-the-badge&logo=Python&logoColor=white"/> 
@@ -133,7 +133,7 @@
 <br>
 
 ## 🚔 기능 소개
-<span id="function"></span>
+<h2 id="function"></h2>
 
 ### 1.???Lane Detection을 통한 차량 주행
 
@@ -176,7 +176,7 @@
 
 
 ## 🚔 산출물
-<span id="deliverable"></span>
+<h2 id="deliverable"></h2>
 <h3>###노션 명세서 등  연결하기  </h3>
 <a href="#"><img alt="RED" src ="https://img.shields.io/badge/Notion-000000.svg?&style=for-the-badge&logo=Notion&logoColor=white"/></a><br>
 <br>
