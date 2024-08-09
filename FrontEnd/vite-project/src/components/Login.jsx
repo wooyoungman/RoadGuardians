@@ -1,4 +1,3 @@
-// src/components/Login.jsx
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from '../axios';  // 커스텀 axios 인스턴스를 import
@@ -28,13 +27,13 @@ function Login({ onLogin }) {
       const response = await axios.post('https://i11c104.p.ssafy.io/api/v1/auth/login', loginData);
 
       if (response.data.result) {
-        sessionStorage.setItem('accessToken', response.data.data.accessToken);
-        sessionStorage.setItem('refreshToken', response.data.data.refreshToken);
-        onLogin(userType); // userType 전달
+        localStorage.setItem('accessToken', response.data.data.accessToken);
+        localStorage.setItem('userType', userType);
+        onLogin(response.data.data.accessToken);
         if (userType === '1') {
-          navigate('/');
+          navigate('/map');
         } else if (userType === '2') {
-          navigate('/report');
+          navigate('/operation');
         } 
       } else {
         alert(response.data.message);
@@ -85,7 +84,7 @@ function Login({ onLogin }) {
         <input 
           type="password"
           id='userPassword'
-          placeholder="Password" 
+          placeholder="Password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
         />
