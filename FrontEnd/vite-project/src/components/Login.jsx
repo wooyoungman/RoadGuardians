@@ -29,6 +29,10 @@ function Login({ onLogin }) {
       if (response.data.result) {
         localStorage.setItem('accessToken', response.data.data.accessToken);
         localStorage.setItem('userType', userType);
+        localStorage.setItem('name', response.data.data.user.name);
+        localStorage.setItem('id', response.data.data.user.id);
+        localStorage.setItem('deptId', response.data.data.user.department.deptId);
+        
         onLogin(response.data.data.accessToken);
         if (userType === '1') {
           navigate('/map');
