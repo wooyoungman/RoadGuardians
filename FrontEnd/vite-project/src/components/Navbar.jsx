@@ -1,14 +1,14 @@
 import React from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
 
-const Navbar = ({ userType, onLogout }) => {
+const Navbar = ({ handleLogout }) => {
   const navigate = useNavigate();
-
   const onLogoutClick = async () => {
-    await onLogout();
+    await handleLogout();
     navigate('/login');
   };
 
+  const userType = localStorage.getItem('userType'); 
   const logoLink = userType === '1' ? '/' : '/operation';
 
   return (
