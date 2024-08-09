@@ -108,10 +108,11 @@ function Kakao() {
   const [locationName, setLocationName] = useState('DB 받아서 넣기');
   const [isModalOpen, setModalOpen] = useState(false);
   const [deptName, setDeptName] = useState('');
-  const [newMarker, setNewMarker] = useState(false); // websocket
+  const [isOverlayVisible, setOverlayVisible] = useState(false);
 
   const apiKey = import.meta.env.VITE_GOOGLE_API_KEY;
 
+  
   const reverseGeocode = useCallback(async (lat, lon) => {
     try {
       const response = await axios.get(`https://maps.googleapis.com/maps/api/geocode/json?latlng=${lat},${lon}&key=${apiKey}&language=ko`);
@@ -170,7 +171,7 @@ function Kakao() {
     };
 
     fetchPotholeData();
-  }, [newMarker]); // websocket을 위한 state 추가
+  }, []);
 
   useEffect(() => {
     const resizeListener = () => {
@@ -193,22 +194,6 @@ function Kakao() {
     return () => {
       window.removeEventListener('resize', resizeListener);
     };
-  }, []);
-
-  // 실시간 반영 wwebSocket
-  useEffect(() => {
-    // const socket = new WebSocket('ws://localhost:8080/ws');
-    const socket = new WebSocket('wss://i11c104.p.ssafy.io/ws'); // 보안 WebSocket wws
-
-    socket.onmessage = (event) => {
-      if (event.data === 'newMarker') {
-        setNewMarker(sync => !sync);
-        // setNewMarker(true); 비동기 때문에 처리 안될 수 있음
-        // setNewMarker(false);
-      }
-    };
-
-    return () => {socket.close(); };
   }, []);
 
   const handleMarkerClick = (marker) => {
@@ -265,25 +250,28 @@ function Kakao() {
         ))}
       </div>
       {selectedMarker && (
-        <div className='path_information_box'>
-          <button onClick={handleClose} className='close_button'>x</button>
-          <img src={selectedMarker.imageUrl || NoPicture} alt={selectedMarker.title} className='no_picture'/>
-          <h2 className='information_box1'><div className='title'>포트홀 정보</div> <div className='ID'>ID: {selectedMarker.potholeId}</div></h2>
-          <div className='information_box2'>
-            <p>위치: {locationName}</p>
-            <p>좌표: {`위도 ${getCoordinates(selectedMarker.location).lat}, 경도 ${getCoordinates(selectedMarker.location).lng}`}</p>
-            <p>시각: {selectedMarker.detectAt}</p>
-            <p>상태: {selectedMarker.confirm ? '연계 후' : '연계 전'}</p>
-          </div>
-          <button
-            className={`connect_button ${buttonClicked ? 'clicked' : ''}`}
-            onClick={handleButtonClick}
-            disabled={buttonClicked}
-          >
-            {buttonClicked ? '연계완료' : '유지 보수과 연계하기'}
-          </button>
-        </div>
-      )}
+  <>
+    <div className='path_information_box'>
+      <button onClick={handleClose} className='close_button'>x</button>
+      <img src={selectedMarker.imageUrl || NoPicture} alt={selectedMarker.title} className='no_picture'/>
+      <h2 className='information_box1'><div className='title'>포트홀 정보</div> <div className='ID'>ID: {selectedMarker.potholeId}</div></h2>
+      <div className='information_box2'>
+        <p>위치: {locationName}</p>
+        <p>좌표: {`위도 ${getCoordinates(selectedMarker.location).lat}, 경도 ${getCoordinates(selectedMarker.location).lng}`}</p>
+        <p>시각: {selectedMarker.detectAt}</p>
+        <p>상태: {selectedMarker.confirm ? '연계 후' : '연계 전'}</p>
+      </div>
+      <button
+        className= 'connect_button' 
+        onClick={handleButtonClick}
+        disabled={buttonClicked}
+      >
+        유지 보수와 연계하기
+      </button>
+    </div>
+  </>
+)}
+
       <button onClick={handleRestoreMarkers} className='restore_button'>
         마커 복원하기
       </button>
