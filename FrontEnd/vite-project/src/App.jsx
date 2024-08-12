@@ -61,6 +61,10 @@ const App = () => {
   const handleLogout = async () => {
     await logout();
     localStorage.removeItem('accessToken');
+    localStorage.removeItem('name');
+    localStorage.removeItem('userType');
+    localStorage.removeItem('id');
+    localStorage.removeItem('deptId');
     setIsAuthenticated(false);
   };
 
