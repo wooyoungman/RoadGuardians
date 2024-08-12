@@ -7,17 +7,24 @@ import com.c104.guardians.service.DepartmentService;
 import com.c104.guardians.service.PotholeService;
 import com.c104.guardians.service.RepairService;
 import com.c104.guardians.repository.PotholeRepository;
+import com.c104.guardians.websocket.WebSocketHandler;
+import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 
 import java.util.*;
 
+@Slf4j
 @RestController
 @RequestMapping("/api/v1/pothole")
 public class PotholeController {
 
+    private static final Logger log = LoggerFactory.getLogger(PotholeController.class);
     @Autowired
     private PotholeRepository potholeRepository;
     @Autowired
@@ -28,6 +35,8 @@ public class PotholeController {
     private PotholeService potholeService;
     @Autowired
     private DepartmentService departmentService;
+    @Autowired
+    private WebSocketHandler webSocketHandler;
 
     @GetMapping("/map")
     public ResponseEntity<List<PotholeMarker>> getPotholesByConfirm(
@@ -51,10 +60,20 @@ public class PotholeController {
         return ResponseEntity.ok(potholeRepository.findById(pothole_id));
     }
     @DeleteMapping("/delete/{pothole_id}")
-    public ResponseEntity<Pothole> deletePothole(
+    public ResponseEntity<?> deletePothole(
             @PathVariable Integer pothole_id
     ){
         potholeRepository.deletePotholeByPotholeId(pothole_id);
+
+        // 웹소켓 ; 새로운 마커 추가
+        try {
+            webSocketHandler.sendMessageToClients("delete");
+            log.info("OK websocket : delete pothole");
+        } catch (Exception e) {
+            log.error("Fail WebSocket : delete pothole");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to send message to websocket");
+        }
+
         return ResponseEntity.ok().build();
     }
 
