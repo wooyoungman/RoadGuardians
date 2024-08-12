@@ -50,7 +50,13 @@ public class PotholeController {
     ) {
         return ResponseEntity.ok(potholeRepository.findById(pothole_id));
     }
-
+    @DeleteMapping("/delete/{pothole_id}")
+    public ResponseEntity<Pothole> deletePothole(
+            @PathVariable Integer pothole_id
+    ){
+        potholeRepository.deletePotholeByPotholeId(pothole_id);
+        return ResponseEntity.ok().build();
+    }
 
     // 유지보수 작업 지시하기
     @PostMapping("/repair")

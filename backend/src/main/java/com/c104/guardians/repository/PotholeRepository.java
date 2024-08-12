@@ -2,6 +2,7 @@ package com.c104.guardians.repository;
 
 import com.c104.guardians.entity.PotholeMarker;
 import com.c104.guardians.entity.Pothole;
+import jakarta.transaction.Transactional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -14,6 +15,7 @@ import java.util.Optional;
 
 
 @Repository
+@Transactional
 public interface PotholeRepository extends JpaRepository<Pothole, Integer> {
     // 담당자 확인 여부 = 유지 보수 작업으로 연계 여부
     List<Pothole> findByConfirm(Boolean confirm);
@@ -21,6 +23,8 @@ public interface PotholeRepository extends JpaRepository<Pothole, Integer> {
     Optional<Pothole> findById(Integer pothole_id);
 
     List<PotholeMarker> findMarkerByConfirm(Boolean confirm);
+
+    void deletePotholeByPotholeId(Integer pothole_id);
 
 
     // 중복 7일 이내 가까운 곳에서 신고
