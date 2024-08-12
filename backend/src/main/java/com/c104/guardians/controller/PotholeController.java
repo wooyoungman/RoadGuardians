@@ -38,13 +38,21 @@ public class PotholeController {
     @Autowired
     private WebSocketHandler webSocketHandler;
 
+<<<<<<< HEAD
+    @CrossOrigin(origins = "http://localhost:5173")
+=======
+>>>>>>> f797fb2bc41b0f5e47a0e5216cb60a64d1ef2bdf
     @GetMapping("/map")
     public ResponseEntity<List<PotholeMarker>> getPotholesByConfirm(
     ) {
         return ResponseEntity.ok(potholeRepository.findMarkerByConfirm(false));
     }
 
+<<<<<<< HEAD
+    @CrossOrigin(origins = "http://localhost:5173")
+=======
 
+>>>>>>> f797fb2bc41b0f5e47a0e5216cb60a64d1ef2bdf
     @GetMapping(params = "confirm")
     public ResponseEntity<?> getPotholesByConfirm(
             @RequestParam Boolean confirm
@@ -53,6 +61,10 @@ public class PotholeController {
         return ResponseEntity.ok(potholeRepository.findByConfirm(confirm));
     }
 
+<<<<<<< HEAD
+    @CrossOrigin(origins = "http://localhost:5173")
+=======
+>>>>>>> f797fb2bc41b0f5e47a0e5216cb60a64d1ef2bdf
     @GetMapping(value = "/detail/{pothole_id}")
     public ResponseEntity<Optional<Pothole>> getDetailPotholes(
             @PathVariable Integer pothole_id
@@ -78,6 +90,10 @@ public class PotholeController {
     }
 
     // 유지보수 작업 지시하기
+<<<<<<< HEAD
+    @CrossOrigin(origins = "http://localhost:5173")
+=======
+>>>>>>> f797fb2bc41b0f5e47a0e5216cb60a64d1ef2bdf
     @PostMapping("/repair")
     public ResponseEntity<Repair> createRepair(
             @RequestBody RepairRequest repairRequest

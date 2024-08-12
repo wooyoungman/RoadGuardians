@@ -1,11 +1,10 @@
-import React, { useEffect, useState, useCallback } from 'react';
+import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import normalMarker from '../assets/normal_marker.png';
 import overMarker from '../assets/click_marker.png';
 import clickMarker from '../assets/click_marker.png';
 import NoPicture from '../assets/no_picture.PNG';
-import LinkModal from '../components/LinkModal'; // LinkModal 임포트
-import '../styles/Map.css';
+import './Map.css';
 
 const { kakao } = window;
 
@@ -28,7 +27,7 @@ const saveDisabledMarkers = (disabledMarkers) => {
   localStorage.setItem('disabledMarkers', JSON.stringify(disabledMarkers));
 };
 
-const Marker = ({ map, position, title, onClick, isActive, isSelected }) => {
+const Marker = ({ map, position, title, onClick, isActive }) => {
   useEffect(() => {
     if (!isActive) {
       return;
@@ -54,39 +53,36 @@ const Marker = ({ map, position, title, onClick, isActive, isSelected }) => {
     const overImage = new kakao.maps.MarkerImage(overMarker, overMarkerSize, {
       offset: overMarkerOffset
     });
-    const clickImage = new kakao.maps.MarkerImage(clickMarker, overMarkerSize, {
-      offset: overMarkerOffset
+    const clickImage = new kakao.maps.MarkerImage(clickMarker, markerSize, {
+      offset: markerOffset
     });
 
     const marker = new kakao.maps.Marker({
       map: map,
       position: position,
       title: title,
-      image: isSelected ? clickImage : normalImage
+      image: normalImage
     });
 
     marker.normalImage = normalImage;
 
     kakao.maps.event.addListener(marker, 'mouseover', function () {
-      if (!isSelected) {
-        marker.setImage(overImage);
-      }
+      marker.setImage(overImage);
     });
 
     kakao.maps.event.addListener(marker, 'mouseout', function () {
-      if (!isSelected) {
-        marker.setImage(normalImage);
-      }
+      marker.setImage(normalImage);
     });
 
     kakao.maps.event.addListener(marker, 'click', function () {
+      marker.setImage(clickImage);
       onClick();
     });
 
     return () => {
       marker.setMap(null);
     };
-  }, [map, position, title, onClick, isActive, isSelected]);
+  }, [map, position, title, onClick, isActive]);
 
   if (!isActive) {
     return null;
@@ -105,62 +101,15 @@ function Kakao() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [disabledMarkers, setDisabledMarkers] = useState(getDisabledMarkers);
-  const [locationName, setLocationName] = useState('DB 받아서 넣기');
-  const [isModalOpen, setModalOpen] = useState(false);
-  const [deptName, setDeptName] = useState('');
-  const [isOverlayVisible, setOverlayVisible] = useState(false);
-<<<<<<< HEAD
-=======
-  const [newMarker, setNewMarker] = useState(false); // websocket
->>>>>>> FrontEnd
-
-  const apiKey = import.meta.env.VITE_GOOGLE_API_KEY;
-
-  
-  const reverseGeocode = useCallback(async (lat, lon) => {
-    try {
-      const response = await axios.get(`https://maps.googleapis.com/maps/api/geocode/json?latlng=${lat},${lon}&key=${apiKey}&language=ko`);
-      const { results } = response.data;
-      if (results && results.length > 0) {
-        const { formatted_address, address_components } = results[0];
-        setLocationName(formatted_address);
-
-        const district = address_components.find(component => component.types.includes('sublocality_level_1') || component.types.includes('locality'));
-        if (district) {
-          setDeptName(district.long_name);
-        } else {
-          setDeptName('정보 없음');
-        }
-      } else {
-        setLocationName('위치 정보를 찾을 수 없습니다.');
-        setDeptName('정보 없음');
-      }
-    } catch (error) {
-      console.error('역지오코딩 오류:', error);
-      setLocationName('역지오코딩 오류');
-      setDeptName('역지오코딩 오류');
-    }
-  }, [apiKey]);
-
-  useEffect(() => {
-    if (selectedMarker && selectedMarker.location) {
-      const coordinates = selectedMarker.location.match(/POINT \(([^ ]+) ([^ ]+)\)/);
-      if (coordinates) {
-        const lon = coordinates[1];
-        const lat = coordinates[2];
-        reverseGeocode(lat, lon);
-      }
-    }
-  }, [selectedMarker, reverseGeocode]);
 
   useEffect(() => {
     const fetchPotholeData = async () => {
       try {
-        const mapResponse = await axios.get('https://i11c104.p.ssafy.io/api/v1/pothole/map');
+        const mapResponse = await axios.get('http://i11c104.p.ssafy.io/api/v1/pothole/map');
         const ids = mapResponse.data.map(pothole => pothole.potholeId);
 
         const requests = ids.map(id =>
-          axios.get(`https://i11c104.p.ssafy.io/api/v1/pothole/detail/${id}`)
+          axios.get(`http://i11c104.p.ssafy.io:8080/api/v1/pothole/detail/${id}`)
         );
 
         const responses = await Promise.all(requests);
@@ -175,11 +124,7 @@ function Kakao() {
     };
 
     fetchPotholeData();
-<<<<<<< HEAD
   }, []);
-=======
-  }, [newMarker]);
->>>>>>> FrontEnd
 
   useEffect(() => {
     const resizeListener = () => {
@@ -204,25 +149,6 @@ function Kakao() {
     };
   }, []);
 
-<<<<<<< HEAD
-=======
-    // 실시간 반영 wwebSocket
-    useEffect(() => {
-      // const socket = new WebSocket('ws://localhost:8080/ws');
-      const socket = new WebSocket('wss://i11c104.p.ssafy.io/ws'); // 보안 WebSocket wws
-  
-      socket.onmessage = (event) => {
-        if (event.data === 'newMarker') {
-          setNewMarker(sync => !sync);
-          // setNewMarker(true); 비동기 때문에 처리 안될 수 있음
-          // setNewMarker(false);
-        }
-      };
-  
-      return () => {socket.close(); };
-    }, []);
-  
->>>>>>> FrontEnd
   const handleMarkerClick = (marker) => {
     setSelectedMarker(marker);
     setButtonClicked(false);
@@ -239,7 +165,6 @@ function Kakao() {
     setDisabledMarkers(updatedDisabledMarkers);
     saveDisabledMarkers(updatedDisabledMarkers);
     setPotholeList(potholeList.filter(pothole => pothole.potholeId !== selectedMarker.potholeId));
-    setModalOpen(true);
   };
 
   const handleRestoreMarkers = () => {
@@ -257,10 +182,6 @@ function Kakao() {
     return { lat: null, lng: null };
   };
 
-  const modalCloseClick = () => {
-    setModalOpen(false);
-  };
-
   return (
     <div>
       <div id="KakaoMap" style={{ width: innerWidth - 20, height: innerHeight - 120 }}>
@@ -272,45 +193,32 @@ function Kakao() {
             title={pothole.title}
             onClick={() => handleMarkerClick(pothole)}
             isActive={true}
-            isSelected={selectedMarker && selectedMarker.potholeId === pothole.potholeId}
           />
         ))}
       </div>
       {selectedMarker && (
-  <>
-    <div className='path_information_box'>
-      <button onClick={handleClose} className='close_button'>x</button>
-      <img src={selectedMarker.imageUrl || NoPicture} alt={selectedMarker.title} className='no_picture'/>
-      <h2 className='information_box1'><div className='title'>포트홀 정보</div> <div className='ID'>ID: {selectedMarker.potholeId}</div></h2>
-      <div className='information_box2'>
-        <p>위치: {locationName}</p>
-        <p>좌표: {`위도 ${getCoordinates(selectedMarker.location).lat}, 경도 ${getCoordinates(selectedMarker.location).lng}`}</p>
-        <p>시각: {selectedMarker.detectAt}</p>
-        <p>상태: {selectedMarker.confirm ? '연계 후' : '연계 전'}</p>
-      </div>
-      <button
-        className= 'connect_button' 
-        onClick={handleButtonClick}
-        disabled={buttonClicked}
-      >
-        유지 보수와 연계하기
-      </button>
-    </div>
-  </>
-)}
-
+        <div className='path_information_box'>
+          <button onClick={handleClose} className='close_button'>x</button>
+          <img src={selectedMarker.imageUrl || NoPicture} alt={selectedMarker.title} className='no_picture'/>
+          <h2 className='information_box1'><div className='title'>포트홀 정보</div> <div className='ID'>ID: {selectedMarker.potholeId}</div></h2>
+          <div className='information_box2'>
+            <p>위치: {selectedMarker.location}</p>
+            <p>좌표: {`위도 ${getCoordinates(selectedMarker.location).lat}, 경도 ${getCoordinates(selectedMarker.location).lng}`}</p>
+            <p>시각: {selectedMarker.detectAt}</p>
+            <p>상태: {selectedMarker.confirm ? '연계 후' : '연계 전'}</p>
+          </div>
+          <button
+            className={`connect_button ${buttonClicked ? 'clicked' : ''}`}
+            onClick={handleButtonClick}
+            disabled={buttonClicked}
+          >
+            {buttonClicked ? '연계완료' : '유지 보수과 연계하기'}
+          </button>
+        </div>
+      )}
       <button onClick={handleRestoreMarkers} className='restore_button'>
         마커 복원하기
       </button>
-
-      {selectedMarker && (
-        <LinkModal
-          isOpen={isModalOpen}
-          isClose={modalCloseClick}
-          selectedItem={selectedMarker}
-          deptName={deptName}
-        />
-      )}
     </div>
   );
 }
