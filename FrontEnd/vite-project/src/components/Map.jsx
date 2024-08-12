@@ -204,8 +204,6 @@ function Kakao() {
     };
   }, []);
 
-<<<<<<< HEAD
-=======
     // 실시간 반영 wwebSocket
     useEffect(() => {
       // const socket = new WebSocket('ws://localhost:8080/ws');
@@ -222,7 +220,7 @@ function Kakao() {
       return () => {socket.close(); };
     }, []);
   
->>>>>>> FrontEnd
+
   const handleMarkerClick = (marker) => {
     setSelectedMarker(marker);
     setButtonClicked(false);
