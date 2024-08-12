@@ -7,7 +7,9 @@ import com.c104.guardians.repository.ReportRepository;
 import com.c104.guardians.service.UserService;
 import com.c104.guardians.service.OverloadService;
 import com.c104.guardians.service.ReportService;
+import com.c104.guardians.websocket.WebSocketHandler;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,6 +21,7 @@ import com.google.firebase.cloud.StorageClient;
 import java.io.IOException;
 import java.util.Optional;
 
+@Slf4j
 @RestController
 @RequestMapping("/api/v1/overload")
 public class OverloadController {
@@ -35,6 +38,9 @@ public class OverloadController {
     private ReportRepository reportRepository;
     @Autowired
     private StorageClient storageClient;
+    @Autowired
+    private WebSocketHandler webSocketHandler;
+
 
 
 
@@ -54,10 +60,19 @@ public class OverloadController {
     }
 
     @DeleteMapping("/delete/{overload_id}")
-    public ResponseEntity<Pothole> deletePothole(
+    public ResponseEntity<?> deletePothole(
             @PathVariable Integer overload_id
     ){
         overloadRepository.deleteOverloadByOverloadId(overload_id);
+        // 웹소켓 ; 새로운 마커 추가
+        try {
+            webSocketHandler.sendMessageToClients("delete");
+            log.info("OK websocket : delete oveload");
+        } catch (Exception e) {
+            log.error("Fail WebSocket : delete oveload");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to send message to websocket");
+        }
+
         return ResponseEntity.ok().build();
     }
 
