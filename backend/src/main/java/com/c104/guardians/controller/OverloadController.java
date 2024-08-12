@@ -53,6 +53,14 @@ public class OverloadController {
         return ResponseEntity.ok(overloadRepository.findById(overload_id));
     }
 
+    @DeleteMapping("/delete/{overload_id}")
+    public ResponseEntity<Pothole> deletePothole(
+            @PathVariable Integer overload_id
+    ){
+        overloadRepository.deleteOverloadByOverloadId(overload_id);
+        return ResponseEntity.ok().build();
+    }
+
     @PostMapping("/report")
     public ResponseEntity<?> createReport(
             @RequestParam("image") MultipartFile image,
