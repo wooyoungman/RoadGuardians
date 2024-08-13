@@ -92,7 +92,7 @@
 # 🚔 프로젝트 설계
 ## 개발 환경
 <h3>Embedded</h3>
-<img alt="python" src="https://img.shields.io/badge/Python 3.9-3776AB?style=for-the-badge&logo=Python&logoColor=white"/> 
+<img alt="python" src="https://img.shields.io/badge/Python-3776AB?style=for-the-badge&logo=Python&logoColor=white"/> 
 <img alt="openvc" src="https://img.shields.io/badge/OpenCV-black?style=for-the-badge&logo=OpenCV&logoColor=white">
 <img alt="Raspberry-Pi5" src="https://img.shields.io/badge/-RaspberryPi 5-C51A4A?style=for-the-badge&logo=Raspberry-Pi">
 <img alt="Jetson Orin Nano" src="https://img.shields.io/badge/Jetson Orin Nano-%236DB33F?style=for-the-badge&logo=Jetson Orin Nano&logoColor=black">
@@ -100,7 +100,7 @@
 
 <h3>AI</h3>
 <p>
-<img alt="python" src="https://img.shields.io/badge/Python 3.9-3776AB?style=for-the-badge&logo=Python&logoColor=white"/> 
+<img alt="python" src="https://img.shields.io/badge/Python-3776AB?style=for-the-badge&logo=Python&logoColor=white"/> 
 <img alt ="pytorch" src="https://img.shields.io/badge/PyTorch-E34F26?logo=PyTorch&style=for-the-badge&logoColor=white">
 <img alt="YOLO v8" src="https://img.shields.io/badge/YOLO v8-0000C9?style=for-the-badge&logo=YOLO-v8">
 </p>
@@ -119,14 +119,13 @@
 
 <h3>Backend</h3>
 <p>
-<img alt="JAVA" src="https://img.shields.io/badge/Java 17-ED8B00?style=for-the-badge&logo=openjdk&logoColor=white">
-<img alt="SpringBoot" src="https://img.shields.io/badge/springboot 3-%236DB33F.svg?style=for-the-badge&logo=springboot&logoColor=white">
-<img alt ="gradle" src="https://img.shields.io/badge/Gradle-02303A?style=for-the-badge&logo=Gradle">
+<img alt="JAVA" src="https://img.shields.io/badge/Java-ED8B00?style=for-the-badge&logo=openjdk&logoColor=white">
+<img alt="SpringBoot" src="https://img.shields.io/badge/springboot-%236DB33F.svg?style=for-the-badge&logo=springboot&logoColor=white">
 <img alt="SpringSecurity" src="https://img.shields.io/badge/Spring%20Security-6DB33F?style=for-the-badge&logo=Spring%20Security&logoColor=white">
 <img alt="JWT" src="https://img.shields.io/badge/JWT-black?style=for-the-badge&logo=JSON%20web%20tokens">
 
 <br>
-<img alt="MySQL" src="https://img.shields.io/badge/MySQL 8.0-4479A1?style=for-the-badge&logo=MySQL&logoColor=white">
+<img alt="MySQL" src="https://img.shields.io/badge/MySQL-4479A1?style=for-the-badge&logo=MySQL&logoColor=white">
 <img alt="firebase" src="https://img.shields.io/badge/firebase-ffca28?style=for-the-badge&logo=firebase&logoColor=black">
 </p>
 
@@ -138,10 +137,34 @@
 <img alt="ubuntu" src="https://img.shields.io/badge/ubuntu-E95420?style=for-the-badge&logo=ubuntu&logoColor=white"> 
 </p>
 <br>
-<h3>Infra</h3>
-<p>
-<img alt='jira' src="https://img.shields.io/badge/Jira-0052CC?style=for-the-badge&logo=Jira&logoColor=white">
+
+
+<p style='font-size:9px; line-height:0.5;' >
+<버전 정보> <br>
+Python : 3.9.19 &nbsp;
+Opencv-Python 4.10.0 &nbsp;
+pytorch : 2.3.1<br>
+React : 18.3.1 &nbsp;
+Tableau : 8.2.62 <br>
+Java : 17.0.11 &nbsp;
+Spring boot : 3.3.2 &nbsp;
+MySQL : 8.0.39 <br>
+Ubuntu : 20.04.6 LTS &nbsp;
+Docker : 27.1.1 &nbsp;
+NGINX : 1.18.0 
 </p>
+
+<h3>협업 툴</h3>
+<p>
+<a href="#">
+<img alt='jira' src="https://img.shields.io/badge/Jira-0052CC?style=for-the-badge&logo=Jira&logoColor=white">
+</a>
+<a href="https://www.notion.so/1-C104-c02fce6e587f4bb5acf3c834544dd04f">
+<img alt='jira' src="https://img.shields.io/badge/Notion-black?style=for-the-badge&logo=Notion&logoColor=white">
+</a>
+</p>
+
+<br>
 
 # 🚔 기능 소개
 
@@ -187,9 +210,9 @@
 
 # 🚔 산출물
 
-##### [⚙ Architecture](#)
+##### [⚙ Architecture](https://lab.ssafy.com/s11-webmobile3-sub2/S11P12C104/uploads/c98e7b45383f15041a297bb1a1b30956/%EC%95%84%ED%82%A4%ED%85%8D%EC%B2%98.png)
 
-##### [⚙ ERD](#)
+##### [⚙ ERD](https://lab.ssafy.com/s11-webmobile3-sub2/S11P12C104/uploads/57503f0ad6bc4c16fa530a4947aec5fd/Entity_Relationship_Diagram__1_.jpg)
 
 ##### [📋 요구사항 명세서](#)
 
