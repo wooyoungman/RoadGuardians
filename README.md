@@ -1,19 +1,16 @@
 <table align="center">
 <tr>
 <td align="center">
-<img alt='logo' src='https://lab.ssafy.com/s11-webmobile3-sub2/S11P12C104/uploads/b9ce9405f95435d2b9ab25edbe80d7ba/logo.png' width=60% align='center'>
+<img alt='logo' src='https://lab.ssafy.com/s11-webmobile3-sub2/S11P12C104/uploads/11a30530f59bae7c804c111ebdb363a4/%EB%A1%9C%EA%B3%A0.PNG' width=100% align='center'>
 
 </a>
 </td>
 </tr>
 </table>
 
-### [로드 가디언즈](https://i11c104.p.ssafy.io/)
-<a href='i11c104.p.ssafy.io' style="color:#270083">
-  <p align='center' style='font-size:30px; font-weight:bold; line-height:10%; '>로드 가디언즈</p>
-  <p align='center' style="font-size:10px">i11c104.p.ssafy.io</p>
-</a>
-<a href="https://i11c104.p.ssafy.io/">
+
+### [로드 가디언즈 🖱](https://i11c104.p.ssafy.io/)
+
 
 ## Index
 #### &emsp; [➤ 프로젝트 소개](#-프로젝트-소개)<br>
@@ -87,6 +84,9 @@
 
 <br>
 <p><span style="font-size:17px; font-weight:bold;">"포트홀을 빠르게 탐지 및 보수"</span> 하고, <span style="font-size:17px; font-weight:bold;">"과적 차량 단속 강화"</span>로 근본적인 포트홀 저감 할 수 있는 시스템이 필요하다.</p>
+<br>
+
+  
 <br>
 
 # 🚔 프로젝트 설계
@@ -165,6 +165,8 @@ NGINX : 1.18.0
 </p>
 
 <br>
+  
+<br>
 
 # 🚔 기능 소개
 
@@ -214,9 +216,9 @@ NGINX : 1.18.0
 
 ##### [⚙ ERD](https://lab.ssafy.com/s11-webmobile3-sub2/S11P12C104/uploads/57503f0ad6bc4c16fa530a4947aec5fd/Entity_Relationship_Diagram__1_.jpg)
 
-##### [📋 요구사항 명세서](#)
+##### [📋 요구사항 명세서](https://olive-bedbug-5a3.notion.site/40f35404a065441985d2ec0eb3b14caf)
 
-##### [📋 API 명세서](#)
+##### [📋 API 명세서](https://olive-bedbug-5a3.notion.site/API-2e721ae0c1474faa8d40a807dec25bb9)
 
 
 <br><br>
