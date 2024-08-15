@@ -24,11 +24,11 @@
 
 ## 서비스 소개
 **On-Device AI를 활용한 도로 관리 시스템**
-1. ???Lane Detection을 통한 차량 주행
+1. Lane Detection을 통한 차량 주행
 2. On-Device AI를 통한 포트홀, 과적 차량 탐지
 3. 실시간 포트홀 모니터링 및 관리
 4. 과적 차량 적발
-5. ????통계
+5. 통계 (DATA VISUALIZATION)
 <br>
 
 ## 프로젝트 기간
@@ -172,15 +172,15 @@ NGINX : 1.18.0
 
 ### 1.Lane Detection을 통한 차량 주행
 
-<p style='font-size:16px;'>1.1 차선 탐지...</p>
+<p style='font-size:16px;'>1.1 차선 탐지</p>
 <img alt='func1.1' src='./README_IMG/차선탐지.png'>
 
 - OpenCV를 기반으로 차선을 나타내는 색인 빨간색 픽셀 값을 검출하여 차선을 그림으로써 차선들의 평균 기울기 값을 기반으로 조향각을 계산하여 차량의 자율 주행 기능을 수행함
 
 ### 2. On-Device AI를 통한 포트홀, 과적 차량 탐지
-<p style='font-size:16px;'>2.1 포트홀 탐지...</p>
+<p style='font-size:16px;'>2.1 포트홀 탐지</p>
 <img alt='func2.1' src='./README_IMG/포트홀탐지.png'>
-<p style='font-size:16px;'>2.2 과적 차량 탐지...</p>
+<p style='font-size:16px;'>2.2 과적 차량 탐지</p>
 <img alt='func2.2' src='./README_IMG/과적차량탐지.png'>
 
 - Yolov8 모델을 사용하여 과적 차량 및 포트홀 데이터를 학습시킨 후 Object Tracking 모드를 통해 각 객체를 검출 및 추적함
