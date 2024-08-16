@@ -7,7 +7,7 @@
 </td>
 </tr>
 </table>
-
+ 
 
 ### [로드 가디언즈 🖱](https://i11c104.p.ssafy.io/)
 
@@ -156,7 +156,7 @@ NGINX : 1.18.0
 
 <h3>협업 툴</h3>
 <p>
-<a href="#">
+<a href="https://ssafy.atlassian.net/jira/software/c/projects/S11P12C104/boards/7000/timeline">
 <img alt='jira' src="https://img.shields.io/badge/Jira-0052CC?style=for-the-badge&logo=Jira&logoColor=white">
 </a>
 <a href="https://www.notion.so/1-C104-c02fce6e587f4bb5acf3c834544dd04f">

@@ -74,12 +74,21 @@ public class PotholeController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to send message to websocket");
         }
 
+        // websocket 웹소켓
+        try {
+            webSocketHandler.sendMessageToClients("newDB");
+            log.info("OK websocket");
+        } catch (Exception e) {
+            log.error("Fail WebSocket");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to send message to websocket");
+        }
+
         return ResponseEntity.ok().build();
     }
 
     // 유지보수 작업 지시하기
     @PostMapping("/repair")
-    public ResponseEntity<Repair> createRepair(
+    public ResponseEntity<?> createRepair(
             @RequestBody RepairRequest repairRequest
     ) {
         Pothole pothole = potholeService.getPotholeById(repairRequest.getPotholeId());
@@ -97,6 +106,16 @@ public class PotholeController {
         repair.setStatus("before"); // 기본 상태 설정
 
         Repair createdRepair = repairService.saveRepair(repair);
+
+        // websocket 웹소켓
+        try {
+            webSocketHandler.sendMessageToClients("newDB");
+            log.info("OK websocket");
+        } catch (Exception e) {
+            log.error("Fail WebSocket");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to send message to websocket");
+        }
+
         return ResponseEntity.ok(createdRepair);
     }
 

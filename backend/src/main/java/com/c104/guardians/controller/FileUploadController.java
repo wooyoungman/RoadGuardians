@@ -110,7 +110,7 @@ public class FileUploadController {
 
         // 웹소켓 ; 새로운 마커 추가
         try {
-            webSocketHandler.sendMessageToClients("newMarker");
+            webSocketHandler.sendMessageToClients("newDB");
             log.info("OK websocket : pothole");
         } catch (Exception e) {
             log.error("Fail WebSocket : pothole");
@@ -182,6 +182,15 @@ public class FileUploadController {
                 log.error("Fail DB save : overload");
                 return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to DB save");
             }
+
+        // websocket 웹소켓
+        try {
+            webSocketHandler.sendMessageToClients("newDB");
+            log.info("OK websocket : overload");
+        } catch (Exception e) {
+            log.error("Fail WebSocket : overload");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to send message to websocket");
+        }
 
             log.info("Successfully upload overload");
             System.out.println();

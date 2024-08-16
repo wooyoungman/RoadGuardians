@@ -1,0 +1,66 @@
+.report_button{
+  display: flex;
+  gap: 0px; /* 버튼 간격 */
+  margin-top: 40px; /* 상단 여백 */
+  margin-left: 450px;
+  position: fixed; /* 고정 위치 */
+  top: 10px; /* 상단에서의 위치 */
+  left: 10px; /* 왼쪽에서의 위치 */
+  z-index: 1000; /* z-index 값 조정 */
+  background-color: transparent; /* 배경색 투명 */
+}
+
+.report_before_box{
+  margin-left: 150px;
+  background-color: #AFB1BA;
+  padding: 50px;
+  border-radius: 30px;
+  width: 950px;
+  border: 30px solid #AFB1BA;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2); 
+}
+
+.before1_button, .after1_button {
+  background-color: #ffffff; /* 버튼 배경색 */
+  color: #000000; /* 버튼 텍스트 색상 */
+  padding: 5px 25px; /* 패딩 설정 */
+  cursor: pointer; /* 커서 포인터 */
+  border-radius: 0px;
+  margin-right: 1px; /* 오른쪽 여백 */
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2); 
+}
+
+
+.before1_button{
+  border-top-left-radius: 10px;
+  border-bottom-left-radius: 10px;
+}
+
+.after1_button{
+  border-top-right-radius: 10px;
+  border-bottom-right-radius: 10px;
+}
+
+.before1_button:hover, .after1_button:hover{
+  background-color: #21304F; /* 호버 상태에서 배경색 변경 */
+  color: white;
+}
+
+.selected{
+  background-color: #21304F;
+  color: white;}
+
+  .report_after_box{
+      margin-left: 150px;
+      background-color: #AFB1BA;
+      padding: 50px;
+      border-radius: 30px;
+
+      width: 950px;
+      height: 1500px;
+      box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2); 
+  }
+.before_report{
+color: #4d4f88;
+font-weight: bolder;
+}

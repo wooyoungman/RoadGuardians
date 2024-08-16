@@ -1,0 +1,466 @@
+.page-container {
+  position: relative;
+  padding: 20px;
+  left : 200px;
+  bottom:30px;
+}
+
+.link-button:hover {
+  background-color: #c9c9c9;
+}
+
+.post-list {
+  margin: 20px;
+}
+
+.post-item {
+  display: flex;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  background-color: #fff;
+  width: 100%;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+}
+
+.post-image {
+  margin-right: 20px;
+  width: 200px;
+  height: 200px;
+  object-fit: cover;
+}
+
+.modal {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: fixed;
+  inset: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 50;
+}
+
+.modal-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+  background-color: #fff;
+  border-radius: 10px;
+  max-width: 600px;
+  width: 100%;
+  margin: auto;
+  text-align: center;
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  margin-bottom: 16px;
+}
+
+.modal-image {
+  width: 100%;
+  height: auto;
+  border-radius: 8px;
+  margin-bottom: 20px;
+}
+
+.modal-text {
+  margin: 16px 0;
+}
+
+.modal-footer {
+  display: flex;
+  justify-content: center;
+  gap: 16px;
+  margin-top: 16px;
+  width: 100%;
+}
+
+.modal-footer .report-button {
+  width: 100%;
+  max-width: 600px;
+  padding: 10px 20px;
+  background-color: #28a745;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.modal-footer .report-button:hover {
+  background-color: #218838;
+}
+
+.modal-footer .complete-button {
+  width: 100%;
+  max-width: 600px;
+  padding: 10px 20px;
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.modal-footer .complete-button:hover {
+  background-color: #0056b3;
+}
+
+.close-button {
+  padding: 10px 20px;
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.close-button:hover {
+  background-color: #0056b3;
+}
+
+.backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 1040;
+  display: none;
+}
+
+.backdrop.show {
+  display: block;
+}
+
+.offcanvas {
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: auto;
+  height: 100vh;
+  background: #fff;
+  box-shadow: -5px 0 5px rgba(0, 0, 0, 0.5);
+  z-index: 1050;
+  transform: translateX(100%);
+  transition: transform 0.3s ease-in-out;
+  visibility: hidden;
+  padding:10px
+}
+
+.offcanvas.show {
+  visibility: visible;
+  transform: translateX(0);
+}
+
+.connect-button {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  margin-top: 20px;
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+.connect-button:hover {
+  background-color: #0056b3;
+}
+
+.offcanvas-body {
+  overflow-y: auto;
+  max-height: 90vh;
+  align-items: center; 
+}
+
+.car-icon {
+  width: 28px;
+  height: 28px;
+  background-image: url('/path/to/car-icon.png');
+  background-size: cover;
+  position: absolute;
+  top: -40px;
+  margin-top: 10px;
+}
+
+.transparent {
+  opacity: 0.6;
+}
+
+.link-buttons {
+  display: flex;
+  gap: 0px; /* 버튼 간격 */
+  margin-top: 40px; /* 상단 여백 */
+  margin-left: 450px;
+  position: fixed; /* 고정 위치 */
+  top: 10px; /* 상단에서의 위치 */
+  left: 10px; /* 왼쪽에서의 위치 */
+  z-index: 30; /* z-index 값 조정 */
+  background-color: transparent; /* 배경색 투명 */
+
+}
+
+.before_button, .after_button {
+  background-color: #ffffff; /* 버튼 배경색 */
+  color: #000000; /* 버튼 텍스트 색상 */
+  padding: 5px 25px; /* 패딩 설정 */
+  cursor: pointer; /* 커서 포인터 */
+  border-radius: 0px;
+  margin-right: 1px; /* 오른쪽 여백 */
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2); 
+}
+
+
+.before_button{
+  border-top-left-radius: 10px;
+  border-bottom-left-radius: 10px;
+}
+
+.after_button{
+  border-top-right-radius: 10px;
+  border-bottom-right-radius: 10px;
+}
+
+.before_button:hover, .after_button:hover{
+  background-color: #21304F; /* 호버 상태에서 배경색 변경 */
+  color: white;
+}
+
+.selected{
+  background-color: #21304F;
+  color: white;}
+
+.before_container_box{
+  margin-left: 180px;
+  background-color: #AFB1BA;;
+  padding: 50px;
+  border-radius: 30px;
+  margin-top: 0px;
+  width: 900px;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2); 
+  
+}
+
+.after_container_box{
+  margin-left: 180px;
+  background-color: #AFB1BA;;
+  padding: 50px;
+  border-radius: 30px;
+  margin-top: 0px;
+  width: 900px;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2); 
+  
+}
+
+.section-image{
+  width: 100%; /* 이미지의 너비를 조정 */
+  max-width: 300px; /* 최대 너비를 설정하여 너무 커지지 않도록 함 */
+}
+
+.section-container {
+  text-align: center; /* 이미지와 텍스트를 가운데 정렬 */
+  margin-bottom: 40px; /* 섹션 간의 간격을 넉넉하게 */
+}
+
+.flex-column {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.text-center {
+  text-align: center;
+}
+
+.item-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.slick-slide{
+  padding:0 10px;
+  height: 292px;
+  width: 800px;
+}
+.before-section .slick-list {
+  background-color: rgba(255, 255, 255, 0.5); 
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.ongoing-section .slick-list {
+  background-color: rgba(107, 133, 206, 0.1); 
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.complete-section .slick-list {
+  background-color: rgba(72, 67, 140, 0.1);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  height: 163px;
+}
+
+.after_link_information{
+  font-size: 11px;
+}
+.afterlink_title{
+  margin: 10px;
+  display: flex;
+  align-items: flex-end;
+}
+.afterlink_title_title{
+  font-weight: bolder;
+  font-size: 25px;
+}
+
+.link-pagination-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 30px;
+}
+
+.link-pagination {
+  display: flex;
+  gap: 6px;
+  font-size: 14px;
+}
+
+.link-pagination-number,
+.link-pagination-arrow {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 35px;
+  height: 35px;
+  background-color: transparent;
+  color: #000;
+  border: 1px solid transparent;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-weight: bold;
+}
+
+.link-pagination-number.active {
+  border-color: #003cff;
+  color: #003cff;
+}
+
+.link-pagination-number:hover,
+.link-pagination-arrow:hover {
+  border-color: #003cff;
+  color: #003cff;
+}
+
+.link-pagination-arrow.disabled {
+  color: #ccc;
+  cursor: not-allowed;
+}
+
+.link-pagination-arrow.prev::before {
+  content: '\2039'; /* 이전 화살표 */
+  font-size: 16px;
+}
+
+.link-pagination-arrow.next::before {
+  content: '\203a'; /* 다음 화살표 */
+}
+
+.title_before_link{
+  color: white;
+}
+
+.before_link_time{
+  font-weight: bold;
+  color: #414285;
+  margin-top: 20px;
+}
+.before_link_where{
+  font-weight: bold;
+  color: #414285;
+}
+.before_link_information1{
+  font-size: 13px;
+  margin-bottom: 20px;
+}
+.before_link_information2{
+  font-size: 13px;
+
+}
+.link-pagination-number.active,
+.link-pagination-number:hover {
+  background-color: #fff;
+  color: #4d4e86;
+  border: 1px solid #ffffff;
+}
+.link-pagination-number {
+  padding: 8px 12px;
+  cursor: pointer;
+  font-size: 16px;
+}
+.beforelink_time{
+  border-top: 1px solid gainsboro;
+  color: #4d4e86;
+  font-size: 20px;
+  margin-bottom: 5px;
+  padding-top: 10px;
+}
+.beforelink_address{
+  border-top: 1px solid gainsboro;
+  color: #4d4e86;
+  font-size: 20px;
+  margin-bottom: 5px;
+  padding-top: 10px;
+}
+.beforelink_where{
+  border-top: 1px solid gainsboro;
+  color: #4d4e86;
+  font-size: 20px;
+  margin-bottom: 5px;
+  padding-top: 10px;
+}
+.beforelink_state{
+  border-top: 1px solid gainsboro;
+  color: #4d4e86;
+  font-size: 20px;
+  margin-bottom: 5px;
+  padding-top: 10px;
+}
+.beforelink_image{
+  width: 400px;
+  margin-bottom: 30px;
+}
+.beforelink_button{
+  margin-bottom: 2rem; /* mb-8 */
+  margin-left: 4rem;   /* mx-16 (왼쪽) */
+  margin-right: 4rem;  /* mx-16 (오른쪽) */
+  background-color: #2c2d4d; /* bg-primary: primary 색상 변수 사용 */
+  color: white; /* text-white */
+  padding-top: 0.5rem; /* py-2 (상단 패딩) */
+  padding-bottom: 0.5rem; /* py-2 (하단 패딩) */
+  padding-left: 1rem; /* px-4 (좌측 패딩) */
+  padding-right: 1rem; /* px-4 (우측 패딩) */
+  border-radius: 0.75rem; /* rounded-xl */
+  transition: background-color 0.3s ease; /* 부드러운 배경색 전환 */
+}
+.afterlink_button{
+  margin-bottom: 2rem; /* mb-8 */
+  margin-left: 160px;  /* mx-16 (왼쪽) */
+  margin-right: 4rem;  /* mx-16 (오른쪽) */
+  background-color: #2c2d4d; /* bg-primary: primary 색상 변수 사용 */
+  color: white; /* text-white */
+  padding-top: 0.5rem; /* py-2 (상단 패딩) */
+  padding-bottom: 0.5rem; /* py-2 (하단 패딩) */
+  padding-left: 1rem; /* px-4 (좌측 패딩) */
+  padding-right: 1rem; /* px-4 (우측 패딩) */
+  border-radius: 0.75rem; /* rounded-xl */
+  transition: background-color 0.3s ease; /* 부드러운 배경색 전환 */
+}
+
+

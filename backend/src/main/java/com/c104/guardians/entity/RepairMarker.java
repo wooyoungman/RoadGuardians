@@ -6,6 +6,11 @@ import org.locationtech.jts.geom.Point;
 public interface RepairMarker {
     Integer getRepairId();
     PotholeInfo getPothole();
+    DepartmentInfo getDepartment();
+
+    interface DepartmentInfo {
+        Integer getDeptId();
+    }
 
     interface PotholeInfo {
         Integer getPotholeId();
