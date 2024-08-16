@@ -88,33 +88,33 @@ function Register() {
       alert('ID 중복 확인을 해주세요.');
       return;
     } 
-    alert('회원 가입은 8월 17일부터 가능합니다.');
-    // try {
-    //   const response = await axios.post('https://i11c104.p.ssafy.io/api/v1/auth/signUp', {
-    //     id: formData.id,
-    //     email: formData.email,
-    //     password: formData.password,
-    //     confirmPassword: formData.passwordConfirm,
-    //     name: formData.name,
-    //     phoneNumber: formData.phone,
-    //     userType: formData.dept_name === "1" ? 1 : 2,
-    //     deptId: parseInt(formData.dept_name),
-    //   });
+    // alert('회원 가입은 8월 17일부터 가능합니다.');
+    try {
+      const response = await axios.post('https://i11c104.p.ssafy.io/api/v1/auth/signUp', {
+        id: formData.id,
+        email: formData.email,
+        password: formData.password,
+        confirmPassword: formData.passwordConfirm,
+        name: formData.name,
+        phoneNumber: formData.phone,
+        userType: formData.dept_name === "1" ? 1 : 2,
+        deptId: parseInt(formData.dept_name),
+      });
 
-    //   if (response.data.result) {
-    //     alert('회원가입이 완료되었습니다.');
-    //     navigate('/login'); // 회원가입 완료 후 로그인 페이지로 이동 
-    //   } else {
-    //     alert(`회원가입 실패: ${response.data.message}`);
-    //   }
-    // } catch (error) {
-    //   if (isNaN(formData.dept_name)){
-    //     alert('소속 부서를 선택해주세요.');
-    //   } else {
-    //   console.error('Registration error', error);
-    //   alert('회원가입 중 오류가 발생했습니다.');
-    //   }
-    // }
+      if (response.data.result) {
+        alert('회원가입이 완료되었습니다.');
+        navigate('/login'); // 회원가입 완료 후 로그인 페이지로 이동 
+      } else {
+        alert(`회원가입 실패: ${response.data.message}`);
+      }
+    } catch (error) {
+      if (isNaN(formData.dept_name)){
+        alert('소속 부서를 선택해주세요.');
+      } else {
+      console.error('Registration error', error);
+      alert('회원가입 중 오류가 발생했습니다.');
+      }
+    }
   };
 
   const handleBack = () => {

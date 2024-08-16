@@ -92,9 +92,9 @@ function Login({ onLogin }) {
             onChange={(e) => setPassword(e.target.value)}
           />
           <button type='submit'>로그인</button>
-          {/* <div className="register-link">
+          <div className="register-link">
             <span onClick={handleRegister}>회원가입</span>
-          </div> */}
+          </div>
         </form>
       </div>
     </div>
