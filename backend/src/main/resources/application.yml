@@ -12,6 +12,7 @@ spring:
       hibernate:
         dialect: org.hibernate.dialect.MySQLDialect
 
+
 app:
   firebase-configuration-file: ./serviceAccountKey.json
   firebase-bucket: c104-10f5a.appspot.com

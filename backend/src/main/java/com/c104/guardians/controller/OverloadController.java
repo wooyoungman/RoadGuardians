@@ -73,6 +73,15 @@ public class OverloadController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to send message to websocket");
         }
 
+        // websocket 웹소켓
+        try {
+            webSocketHandler.sendMessageToClients("newDB");
+            log.info("OK websocket");
+        } catch (Exception e) {
+            log.error("Fail WebSocket");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to send message to websocket");
+        }
+
         return ResponseEntity.ok().build();
     }
 
@@ -113,6 +122,14 @@ public class OverloadController {
         System.out.println(imageName);
 //        https://firebasestorage.googleapis.com/v0/b/c104-10f5a.appspot.com/o/report%2F1.png?alt=media
 
+        // websocket 웹소켓
+        try {
+            webSocketHandler.sendMessageToClients("newDB");
+            log.info("OK websocket");
+        } catch (Exception e) {
+            log.error("Fail WebSocket");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to send message to websocket");
+        }
         return ResponseEntity.ok(createdReport);
 
     }

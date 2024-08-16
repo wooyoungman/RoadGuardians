@@ -5,7 +5,9 @@ import com.c104.guardians.dto.RepairList;
 import com.c104.guardians.entity.RepairMarker;
 import com.c104.guardians.repository.RepairRepository;
 import com.c104.guardians.service.RepairService;
+import com.c104.guardians.websocket.WebSocketHandler;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,10 +19,14 @@ import java.util.List;
 
 import java.util.Optional;
 
+@Slf4j
 @RestController
 @RequestMapping("/api/v1/repair")
 public class RepairController {
 
+
+    @Autowired
+    private WebSocketHandler webSocketHandler;
     @Autowired
     private RepairService repairService;
     @Autowired
@@ -56,6 +62,14 @@ public class RepairController {
 
         statusEdit("ongoing", repairList);
 
+        // websocket 웹소켓
+        try {
+            webSocketHandler.sendMessageToClients("newDB");
+            log.info("OK websocket");
+        } catch (Exception e) {
+            log.error("Fail WebSocket");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to send message to websocket");
+        }
         return ResponseEntity.ok(repairList);
     }
 
@@ -66,6 +80,14 @@ public class RepairController {
 
         statusEdit("complete", repairList);
 
+        // websocket 웹소켓
+        try {
+            webSocketHandler.sendMessageToClients("newDB");
+            log.info("OK websocket");
+        } catch (Exception e) {
+            log.error("Fail WebSocket");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to send message to websocket");
+        }
         return ResponseEntity.ok(repairList);
     }
 

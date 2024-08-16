@@ -1,0 +1,162 @@
+body{
+    background: linear-gradient(to bottom, rgb(133, 135, 143),rgb(255, 255, 255));
+  font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+}
+.sidebar {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  background-color: rgb(44, 62, 80);
+  color: white;
+  width: 250px;
+  height: 100vh;
+  padding: 20px 0;
+  box-sizing: border-box;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 30;
+  box-shadow: 2px 0 10px rgba(0, 0, 0, 0.5);
+}
+
+.logo-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 0px;
+  padding-bottom: 30px;
+  border-bottom: 2px solid white;
+}
+
+
+.logo {
+  height: 120px;
+  margin-bottom: 10px;
+  margin-top: 10px;
+}
+
+.logo-text {
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.nav-links {
+  list-style: none;
+  width: 100%;
+  padding: 0;
+  margin: 0;
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.nav-links li {
+  width: 100%;
+  margin-bottom: 0px;
+}
+
+.nav-links a {
+  text-decoration: none;
+  color: white;
+  font-weight: 500;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 20px;
+  transition: background-color 0.3s ease;
+  margin: 0;
+}
+
+.nav-links a i {
+  font-size: 18px;
+  margin-right: auto; /* 아이콘을 왼쪽으로 밀기 */
+}
+
+.nav-links a span { /* 텍스트를 오른쪽으로 밀기 */
+  margin-left: auto;
+  text-align: right;
+  flex-grow: 1; /* 텍스트가 아이콘을 밀어낼 수 있도록 설정 */
+}
+
+.nav-links a.active-link {
+  background-color: #172238;
+}
+
+.nav-links a:hover {
+  background-color: #172238;
+}
+
+.nav-links a .nav-icon {
+  width: 24px;
+  height: 24px;
+  margin-right: 10px;
+  object-fit: contain;
+}
+
+
+.logout-button {
+  margin-top: 30px;
+  width: 100px; /* Set the width */
+  height: 40px; /* Set the height */
+  padding: 0; /* Remove default padding */
+  background-color: #28285c; /* Use the specified color */
+  color: white; /* White text color */
+  border: none; /* Remove border */
+  cursor: pointer; /* Pointer cursor on hover */
+  font-size: 14px; /* Set font size */
+  font-weight: bold; /* Bold text */
+  border-radius: 20px; /* Rounded corners but not fully circular */
+  display: flex; /* Flexbox for centering content */
+  align-items: center; /* Vertically center the content */
+  justify-content: center; /* Horizontally center the content */
+  transition: background-color 0.3s ease; /* Smooth background color transition */
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2); 
+}
+
+.logout-button:hover {
+  background-color: #5d5da7; /* Darker shade on hover */
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2); 
+
+}
+
+.main-content {
+  margin-left: 250px; /* Adjust based on the width of your sidebar */
+  padding: 20px;
+  display: flex;
+  justify-content: center; /* Center the content horizontally */
+  align-items: center; /* Center the content vertically */
+  height: 100vh;
+  box-sizing: border-box;
+}
+
+.map-container {
+  width: calc(100% - 250px); /* Subtract the sidebar width */
+  max-width: 1200px; /* Optional: Set a max width for the map */
+  height: calc(100% - 40px); /* Adjust the height to fit within the content area */
+  box-sizing: border-box;
+  padding: 20px;
+  background-color: #ffffff; /* Example background color */
+  }
+
+#ReportFormDiv {
+  width: 23cm;
+  height: 18.5cm;
+}
+
+#ReportForm {
+  font-family: '바탕';
+  display: inline-block;
+  position: relative;
+  width: 21cm;
+  height: 29.7cm;
+  padding: 1.5cm 1.5cm 2cm 1.5cm;
+}
+
+#ReportImg {
+  height: 10cm;
+  width: auto;
+  display: block;
+  margin: 0 auto;
+}
