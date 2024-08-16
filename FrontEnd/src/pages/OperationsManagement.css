@@ -1,0 +1,132 @@
+.operations-management-container .pothole-list {
+  position: absolute;
+  top: 60px;
+  left: -800px;
+  width: 350px;
+  max-height: 80%;
+  background: rgba(255, 255, 255, 0.9);
+  border: 1px solid rgba(0, 0, 102, 0.3);
+  backdrop-filter: blur(15px);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+  z-index: 100;
+  padding: 15px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  transition: max-height 0.3s ease-in-out;
+  overflow: hidden;
+  border-radius: 20px;
+}
+
+
+.operations-management-container .pothole-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  cursor: pointer;
+  width: 100%;
+  padding: 12px;
+  border-bottom: 2px solid rgba(0, 0, 102, 0.2);
+  font-weight: bold;
+  font-size: 18px;
+  color: rgba(0, 0, 102, 0.7);
+}
+
+.operations-management-container .toggle-button {
+  background: transparent;
+  border: none;
+  font-size: 20px;
+  cursor: pointer;
+  color: rgba(0, 0, 102, 0.5);
+  transition: transform 0.3s ease-in-out, color 0.3s ease-in-out;
+}
+
+.operations-management-container .toggle-button:hover {
+  color: rgba(0, 0, 102, 0.8);
+}
+
+.operations-management-container .pothole-list ul {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+  width: 100%;
+  overflow-y: auto;
+  max-height: 600px;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(0, 0, 102, 0.5) rgba(255, 255, 255, 0.3);
+}
+
+.operations-management-container .pothole-list li {
+  padding: 12px;
+  margin: 7px 0;
+  border-radius: 12px;
+  border: 1px solid rgba(0, 0, 102, 0.1);
+  background: rgba(0, 0, 102, 0.1);
+  color: rgba(0, 0, 102, 0.8);
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+  transition: background 0.3s ease-in-out, box-shadow 0.3s ease-in-out, color 0.3s ease-in-out;
+}
+
+.operations-management-container .pothole-list li:hover {
+  background: rgba(0, 0, 102, 0.3);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+  color: rgb(0, 0, 0);
+}
+
+.operations-management-container .start-button {
+  background-color: rgba(0, 0, 102, 0.9);
+  color: white;
+  padding: 7px;
+  margin: 3px;
+  font-size: 15px;
+  font-weight: bold;
+  border: 2px solid rgba(255, 255, 255, 0.4);
+  border-radius: 12px;
+  cursor: pointer;
+  transition: border-color 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+  display: flex;
+  align-items: center;
+}
+
+.operations-management-container .start-button:hover {
+  border-color: rgba(255, 255, 255, 0.8);
+  box-shadow: 0 0 10px rgba(255, 255, 255, 0.6);
+}
+
+.operations-management-container .start-button:active {
+  border-color: rgba(255, 255, 255, 1);
+  box-shadow: 0 0 5px rgba(255, 255, 255, 0.8);
+}
+
+.operations-management-container .pothole-start {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  padding: 10px;
+}
+
+.operations-management-container .pothole-list.collapsed .pothole-start {
+  display: none; 
+}
+
+.repair-map-container{
+  position: relative;
+  width: 900px;
+  height: calc(100vh - 60px);
+  padding: 2px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  left: 80px;
+  bottom: 30px;
+  margin-left: 300px;
+  background-color: white;
+}
+
+.pothole-list {
+  position: relative; /* 위치를 제어하기 위해 상대 위치 지정 */
+  z-index: 1000; /* 포트홀 목록을 nav 바보다 위에 나타나도록 z-index 값 설정 */
+}
