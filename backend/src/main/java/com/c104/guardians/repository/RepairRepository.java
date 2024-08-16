@@ -15,10 +15,12 @@ public interface RepairRepository extends JpaRepository<Repair, Integer> {
 
     // 필드들이 매핑이 잘 안돼서 as로 지정해줌
     @Query("SELECT r.repairId as repairId, " +
-            "r.pothole as pothole, " +
+            "r.department as department,"+
+            "r.pothole as pothole,"+
+            "d.deptId as deptId, " +
             "p.potholeId as potholeId, " +
             "p.location as location " +
-            "FROM Repair r JOIN r.pothole p WHERE r.status = 'before'")
+            "FROM Repair r JOIN r.pothole p JOIN r.department d WHERE r.status = 'before'")
     List<RepairMarker> findMarkerByStatus();
 
 
