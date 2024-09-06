@@ -1,8 +1,7 @@
 <table align="center">
 <tr>
 <td align="center">
-<img alt='logo' src='https://lab.ssafy.com/s11-webmobile3-sub2/S11P12C104/uploads/11a30530f59bae7c804c111ebdb363a4/%EB%A1%9C%EA%B3%A0.PNG' width=100% align='center'>
-
+<img alt='logo' src='./README_IMG/logo.png' width=100% align='center'>
 </a>
 </td>
 </tr>
@@ -66,7 +65,7 @@
 포트홀 현상이 급증하면서 사회적 문제로 부각되고 있다.<br>
 최근 2년간 접수된 ‘포트홀’ 관련 민원은 총 52,262건이며, 2024년 1월부터 포트홀 민원은 전년 같은 기간에 비해 약 5.8배 증가했다.
 <br><br>
-<img alt='chart' src="https://lab.ssafy.com/s11-webmobile3-sub2/S11P12C104/uploads/551745ceb567dd341ad33177c33fcc9c/chart.PNG" width=70%><br>
+<img alt='chart' src="./README_IMG/chart.png" width=70%><br>
 
 <p>
 "신고에 의존하는 포트홀 관리" 
@@ -315,9 +314,9 @@ NGINX : 1.18.0
 
 # 🚔 산출물
 
-##### [⚙ Architecture](https://lab.ssafy.com/s11-webmobile3-sub2/S11P12C104/uploads/c98e7b45383f15041a297bb1a1b30956/%EC%95%84%ED%82%A4%ED%85%8D%EC%B2%98.png)
+##### [⚙ Architecture](./README_IMG/아키텍처.png)
 
-##### [⚙ ERD](https://lab.ssafy.com/s11-webmobile3-sub2/S11P12C104/uploads/57503f0ad6bc4c16fa530a4947aec5fd/Entity_Relationship_Diagram__1_.jpg)
+##### [⚙ ERD](./README_IMG/erd.png)
 
 ##### [📋 요구사항 명세서](https://olive-bedbug-5a3.notion.site/40f35404a065441985d2ec0eb3b14caf)
 
